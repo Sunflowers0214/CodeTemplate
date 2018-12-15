@@ -1,0 +1,50 @@
+##首字母大写
+#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
+##首字母小写
+#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
+package ${packageName}.${projectName.toLowerCase()}.model;
+
+import java.util.Date;
+
+/**
+ * @description $tableInfo.tabComment对象
+ * @author ${author}
+ * @version 1.0.0
+ * @createtime $time
+ */
+public class #firstToUpper(${tableInfo.tableLabel}) {
+
+#foreach($field in $tableInfo.noteshuColList)
+	private ${field.columnSimpleClassName} #firstToLower($field.columnLabel);//$field.colComment
+#end
+	private $tableInfo.tableLabel where;
+#foreach($field in $tableInfo.noteshuColList)
+	
+	//$field.colComment
+	public ${field.columnSimpleClassName} get#firstToUpper($field.columnLabel)(){
+		return #firstToLower($field.columnLabel);
+	}
+	public void set#firstToUpper($field.columnLabel)(${field.columnSimpleClassName} #firstToLower($field.columnLabel)){
+		this.#firstToLower($field.columnLabel) =#firstToLower($field.columnLabel);
+	}
+#end
+
+	//修改条件
+	public $tableInfo.tableLabel getWhere() {
+		return where;
+	}
+	public void setWhere($tableInfo.tableLabel where) {
+		this.where = where;
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("{");
+#foreach($field in $tableInfo.noteshuColList)
+		sb.append("#firstToLower($field.columnLabel)="+#firstToLower($field.columnLabel)+",");
+#end
+		sb.append("}");
+		return sb.toString();
+	}
+}

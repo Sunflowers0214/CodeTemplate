@@ -1,0 +1,97 @@
+##首字母大写
+#macro(firstToUpper $field)
+$field.toUpperCase().substring(0,1)$field.substring(1)##
+#end
+##首字母小写
+#macro(firstToLower $field)
+$field.toLowerCase().substring(0,1)$field.substring(1)##
+#end
+package ${packageName}.${projectName.toLowerCase()}.service.impl;
+
+import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableInfo.tableLabel});
+import ${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableInfo.tableLabel})Dao;
+import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${tableInfo.tableLabel})Service;
+import com.flysnow.common.exception.FrameworkException;
+import com.flysnow.common.base.BaseService;
+import com.flysnow.common.base.Page;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @description $tableInfo.tabComment逻辑层实现
+ * @author ${author}
+ * @version 1.0.0
+ * @createtime $time
+ */
+public class #firstToUpper(${tableInfo.tableLabel})ServiceImpl extends BaseService implements #firstToUpper(${tableInfo.tableLabel})Service {
+
+	private #firstToUpper(${tableInfo.tableLabel})Dao #firstToLower(${tableInfo.tableLabel})Dao;
+
+	public void set#firstToUpper(${tableInfo.tableLabel})Dao(#firstToUpper(${tableInfo.tableLabel})Dao #firstToLower(${tableInfo.tableLabel})Dao) {
+		this.#firstToLower(${tableInfo.tableLabel})Dao = #firstToLower(${tableInfo.tableLabel})Dao;
+	}
+
+	@Override
+	public #firstToUpper(${tableInfo.tableLabel}) insert(#firstToUpper(${tableInfo.tableLabel}) entity){
+		try {
+			return #firstToLower(${tableInfo.tableLabel})Dao.insert(entity);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new FrameworkException("${tableInfo.tabComment}添加异常", e);
+		}
+	}
+
+	@Override
+	public boolean delete(#firstToUpper(${tableInfo.tableLabel}) entity){
+		try {
+			return #firstToLower(${tableInfo.tableLabel})Dao.delete(entity)>0;
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new FrameworkException("${tableInfo.tabComment}删除异常", e);
+		}
+	}
+
+	@Override
+	public boolean update(#firstToUpper(${tableInfo.tableLabel}) entity){
+		try {
+			return #firstToLower(${tableInfo.tableLabel})Dao.update(entity)>0;
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new FrameworkException("${tableInfo.tabComment}修改异常", e);
+		}
+	}
+
+	@Override
+	public #firstToUpper(${tableInfo.tableLabel}) get(#firstToUpper(${tableInfo.tableLabel}) entity){
+		try {
+			return (#firstToUpper(${tableInfo.tableLabel}))#firstToLower(${tableInfo.tableLabel})Dao.get(entity);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new FrameworkException("${tableInfo.tabComment}查询异常", e);
+		}
+	}
+
+
+	@Override
+	public List getList(#firstToUpper(${tableInfo.tableLabel}) entity){
+		try {
+			return #firstToLower(${tableInfo.tableLabel})Dao.getList(entity);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new FrameworkException("${tableInfo.tabComment}查询异常", e);
+		}
+	}
+
+
+	@Override
+	public Page getListForPage(Map map, int pageNo,int pageSize,String sort){
+		try {
+			return #firstToLower(${tableInfo.tableLabel})Dao.getListForPage(map,pageNo,pageSize);
+		} catch (Exception e) {
+			logger.error(e.getMessage(),e);
+			throw new FrameworkException("${tableInfo.tabComment}查询异常", e);
+		}
+	}
+
+}
+

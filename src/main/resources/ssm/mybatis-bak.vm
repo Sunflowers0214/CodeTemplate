@@ -1,0 +1,162 @@
+﻿##首字母大写
+#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
+##首字母小写
+#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableInfo.tableLabel})Dao">
+
+	<sql id="#firstToUpper(${tableInfo.tableLabel})Where">
+#foreach($field in $tableInfo.columnList)
+		<if test="#firstToLower($field.columnLabel) != null">
+            AND a.$field.columnName=#{#firstToLower($field.columnLabel)}
+		</if>
+#end
+	</sql>
+	
+	<sql id="#firstToUpper(${tableInfo.tableLabel})ModifyWhere">
+#foreach($field in $tableInfo.columnList)
+		<if test="where.#firstToLower($field.columnLabel) != null">
+            AND $field.columnName=#{where.#firstToLower($field.columnLabel)}
+		</if>
+#end 
+	</sql>
+	
+	<insert id="insert#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
+		INSERT INTO ${tableInfo.tableName.toLowerCase()} (
+        <trim prefix="" suffixOverrides=",">
+#foreach($field in $tableInfo.columnList)
+			<if test="#firstToLower($field.columnLabel) != null">
+				$field.columnName,
+			</if>
+#end
+		</trim>
+		) VALUES (
+        <trim prefix="" suffixOverrides=",">
+#foreach($field in $tableInfo.columnList)
+	       	<if test="#firstToLower($field.columnLabel) != null">
+				#{#firstToLower($field.columnLabel)},
+			</if>
+#end
+		</trim>
+		)
+	</insert>
+
+    <delete id="delete#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
+        DELETE FROM ${tableInfo.tableName.toLowerCase()}
+        <where>
+            <include refid="#firstToUpper(${tableInfo.tableLabel})ModifyWhere" />
+        </where>
+    </delete>
+
+    <update id="update#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
+		UPDATE ${tableInfo.tableName.toLowerCase()}
+        <set>
+#foreach($field in $tableInfo.columnList)  
+			<if test="#firstToLower($field.columnLabel) != null">
+				$field.columnName=#{#firstToLower($field.columnLabel)},
+			</if>
+#end
+		</set>
+        <where>
+			<include refid="#firstToUpper(${tableInfo.tableLabel})ModifyWhere" />
+		</where>
+	</update>
+
+    <!-- $tableInfo.tabComment (单条查询) -->
+    <resultMap id="#firstToUpper(${tableInfo.tableLabel})Result" type="#firstToLower($tableInfo.tableLabel)">
+#foreach($field in $tableInfo.noteshuColList)
+		<result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
+#end
+    </resultMap>
+    <select id="get#firstToUpper(${tableInfo.tableLabel})" resultMap="#firstToUpper(${tableInfo.tableLabel})Result" parameterType="#firstToLower($tableInfo.tableLabel)" >
+        SELECT
+#set( $count = 1)
+#foreach($field in $tableInfo.noteshuColList)
+#if($count==$!{tableInfo.noteshuColList.size()})
+			a.$field.columnName
+#else
+			a.$field.columnName,
+#end
+#set($count=$count+1)
+#end
+        FROM ${tableInfo.tableName.toLowerCase()} a
+        WHERE 1=1
+#foreach($field in $tableInfo.validFlagList)
+		AND a.$field.colname = '$field.valid'
+#end
+        <trim prefix="" prefixOverrides="">
+            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        </trim>
+    </select>
+
+    <!-- $tableInfo.tabComment (列表查询) -->
+    <resultMap id="#firstToUpper(${tableInfo.tableLabel})ListResult" type="#firstToLower($tableInfo.tableLabel)">
+#foreach($field in $tableInfo.noteshuColList)
+		<result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
+#end
+    </resultMap>
+	<select id="get#firstToUpper(${tableInfo.tableLabel})List" resultMap="#firstToUpper(${tableInfo.tableLabel})ListResult" parameterType="#firstToLower($tableInfo.tableLabel)" >
+        SELECT
+#set( $count = 1)
+#foreach($field in $tableInfo.noteshuColList)
+#if($count==$!{tableInfo.noteshuColList.size()})
+			a.$field.columnName
+#else
+			a.$field.columnName,
+#end
+#set($count=$count+1)
+#end
+		FROM ${tableInfo.tableName.toLowerCase()} a
+		WHERE 1=1
+#foreach($field in $tableInfo.validFlagList)
+    	AND a.$field.colname = '$field.valid'
+#end
+        <trim prefix="" prefixOverrides="">
+            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        </trim>
+	</select>
+
+    <!-- $tableInfo.tabComment (分页查询) -->
+    <resultMap id="#firstToUpper(${tableInfo.tableLabel})ListPageResult" type="java.util.HashMap">
+#foreach($field in $tableInfo.noteshuColList)
+		<result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
+#end
+    </resultMap>
+    <select id="get#firstToUpper(${tableInfo.tableLabel})ListPage" resultMap="#firstToUpper(${tableInfo.tableLabel})ListPageResult" parameterType="map" >
+        SELECT
+#set( $count = 1)
+#foreach($field in $tableInfo.noteshuColList)
+#if($count==$!{tableInfo.noteshuColList.size()})
+			a.$field.columnName
+#else
+			a.$field.columnName,
+#end
+#set($count=$count+1)
+#end
+        FROM ${tableInfo.tableName.toLowerCase()} a
+        WHERE 1=1
+#foreach($field in $tableInfo.validFlagList)
+		AND a.$field.colname = '$field.valid'
+#end
+        <trim prefix="" prefixOverrides="">
+            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        </trim>
+        <if test="pageSort != null">
+            ORDER BY #{pageSort}
+        </if>
+        LIMIT #{beginRow},#{pageSize}
+    </select>
+    <select id="get#firstToUpper(${tableInfo.tableLabel})ListPageCount" resultType="int" parameterType="map" >
+        SELECT count(1)
+        FROM ${tableInfo.tableName.toLowerCase()} a
+        WHERE 1=1
+#foreach($field in $tableInfo.validFlagList)
+    	AND a.$field.colname = '$field.valid'
+#end
+        <trim prefix="" prefixOverrides="">
+            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        </trim>
+    </select>
+
+</mapper>

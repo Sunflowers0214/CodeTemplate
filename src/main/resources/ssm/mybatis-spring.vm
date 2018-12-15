@@ -1,0 +1,26 @@
+##首字母大写
+#macro(firstToUpper $field)
+    $field.toUpperCase().substring(0,1)$field.substring(1)##
+#end
+##首字母小写
+#macro(firstToLower $field)
+    $field.toLowerCase().substring(0,1)$field.substring(1)##
+#end
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!-- 配置SqlSessionFactory对象 -->
+    <bean id="sqlSessionFactory#firstToUpper(${projectName})" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!-- 注入数据库连接池 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置MyBaties全局配置文件:mybatis-${projectName}-config.xml -->
+        <property name="configLocation" value="classpath:config/mybatis/mybatis-${projectName}-config.xml"/>
+    </bean>
+
+</beans>

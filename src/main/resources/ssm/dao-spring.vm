@@ -1,0 +1,21 @@
+##首字母大写
+#macro(firstToUpper $field)
+$field.toUpperCase().substring(0,1)$field.substring(1)##
+#end
+##首字母小写
+#macro(firstToLower $field)
+$field.toLowerCase().substring(0,1)$field.substring(1)##
+#end
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+#foreach($table in $tablesInfo)
+    <!-- $table.tabComment -->
+  	<bean id="#firstToLower(${table.tableLabel})Dao" class="${packageName}.${projectName.toLowerCase()}.dao.impl.#firstToUpper(${table.tableLabel})DaoImpl">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory#firstToUpper(${projectName})"/>
+	</bean>
+
+#end
+</beans>

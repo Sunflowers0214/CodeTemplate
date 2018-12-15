@@ -1,0 +1,61 @@
+package ${packageName}.${projectName.toLowerCase()}.test;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.util.HashMap;
+import java.util.Map;
+import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableInfo.tableLabel});
+import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${tableInfo.tableLabel})Service;
+
+/**
+ * @description $tableInfo.tabComment逻辑层测试
+ * @author ${author}	 
+ * @createtime $time
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration({"classpath:config/spring/spring-service.xml", "classpath:config/spring/spring-mybatis.xml","classpath:config/spring/${projectName.toLowerCase()}-*.xml"})
+public class #firstToUpper(${tableInfo.tableLabel})ServiceTest {
+ 
+	@Autowired
+	private #firstToUpper(${tableInfo.tableLabel})Service #firstToLower(${tableInfo.tableLabel})Service;
+
+ 	@Test
+	public void testInsert() {
+		#firstToUpper(${tableInfo.tableLabel}) #firstToLower(${tableInfo.tableLabel}) = new #firstToUpper(${tableInfo.tableLabel})();
+		#firstToLower(${tableInfo.tableLabel})Service.insert(#firstToLower(${tableInfo.tableLabel}));
+	}
+
+	@Test
+	public void testDelete() {
+		#firstToUpper(${tableInfo.tableLabel}) #firstToLower(${tableInfo.tableLabel}) = new #firstToUpper(${tableInfo.tableLabel})();
+		#firstToLower(${tableInfo.tableLabel})Service.delete(#firstToLower(${tableInfo.tableLabel}));
+	}
+
+	@Test
+	public void testUpdate() {
+		#firstToUpper(${tableInfo.tableLabel}) #firstToLower(${tableInfo.tableLabel}) = new #firstToUpper(${tableInfo.tableLabel})();
+		#firstToLower(${tableInfo.tableLabel})Service.update(#firstToLower(${tableInfo.tableLabel}));
+	}
+
+	@Test
+	public void testGet() {
+		#firstToUpper(${tableInfo.tableLabel}) #firstToLower(${tableInfo.tableLabel}) = new #firstToUpper(${tableInfo.tableLabel})();
+		#firstToLower(${tableInfo.tableLabel})Service.get(#firstToLower(${tableInfo.tableLabel}));
+	}
+
+	@Test
+	public void testGetListForPage() {
+		Map map = new HashMap();
+		#firstToLower(${tableInfo.tableLabel})Service.getListForPage(map, 1, 10, "");
+	}
+
+	@Test
+	public void testGetList() {
+		#firstToUpper(${tableInfo.tableLabel}) #firstToLower(${tableInfo.tableLabel}) = new #firstToUpper(${tableInfo.tableLabel})();
+		#firstToLower(${tableInfo.tableLabel})Service.getList(#firstToLower(${tableInfo.tableLabel}));
+	}
+ 
+}

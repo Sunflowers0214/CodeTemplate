@@ -1,0 +1,43 @@
+##首字母大写
+#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
+##首字母小写
+#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
+var #firstToLower(${tableInfo.tableLabel})DetUrl=rootPath+"/${languagePath.toLowerCase()}/query_#firstToLower($tableInfo.tableLabel).action";
+var #firstToLower(${tableInfo.tableLabel})ModUrl=rootPath+"/${languagePath.toLowerCase()}/modify_#firstToLower($tableInfo.tableLabel).action";
+
+$(function (){
+	setPageControl("nm_",#firstToLower($tableInfo.tableLabel)DataName,"span");
+	$.metadata.setType("attr","validate");
+    $("${builderHelper.getjing()}#firstToUpper(${tableInfo.tableLabel})ModifyForm").validate({
+        errorPlacement: function (lable, element){
+        	errorPlacement(lable, element);
+        },
+        success: function (lable){
+        	success(lable);
+        },
+        submitHandler: function (){
+        	submitHandler();
+        	submit#firstToUpper(${tableInfo.tableLabel})Modify();
+        }
+    });
+    set#firstToUpper(${tableInfo.tableLabel})();
+    initDataPicker();
+    WoohForm.createForm('#firstToUpper(${tableInfo.tableLabel})ModifyForm',{});
+});  
+
+//初始页面数据
+function set#firstToUpper(${tableInfo.tableLabel})(){
+	var paramObj = {};
+#foreach($field in $tableInfo.pkColumnList)
+	paramObj.#firstToLower($field.columnLabel)=#firstToLower($field.columnLabel);
+	$("#m_#firstToLower($field.columnLabel)").val(#firstToLower($field.columnLabel));
+#end
+	asyncAjaxPost(JSON.stringify(paramObj), #firstToLower(${tableInfo.tableLabel})DetUrl, function (data) {
+		setPageControl("m_", data.l#firstToUpper(${tableInfo.tableLabel}));
+	});
+}
+
+//修改数据
+function submit#firstToUpper(${tableInfo.tableLabel})Modify(){
+ajaxSubmit("m_",#firstToLower(${tableInfo.tableLabel})ModUrl,#firstToLower(${tableInfo.tableLabel})Management,MODIFY,3,"goback()");
+}

@@ -1,0 +1,64 @@
+##首字母大写
+#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
+##首字母小写
+#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
+package ${packageName}.${projectName.toLowerCase()}.dao;
+
+import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableInfo.tableLabel});
+import com.flysnow.common.base.Page;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @description $tableInfo.tabComment数据层接口
+ * @author ${author}
+ * @version 1.0.0
+ * @createtime $time
+ */
+public interface #firstToUpper(${tableInfo.tableLabel})Dao{
+
+	/**
+	 * @description 增加
+	 * @param entity
+	 * @return
+	 */
+	public abstract #firstToUpper(${tableInfo.tableLabel}) insert(#firstToUpper(${tableInfo.tableLabel}) entity);
+
+	/**
+	 * @description 删除
+	 * @param entity
+	 * @return
+	 */
+	public abstract int delete(#firstToUpper(${tableInfo.tableLabel}) entity);
+
+	/**
+	 * @description 修改
+	 * @param entity
+	 * @return
+	 */
+	public abstract int update(#firstToUpper(${tableInfo.tableLabel}) entity);
+
+	/**
+	 * @description 查询单条
+	 * @param entity
+	 * @return
+	 */
+	public abstract #firstToUpper(${tableInfo.tableLabel}) get(#firstToUpper(${tableInfo.tableLabel}) entity);
+
+	/**
+	 * @description 多条查询
+	 * @param entity
+	 * @return
+	*/
+	public abstract List getList(#firstToUpper(${tableInfo.tableLabel}) entity);
+
+	/**
+	 * @description 分页查询
+	 * @param map
+	 * @param pageNo
+	 * @param pageSize
+	 * @return
+	 */
+	public abstract Page getListForPage(Map map, int pageNo, int pageSize);
+
+}

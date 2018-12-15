@@ -1,0 +1,21 @@
+##首字母大写
+#macro(firstToUpper $field)
+$field.toUpperCase().substring(0,1)$field.substring(1)##
+#end
+##首字母小写
+#macro(firstToLower $field)
+$field.toLowerCase().substring(0,1)$field.substring(1)##
+#end
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN" "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts> 
+	<package name="${languagePath.toLowerCase()}" extends="hecsp-default" namespace="/${languagePath.toLowerCase()}">
+#foreach($table in $tablesInfo)
+    	<!-- $table.tabComment -->
+		<action name="*_#firstToLower(${table.tableLabel})" method="{1}" class="#firstToLower(${table.tableLabel})Action">
+			<result type="json"/>
+		</action>
+		
+#end
+	</package> 
+</struts>

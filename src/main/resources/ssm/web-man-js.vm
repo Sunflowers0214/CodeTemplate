@@ -1,0 +1,111 @@
+##首字母大写
+#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
+##首字母小写
+#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
+##字母小写
+#macro(nametoLower $field)$field.toLowerCase()
+#end
+var #firstToLower(${tableInfo.tableLabel})ListPageUrl=rootPath+"/${languagePath.toLowerCase()}/queryListPage_#firstToLower($tableInfo.tableLabel).action";
+var #firstToLower(${tableInfo.tableLabel})DelUrl=rootPath+"/${languagePath.toLowerCase()}/delete_#firstToLower($tableInfo.tableLabel).action";
+var #firstToUpper(${tableInfo.tableLabel})Grid = null;
+#foreach($field in $tableInfo.columnList)
+#if(${field.isPrimaryKey()})
+var #firstToLower($field.columnLabel);
+#end
+#end
+
+$(function () {
+	setLanguage("#nametoLower($tableInfo.tableLabel)Page.js","",window.parent.languageFlag,window.parent.languagePath);
+	setPageControl("n_",#firstToLower($tableInfo.tableLabel)DataName,"span");
+    //初始化表格
+	#firstToUpper(${tableInfo.tableLabel})Grid = WoohGrid.createGrid("#firstToUpper(${tableInfo.tableLabel})MainGrid",{
+        columns: #firstToLower($tableInfo.tableLabel)GridHead,
+        onDblClickRow: function (data, rowindex, rowobj){
+#foreach($field in $tableInfo.columnList)
+#if(${field.isPrimaryKey()})
+			init#firstToUpper(${tableInfo.tableLabel})Detail(data.#firstToLower($field.columnLabel));
+#end
+#end
+		},
+        onSuccess:function(data, grid){
+        	if(data.result=="false"){
+        		$.ligerDialog.error(data.data);
+        	}
+        },
+        where:get#firstToUpper(${tableInfo.tableLabel})Search(),
+        root:"l#firstToUpper(${tableInfo.tableLabel})",
+        record:"totalrows",
+        allowHideColumn:false,
+        colLen:1,
+        data:null,
+        width: '98%',
+    	isScroll: false
+    });
+
+#foreach($field in $tableInfo.columnList)
+#if(${field.isPrimaryKey()})
+    WoohTextBox.createTextBox("q_#firstToLower($field.columnLabel)", {
+		onKeyEnter:get#firstToUpper(${tableInfo.tableLabel})Search
+	});
+#end
+#end
+	
+    WoohForm.createForm("#firstToUpper(${tableInfo.tableLabel})Form",{});
+    get#firstToUpper(${tableInfo.tableLabel})Search();
+});
+
+//查询多行数据
+function get#firstToUpper(${tableInfo.tableLabel})Search(){
+	if (!#firstToUpper(${tableInfo.tableLabel})Grid) return false;
+	setParams("q_");
+	#firstToUpper(${tableInfo.tableLabel})Grid.setOptions({parms:params,url:#firstToLower(${tableInfo.tableLabel})ListPageUrl,dataAction: 'server',newPage:1});
+}
+
+//增加数据
+function init#firstToUpper(${tableInfo.tableLabel})Add(){
+	checkSubmitFlag = false;
+	targetTabJsp("${languagePath.toLowerCase()}/jsp/#nametoLower(${tableInfo.tableLabel})Add.jsp","${tableInfo.tabComment}添加");
+}
+
+//修改数据
+function init#firstToUpper(${tableInfo.tableLabel})Modify(id){
+#foreach($field in $tableInfo.columnList)
+#if(${field.isPrimaryKey()})
+	#firstToLower($field.columnLabel)=id;
+#end
+#end
+	checkSubmitFlag = false;
+	targetTabJsp("${languagePath.toLowerCase()}/jsp/#nametoLower(${tableInfo.tableLabel})Modify.jsp","${tableInfo.tabComment}修改");
+}
+        
+//删除数据
+function init#firstToUpper(${tableInfo.tableLabel})Delete(id){
+	$.ligerDialog.confirm(#firstToLower($tableInfo.tableLabel)DelMsg, function(yes){
+		if (yes){
+#foreach($field in $tableInfo.columnList)
+#if(${field.isPrimaryKey()})
+			$("#d_#firstToLower($field.columnLabel)").val(id);
+#end
+#end
+			if(yes)
+				ajaxSubmit("d_",#firstToLower(${tableInfo.tableLabel})DelUrl,#firstToLower(${tableInfo.tableLabel})Management,DELETE,2,"#firstToUpper(${tableInfo.tableLabel})");
+			}
+		}
+	);
+}
+        
+//查询明细
+function init#firstToUpper(${tableInfo.tableLabel})Detail(id){
+#foreach($field in $tableInfo.columnList)
+#if(${field.isPrimaryKey()})
+	#firstToLower($field.columnLabel)=id;
+#end
+#end
+	targetTabJsp("${languagePath.toLowerCase()}/jsp/#nametoLower(${tableInfo.tableLabel})Detail.jsp","${tableInfo.tabComment}明细");
+}
+
+//返回
+function goback(){
+	saveDialogClose();
+	get#firstToUpper(${tableInfo.tableLabel})Search();
+}

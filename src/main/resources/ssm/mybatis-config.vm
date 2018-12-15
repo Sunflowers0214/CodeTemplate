@@ -1,0 +1,26 @@
+##首字母大写
+#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
+##首字母小写
+#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!-- 命名空间 -->
+    <typeAliases>
+        <!-- 扫描model包 使用别名 -->
+        <!-- <package name="${packageName}.${projectName.toLowerCase()}.model"/> -->
+#foreach($table in $tablesInfo)
+        <!-- $table.tabComment -->
+        <typeAlias alias="#firstToLower(${table.tableLabel})" type="${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${table.tableLabel})"/>
+#end
+    </typeAliases>
+
+    <!-- 映射mapper-->
+    <mappers>
+#foreach($table in $tablesInfo)
+        <!-- $table.tabComment -->
+        <mapper resource="config/mybatis/${languagePath.toLowerCase()}/#firstToUpper(${table.tableLabel})Mapper.xml"/>
+#end
+    </mappers>
+</configuration>
