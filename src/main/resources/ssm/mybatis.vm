@@ -14,14 +14,6 @@
 #end
 	</sql>
 	
-	<sql id="#firstToUpper(${tableInfo.tableLabel})ModifyWhere">
-#foreach($field in $tableInfo.columnList)
-		<if test="where.#firstToLower($field.columnLabel) != null">
-            AND $field.columnName=#{where.#firstToLower($field.columnLabel)}
-		</if>
-#end 
-	</sql>
-	
 	<insert id="insert#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
 		INSERT INTO ${tableInfo.tableName.toLowerCase()} (
         <trim prefix="" suffixOverrides=",">
@@ -42,13 +34,13 @@
 		)
 	</insert>
 
-    <delete id="delete#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
-        DELETE FROM ${tableInfo.tableName.toLowerCase()}
-        <where>
-            <include refid="#firstToUpper(${tableInfo.tableLabel})ModifyWhere" />
-        </where>
-    </delete>
-
+    <sql id="#firstToUpper(${tableInfo.tableLabel})ModifyWhere">
+#foreach($field in $tableInfo.columnList)
+		<if test="where.#firstToLower($field.columnLabel) != null">
+			AND $field.columnName=#{where.#firstToLower($field.columnLabel)}
+		</if>
+#end
+    </sql>
     <update id="update#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
 		UPDATE ${tableInfo.tableName.toLowerCase()}
         <set>

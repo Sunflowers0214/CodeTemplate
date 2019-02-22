@@ -38,7 +38,7 @@ public class CreateCode {
         //数据库访问层
         CreateCode.createFiles(tableModelList, "Dao.vm", javaPath + "/dao", "Dao.java");
         CreateCode.createFiles(tableModelList, "DaoImpl.vm", javaPath + "/dao/impl", "DaoImpl.java");
-        CreateCode.createFile(tableModelList, "dao-spring.vm", configPath, projectName + "-dao.xml");
+        CreateCode.createFile(tableModelList, "Dao-spring.vm", configPath, projectName + "-dao.xml");
         CreateCode.createFiles(tableModelList, "DaoTest.vm", testPath + "/dao", "DaoTest.java");
 
         CreateCode.createFiles(tableModelList, "mybatis.vm", "config/mybatis/" + languagePath, "Mapper.xml");
@@ -48,7 +48,7 @@ public class CreateCode {
         //逻辑处理层
         CreateCode.createFiles(tableModelList, "Service.vm", javaPath + "/service", "Service.java");
         CreateCode.createFiles(tableModelList, "ServiceImpl.vm", javaPath + "/service/impl", "ServiceImpl.java");
-        CreateCode.createFile(tableModelList, "service-spring.vm", configPath, projectName + "-service.xml");
+        CreateCode.createFile(tableModelList, "Service-spring.vm", configPath, projectName + "-service.xml");
         CreateCode.createFiles(tableModelList, "ServiceTest.vm", testPath + "/service", "ServiceTest.java");
 
         //控制层
@@ -57,14 +57,14 @@ public class CreateCode {
 
 
         String webPath = "webapp/" + projectName;
-//        CreateCode.createFiles(tableModelList, "web-man-jsp.vm", webPath+"/jsp", "Man.jsp");
-//        CreateCode.createFiles(tableModelList, "web-man-js.vm", webPath+"/js", "Man,js");
-//        CreateCode.createFiles(tableModelList, "web-add-jsp.vm", webPath+"/jsp", "Add.jsp");
-//        CreateCode.createFiles(tableModelList, "web-add-js.vm", webPath+"/js", "Add.js");
-//        CreateCode.createFiles(tableModelList, "web-modify-jsp.vm", webPath+"/jsp", "Modify.jsp");
-//        CreateCode.createFiles(tableModelList, "web-modify-js.vm", webPath+"/js", "Modify.js");
-//        CreateCode.createFiles(tableModelList, "web-detail-jsp.vm", webPath+"/jsp", "Detail.jsp");
-//        CreateCode.createFiles(tableModelList, "web-detail-js.vm", webPath+"/js", "Detail.js");
+//        CreateCode.createFiles(tableModelList, "web-manhtml.vm", webPath+"/jsp", "Man.jsp");
+//        CreateCode.createFiles(tableModelList, "web-manjs.vm", webPath+"/js", "Man,js");
+//        CreateCode.createFiles(tableModelList, "web-web-addhtml.vm", webPath+"/jsp", "Add.jsp");
+//        CreateCode.createFiles(tableModelList, "web-web-addjs.vm", webPath+"/js", "Add.js");
+//        CreateCode.createFiles(tableModelList, "web-modifyhtml.vm", webPath+"/jsp", "Modify.jsp");
+//        CreateCode.createFiles(tableModelList, "web-modifyjs.vm", webPath+"/js", "Modify.js");
+//        CreateCode.createFiles(tableModelList, "web-detailhtml.vm", webPath+"/jsp", "Detail.jsp");
+//        CreateCode.createFiles(tableModelList, "web-detailjs.vm", webPath+"/js", "Detail.js");
 
     }
 
