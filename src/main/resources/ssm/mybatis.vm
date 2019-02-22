@@ -13,10 +13,10 @@
 		</if>
 #end
 	</sql>
-	
+
 	<insert id="insert#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
 		INSERT INTO ${tableInfo.tableName.toLowerCase()} (
-        <trim prefix="" suffixOverrides=",">
+        <trim suffix="" suffixOverrides=",">
 #foreach($field in $tableInfo.columnList)
 			<if test="#firstToLower($field.columnLabel) != null">
 				$field.columnName,
@@ -24,7 +24,7 @@
 #end
 		</trim>
 		) VALUES (
-        <trim prefix="" suffixOverrides=",">
+        <trim suffix="" suffixOverrides=",">
 #foreach($field in $tableInfo.columnList)
 	       	<if test="#firstToLower($field.columnLabel) != null">
 				#{#firstToLower($field.columnLabel)},
@@ -44,7 +44,7 @@
     <update id="update#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
 		UPDATE ${tableInfo.tableName.toLowerCase()}
         <set>
-#foreach($field in $tableInfo.columnList)  
+#foreach($field in $tableInfo.columnList)
 			<if test="#firstToLower($field.columnLabel) != null">
 				$field.columnName=#{#firstToLower($field.columnLabel)},
 			</if>
