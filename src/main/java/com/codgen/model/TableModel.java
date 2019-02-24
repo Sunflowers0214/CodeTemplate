@@ -6,19 +6,26 @@ import java.util.List;
 
 /**
  * 表模型
- *
- * @author 黄天政
  */
 public class TableModel {
     private String tableName;//表名
     private String schema;//数据库
     private String tableLabel;//表标签
     private String tabComment = "";//表注释(中文)
-    private List<ColumnModel> columnList = new ArrayList<ColumnModel>();//列模型集合
-    private List<ColumnModel> pkColumnList = new ArrayList<ColumnModel>();//主键列模型集合
-    private List<ColumnModel> teshuColList = new ArrayList<ColumnModel>();//特殊处理列模型集合
-    private List<ColumnModel> noteshuColList = new ArrayList<ColumnModel>();//无特殊处理列模型集合
-    private List<ValidFlagModel> validFlagList = new ArrayList<ValidFlagModel>();//逻辑删除模型
+    private List<ColumnModel> columnList;//列模型集合
+    private List<ColumnModel> pkColumnList;//主键列模型集合
+    private List<ColumnModel> noteshuColList;//普通列模型集合
+    private List<ColumnModel> teshuColList;//特殊处理列模型集合
+    private List<ValidFlagModel> validFlagList;//逻辑删除模型
+
+    private TableModel() {
+    }
+
+    public TableModel(String schema, String tableName, String tabComment) {
+        this.schema = schema;
+        this.tableName = tableName;
+        this.tabComment = tabComment;
+    }
 
     /**
      * @return 取得表名称
@@ -49,20 +56,6 @@ public class TableModel {
     }
 
     /**
-     * @return 取得表的注释
-     */
-    public String getTabComment() {
-        return tabComment;
-    }
-
-    /**
-     * @param tabComment 设置表的注释
-     */
-    public void setTabComment(String tabComment) {
-        this.tabComment = tabComment;
-    }
-
-    /**
      * @return 取得表的显示标签
      */
     public String getTableLabel() {
@@ -74,6 +67,20 @@ public class TableModel {
      */
     public void setTableLabel(String tableLabel) {
         this.tableLabel = tableLabel;
+    }
+
+    /**
+     * @return 取得表的注释
+     */
+    public String getTabComment() {
+        return tabComment;
+    }
+
+    /**
+     * @param tabComment 设置表的注释
+     */
+    public void setTabComment(String tabComment) {
+        this.tabComment = tabComment;
     }
 
     /**
@@ -90,6 +97,22 @@ public class TableModel {
         this.columnList = columnList;
     }
 
+    public List<ColumnModel> getPkColumnList() {
+        return pkColumnList;
+    }
+
+    public void setPkColumnList(List<ColumnModel> pkColumnList) {
+        this.pkColumnList = pkColumnList;
+    }
+
+    public List<ColumnModel> getNoteshuColList() {
+        return noteshuColList;
+    }
+
+    public void setNoteshuColList(List<ColumnModel> noteshuColList) {
+        this.noteshuColList = noteshuColList;
+    }
+
     public List<ColumnModel> getTeshuColList() {
         return teshuColList;
     }
@@ -98,17 +121,12 @@ public class TableModel {
         this.teshuColList = teshuColList;
     }
 
-    /**
-     * 根据列名取得列模型
-     *
-     * @param name 列名称
-     * @return 返回的列模型
-     */
-    public ColumnModel getColumnByName(String name) {
-        for (ColumnModel cm : columnList) {
-            if (cm.getColumnName().equalsIgnoreCase(name)) return cm;
-        }
-        return null;
+    public List<ValidFlagModel> getValidFlagList() {
+        return validFlagList;
+    }
+
+    public void setValidFlagList(List<ValidFlagModel> validFlagList) {
+        this.validFlagList = validFlagList;
     }
 
     @Override
@@ -142,30 +160,6 @@ public class TableModel {
         return true;
     }
 
-    public List<ColumnModel> getPkColumnList() {
-        return pkColumnList;
-    }
-
-    public void setPkColumnList(List<ColumnModel> pkColumnList) {
-        this.pkColumnList = pkColumnList;
-    }
-
-    public List<ColumnModel> getNoteshuColList() {
-        return noteshuColList;
-    }
-
-    public void setNoteshuColList(List<ColumnModel> noteshuColList) {
-        this.noteshuColList = noteshuColList;
-    }
-
-    public List<ValidFlagModel> getValidFlagList() {
-        return validFlagList;
-    }
-
-    public void setValidFlagList(List<ValidFlagModel> validFlagList) {
-        this.validFlagList = validFlagList;
-    }
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
@@ -177,15 +171,15 @@ public class TableModel {
         builder.append(tableLabel);
         builder.append(", tabComment=");
         builder.append(tabComment);
-        //builder.append(", columnList=");
-        //builder.append(columnList);
+        builder.append(", \n>>>表字段集合columnList=");
+        builder.append(columnList);
         builder.append(", \n>>>主键列集合pkColumnList=");
         builder.append(pkColumnList);
-        builder.append(", \n>>>表字段集合noteshuColList=");
-        builder.append(noteshuColList);
+        //builder.append(", \n>>>表字段集合noteshuColList=");
+        //builder.append(noteshuColList);
         builder.append(", \n>>>权限字段集合teshuColList=");
         builder.append(teshuColList);
-        builder.append(", \n>>>逻辑删除集合validFlagList=");
+        builder.append(", \n>>>逻辑删除validFlagList=");
         builder.append(validFlagList);
         builder.append("}\n");
         return builder.toString();

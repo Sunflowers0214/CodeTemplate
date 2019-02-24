@@ -6,7 +6,6 @@ import java.util.Map;
 /**
  * JDBC配置模型
  *
- * @author 黄天政
  */
 public class TableConfig {
     private String prefix;

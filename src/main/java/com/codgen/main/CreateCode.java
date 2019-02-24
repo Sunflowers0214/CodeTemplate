@@ -3,9 +3,9 @@ package com.codgen.main;
 import com.codgen.model.JdbcConfig;
 import com.codgen.model.TableConfig;
 import com.codgen.model.TableModel;
-import com.codgen.service.DbProvider;
-import com.codgen.service.impl.MysqlProvider;
-import com.codgen.service.impl.OracleProvider;
+import com.codgen.db.DbProvider;
+import com.codgen.db.impl.MysqlProvider;
+import com.codgen.db.impl.OracleProvider;
 import com.codgen.util.BuilderHelper;
 import com.codgen.util.FileHelper;
 import org.apache.velocity.Template;
@@ -22,7 +22,9 @@ public class CreateCode {
 
     public static void main(String[] args) throws IOException {
         List<TableModel> tableModelList = CreateCode.initTableModel();
-
+        if (true) {
+            return;
+        }
         FileHelper helper = new FileHelper();
         Properties properties = helper.getProperties("jdbc.properties");
         String projectName = properties.get("projectName").toString();
@@ -46,10 +48,10 @@ public class CreateCode {
         CreateCode.createFile(tableModelList, "mybatis-spring.vm", "config/spring", "spring-mybatis-" + projectName + "-config.xml");
 
         //逻辑处理层
-        CreateCode.createFiles(tableModelList, "Service.vm", javaPath + "/service", "Service.java");
-        CreateCode.createFiles(tableModelList, "ServiceImpl.vm", javaPath + "/service/impl", "ServiceImpl.java");
-        CreateCode.createFile(tableModelList, "Service-spring.vm", configPath, projectName + "-service.xml");
-        CreateCode.createFiles(tableModelList, "ServiceTest.vm", testPath + "/service", "ServiceTest.java");
+        CreateCode.createFiles(tableModelList, "Service.vm", javaPath + "/db", "Service.java");
+        CreateCode.createFiles(tableModelList, "ServiceImpl.vm", javaPath + "/db/impl", "ServiceImpl.java");
+        CreateCode.createFile(tableModelList, "Service-spring.vm", configPath, projectName + "-db.xml");
+        CreateCode.createFiles(tableModelList, "ServiceTest.vm", testPath + "/db", "ServiceTest.java");
 
         //控制层
         CreateCode.createFiles(tableModelList, "Controller.vm", javaPath + "/controller", "Controller.java");
@@ -78,33 +80,21 @@ public class CreateCode {
         FileHelper helper = new FileHelper();
         Properties properties = helper.getProperties("jdbc.properties");
 
-        //数据库连接
-        DbProvider provider;
-        JdbcConfig jdbcConfig = new JdbcConfig();
-        jdbcConfig.setDatabaseType(properties.getProperty("databaseType"));
-        jdbcConfig.setDriver(properties.getProperty("driverClass"));
-        jdbcConfig.setUrl(properties.getProperty("jdbcUrl"));
-        jdbcConfig.setUser(properties.getProperty("user"));
-        jdbcConfig.setPassword(properties.getProperty("password"));
-        jdbcConfig.setSchema(properties.getProperty("schema"));
-        if ("mysql".equalsIgnoreCase(jdbcConfig.getDatabaseType())) {
-            provider = new MysqlProvider(jdbcConfig);
-        } else if ("oracle".equalsIgnoreCase(jdbcConfig.getDatabaseType())) {
-            provider = new OracleProvider(jdbcConfig);
-        } else {
-            return null;
-        }
+        //数据库连 接
+        JdbcConfig jdbcConfig = new JdbcConfig(properties);
+        DbProvider provider = new DbProvider(jdbcConfig);
 
         TableConfig tableConfig = new TableConfig();
         tableConfig.setPrefix(properties.getProperty("prefix"));
         tableConfig.setValidFlags(properties.getProperty("validFlags"));
         tableConfig.setExcludeFields(properties.getProperty("excludeFields").split(","));
 
-        List<String> tableNameList = provider.getTableNames();
-        for (String tableName : tableNameList) {
-            System.out.println(tableName);
+        List<TableModel> tableList = provider.getTableList();
+        for (TableModel tableModel : tableList) {
+            String tableName = tableModel.getTableName();
+            System.out.println(tableName + ":" + tableModel.getTabComment());
             if (tableName.startsWith(tableConfig.getPrefix())) {
-                TableModel tableModel = provider.createTableModel(tableName, tableConfig);
+                provider.initTableModel(tableModel, tableConfig);
                 tableModelList.add(tableModel);
             }
         }

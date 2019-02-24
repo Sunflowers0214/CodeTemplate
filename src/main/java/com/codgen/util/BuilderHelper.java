@@ -8,17 +8,6 @@ import com.codgen.model.TableModel;
 
 public class BuilderHelper {
 
-    public TableModel getTableModelByName(List<TableModel> liTable, String tableName) {
-        TableModel tableModel = new TableModel();
-        for (int i = 0; i < liTable.size(); i++) {
-            if (liTable.get(i).getTableName().endsWith(tableName)) {
-                tableModel = liTable.get(i);
-                break;
-            }
-        }
-        return tableModel;
-    }
-
     public String checkValue(String colComment, String s) {
         if (colComment != null) {
             String[] des = colComment.split(";");
