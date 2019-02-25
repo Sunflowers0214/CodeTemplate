@@ -1,6 +1,6 @@
 package com.codgen.main;
 
-import com.codgen.db.DataHelper;
+import com.codgen.helper.DataHelper;
 import com.codgen.model.JdbcConfig;
 import com.codgen.model.TableConfig;
 import com.codgen.model.TableModel;
@@ -99,7 +99,7 @@ public class CreateCode {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String dateStr = formatter.format(new Date());
         //配置
-        context.put("builderHelper", new BuilderHelper());
+        context.put("builder", new BuilderHelper());
         context.put("author", properties.get("author"));
         context.put("time", dateStr);
         //引用

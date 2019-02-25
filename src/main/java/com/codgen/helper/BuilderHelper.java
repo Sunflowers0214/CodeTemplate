@@ -1,85 +1,116 @@
 package com.codgen.helper;
 
-import java.util.UUID;
+import org.apache.commons.lang.StringUtils;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class BuilderHelper {
 
-    public String checkValue(String columnComment, String s) {
-        if (columnComment != null) {
-            String[] des = columnComment.split(";");
-            if (des.length == 1) {
-                return columnComment;
-            }
-            for (int i = 0; i < des.length; i++) {
-                String[] subdes = des[i].split(":");
-                if (subdes[0].equals(s)) {
-                    return "1";
-                }
-            }
-        }
-        return "0";
+    /**
+     * 首字母大写
+     *
+     * @param value
+     * @return
+     */
+    public static String firstToUpper(String value) {
+        return value.substring(0, 1).toUpperCase() + value.substring(1, value.length());
     }
 
-    public static String firstToUpper(String name) {
-        return name.substring(0, 1).toUpperCase() + name.substring(1, name.length());
+    /**
+     * 首字母小写
+     *
+     * @param value
+     * @return
+     */
+    public String firstToLower(String value) {
+        return value.substring(0, 1).toLowerCase() + value.substring(1, value.length());
     }
 
-    public String firstToLower(String name) {
-        return name.substring(0, 1).toLowerCase() + name.substring(1, name.length());
+    /**
+     * 大写
+     *
+     * @param value
+     * @return
+     */
+    public String toUpper(String value) {
+        return value.toUpperCase();
     }
 
-    public String nametoLower(String name) {
-        return name.toLowerCase();
+    /**
+     * 小写
+     *
+     * @param value
+     * @return
+     */
+    public String toLower(String value) {
+        return value.toLowerCase();
     }
 
-    public Integer getYiBan(Integer name) {
-        return name / 2;
-    }
-
+    /**
+     * 获取$符号
+     *
+     * @return
+     */
     public String getyu() {
         return "$";
     }
 
-    public String getjing() {
+    /**
+     * 获取#符号
+     *
+     * @return
+     */
+    public String getJing() {
         return "#";
     }
 
-    public String getUUID() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
-    }
 
-    public static String getPartString(String s) {
-        s = s.toLowerCase();
-        String[] parts = s.split("_");
-        String result = "";
-        if (parts.length > 1) {
-            for (int k = 0; k < parts.length; k++) {
-                if (k == 1 && parts[0].length() == 1) {
-                    result += parts[k].toLowerCase();
-                } else {
-                    result += firstToUpper(parts[k].toLowerCase());
-                }
-            }
-        } else {
-            result = firstToUpper(s.toLowerCase());
+    /**
+     * 驼峰格式化
+     *
+     * @param line
+     * @return
+     */
+    public static String getPartString(String line) {
+        if (line == null || "".equals(line)) {
+            return "";
         }
-        return result;
+        StringBuffer sb = new StringBuffer();
+        Pattern pattern = Pattern.compile("([A-Za-z\\d]+)(_)?");
+        Matcher matcher = pattern.matcher(line);
+        //匹配正则表达式
+        while (matcher.find()) {
+            String word = matcher.group();
+            //当是true 或则是空的情况
+            if (matcher.start() == 0) {
+                sb.append(Character.toLowerCase(word.charAt(0)));
+            } else {
+                sb.append(Character.toUpperCase(word.charAt(0)));
+            }
+
+            int index = word.lastIndexOf('_');
+            if (index > 0) {
+                sb.append(word.substring(1, index).toLowerCase());
+            } else {
+                sb.append(word.substring(1).toLowerCase());
+            }
+        }
+        return sb.toString();
     }
 
     /**
      * 去掉前缀
      *
-     * @param s
+     * @param value
      * @param prefix
      * @return
      */
-    public static String getPartString(String s, String prefix) {
-        if (prefix != null && !prefix.equals("")) {
-            if (s.indexOf(prefix) == 0) {
-                s = s.replaceFirst(prefix, "");
-            }
+    public static String getPartString(String value, String prefix) {
+        if (StringUtils.isNotEmpty(prefix) && value.startsWith(prefix)) {
+            value = value.replaceFirst(prefix, "");
         }
-        return getPartString(s);
+        return getPartString(value);
     }
 }

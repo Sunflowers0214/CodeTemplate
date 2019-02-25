@@ -1,6 +1,6 @@
 package com.codgen.db.impl;
 
-import com.codgen.helper.DbProvider;
+import com.codgen.db.DbProvider;
 import com.codgen.model.ColumnModel;
 import com.codgen.model.TableModel;
 import org.apache.commons.lang.StringUtils;

@@ -1,13 +1,14 @@
-package com.codgen.db;
+package com.codgen.helper;
 
+import com.codgen.db.DbProvider;
 import com.codgen.db.impl.MysqlProvider;
 import com.codgen.db.impl.OracleProvider;
-import com.codgen.helper.DbProvider;
 import com.codgen.model.*;
-import com.codgen.helper.BuilderHelper;
 import org.apache.commons.lang.StringUtils;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 

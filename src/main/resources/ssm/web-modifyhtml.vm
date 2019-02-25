@@ -32,7 +32,7 @@
 		</div>
 	</form>
 	<center>
-		<input type="button" value="保存" class="savebtn" id="saveModify" onclick="$('${builderHelper.getjing()}#firstToUpper(${tableModel.tableLabel})ModifyForm').submit()"/>
+		<input type="button" value="保存" class="savebtn" id="saveModify" onclick="$('${builder.getJing()}#firstToUpper(${tableModel.tableLabel})ModifyForm').submit()"/>
 	    <input type="button" value="关闭" class="closebtn" id="closeModify" onclick="saveDialogClose();"/>
 	</center>
 </div>

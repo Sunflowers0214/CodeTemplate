@@ -8,7 +8,7 @@ var #firstToLower(${tableModel.tableLabel})ModUrl=rootPath+"/${languagePath.toLo
 $(function (){
 	setPageControl("nm_",#firstToLower($tableModel.tableLabel)DataName,"span");
 	$.metadata.setType("attr","validate");
-    $("${builderHelper.getjing()}#firstToUpper(${tableModel.tableLabel})ModifyForm").validate({
+    $("${builder.getJing()}#firstToUpper(${tableModel.tableLabel})ModifyForm").validate({
         errorPlacement: function (lable, element){
         	errorPlacement(lable, element);
         },

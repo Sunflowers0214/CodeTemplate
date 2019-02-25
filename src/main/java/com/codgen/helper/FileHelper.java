@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
 import java.util.Properties;
 
 public class FileHelper {
@@ -14,7 +15,7 @@ public class FileHelper {
         Properties p = new Properties();
 
         try {
-            in = ClassLoaderUtil.getStream(path);
+            in = getStream(path);
             p.load(in);
             return p;
         } catch (IOException e) {
@@ -29,6 +30,10 @@ public class FileHelper {
             }
         }
         return p;
+    }
+
+    public static InputStream getStream(String relativePath) {
+        return FileHelper.class.getClassLoader().getResourceAsStream(relativePath);
     }
 
     public void writeToFile(String filePath, String fileName, String content) throws IOException {

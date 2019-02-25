@@ -1,4 +1,4 @@
-package com.codgen.helper;
+package com.codgen.db;
 
 import com.codgen.model.ColumnModel;
 import com.codgen.model.TableModel;
