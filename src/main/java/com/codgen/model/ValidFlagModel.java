@@ -2,8 +2,6 @@ package com.codgen.model;
 
 /**
  * 逻辑删除
- *
- * @author wangzhuzhu
  */
 public class ValidFlagModel {
     private ColumnModel columnModel;
@@ -47,12 +45,13 @@ public class ValidFlagModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("<"+colname+"> [colname=");
+        builder.append("<" + colname + "> {colname=");
         builder.append(colname);
         builder.append(", valid=");
         builder.append(valid);
         builder.append(", disable=");
         builder.append(disable);
+        builder.append("}");
         return builder.toString();
     }
 

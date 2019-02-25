@@ -2,7 +2,6 @@ package com.codgen.model;
 
 /**
  * 主键模型
- * @author 黄天政
  *
  */
 public class PrimaryKeyModel {

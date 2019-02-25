@@ -8,32 +8,40 @@ package com.codgen.model;
  */
 public class ColumnModel {
 
-    //列名
-    private String columnName;
-    //列标签，列注释的标签部分。用于打印输出和显示的指定列的建议标题（中文）
-    private String columnLabel;
-    //列注释
-    private String colComment;
-    //列的 SQL 类型。
-    private int columnType;
-    //列的 SQL类型名称
-    private String columnTypeName;
-    //列的最大标准宽度
-    private int columnDisplaySize;
-    //面向具体编程语言中类的简单类名，非全限定名，，默认的编程语言为Java，如String
-    private String columnSimpleClassName;
-    //面向具体编程语言中类的完全限定名称，默认的编程语言为Java，如：java.lang.String。
-    private String columnClassName;
-    //面向具体编程语言中类的所在的包(命名空间)，默认的编程语言为Java，如：java.lang
-    private String columnClassPackage;
-    //获取指定列的指定列宽。对于数值型数据，是指最大精度。对于字符型数据，是指字符串长度。
-    private int precision = 0;
-    //列的小数点右边的位数。对于其标度不可用的数据类型，默认为 0。
-    private int scale = 0;
-    //标识该列是否为主键
-    private boolean primaryKey = false;
-    //标识该列的值能否为空
-    private boolean nullable = true;
+    private String columnName; //列名
+    private String columnLabel;//列标签，列注释的标签部分。用于打印输出和显示的指定列的建议标题（中文）
+    private String colComment;//列注释
+    private String columnType;//列的 SQL 类型。
+    private int columnSize;//列的 SQL 长度
+    private String columnClassName;//面向具体编程语言中类的完全限定名称，默认的编程语言为Java，如：java.lang.String。
+    private String columnSimpleClassName;//面向具体编程语言中类的简单类名，非全限定名，，默认的编程语言为Java，如String
+    private String columnClassPackage;//面向具体编程语言中类的所在的包(命名空间)，默认的编程语言为Java，如：java.lang
+    private int precision = 0;//获取指定列的指定列宽。对于数值型数据，是指最大精度。对于字符型数据，是指字符串长度。
+    private int scale = 0;//列的小数点右边的位数。对于其标度不可用的数据类型，默认为 0。
+    private boolean primaryKey = false;//标识该列是否为主键
+    private boolean nullable = true;//标识该列的值能否为空
+
+    public ColumnModel() {
+        this.columnName = columnName;
+    }
+
+    public ColumnModel(String columnName, String colComment, String columnType, int columnSize) {
+        this.columnName = columnName;
+        this.colComment = colComment;
+        this.columnType = columnType;
+        this.columnSize = columnSize;
+    }
+
+    public ColumnModel(String columnName, String colComment, String columnType, int columnSize, int precision, int scale, boolean primaryKey, boolean nullable) {
+        this.columnName = columnName;
+        this.colComment = colComment;
+        this.columnType = columnType;
+        this.columnSize = columnSize;
+        this.precision = precision;
+        this.scale = scale;
+        this.primaryKey = primaryKey;
+        this.nullable = nullable;
+    }
 
     //@return 取得列名称
     public String getColumnName() {
@@ -41,10 +49,18 @@ public class ColumnModel {
     }
 
     public void setColumnName(String columnName) {
-        if (columnName != null) {
-            columnName = columnName.toLowerCase();
-        }
+//        if (columnName != null) {
+//            columnName = columnName.toLowerCase();
+//        }
         this.columnName = columnName;
+    }
+
+    public String getColumnLabel() {
+        return columnLabel;
+    }
+
+    public void setColumnLabel(String columnLabel) {
+        this.columnLabel = columnLabel;
     }
 
     //@return 取得列注释
@@ -54,6 +70,23 @@ public class ColumnModel {
 
     public void setColComment(String colComment) {
         this.colComment = colComment;
+    }
+
+    //取得在java.sql.Types定义的类型
+    public String getColumnType() {
+        return columnType;
+    }
+
+    public void setColumnType(String columnType) {
+        this.columnType = columnType;
+    }
+
+    public int getColumnSize() {
+        return columnSize;
+    }
+
+    public void setColumnSize(int columnSize) {
+        this.columnSize = columnSize;
     }
 
     public String getColumnSimpleClassName() {
@@ -125,41 +158,6 @@ public class ColumnModel {
         this.nullable = nullable;
     }
 
-    //取得在java.sql.Types定义的类型
-    public int getColumnType() {
-        return columnType;
-    }
-
-    public void setColumnType(int columnType) {
-        this.columnType = columnType;
-    }
-
-    //@return 获取指定列的 在java.sql.Types定义的类型的名称。
-    public String getColumnTypeName() {
-        return columnTypeName;
-    }
-
-    public void setColumnTypeName(String columnTypeName) {
-        this.columnTypeName = columnTypeName;
-    }
-
-    //@return 允许作为指定列宽度的最大标准字符数
-    public int getColumnDisplaySize() {
-        return columnDisplaySize;
-    }
-
-    public void setColumnDisplaySize(int columnDisplaySize) {
-        this.columnDisplaySize = columnDisplaySize;
-    }
-
-    //@return 取得列标签，列注释的标签部分。用于打印输出和显示的指定列的建议标题
-    public String getColumnLabel() {
-        return columnLabel;
-    }
-
-    public void setColumnLabel(String columnLabel) {
-        this.columnLabel = columnLabel;
-    }
 
     @Override
     public int hashCode() {
@@ -194,7 +192,7 @@ public class ColumnModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("\n---<"+colComment+">{columnName=");
+        builder.append("\n---<" + colComment + ">{columnName=");
         builder.append(columnName);
         builder.append(", colComment=");
         builder.append(colComment);
@@ -202,10 +200,8 @@ public class ColumnModel {
         builder.append(columnLabel);
         builder.append(", columnType=");
         builder.append(columnType);
-        builder.append(", columnTypeName=");
-        builder.append(columnTypeName);
-        builder.append(", columnDisplaySize=");
-        builder.append(columnDisplaySize);
+        builder.append(", columnSize=");
+        builder.append(columnSize);
         builder.append(", columnClassName=");
         builder.append(columnClassName);
         builder.append(", columnClassPackage=");
