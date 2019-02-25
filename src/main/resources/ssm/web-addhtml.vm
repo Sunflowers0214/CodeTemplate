@@ -5,14 +5,14 @@
 ##字母小写
 #macro(nametoLower $field)$field.toLowerCase()#end
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<script src="./${languagePath.toLowerCase()}/js/#firstToUpper($tableInfo.tableLabel)Add.js" type="text/javascript"></script>
+<script src="./${languagePath.toLowerCase()}/js/#firstToUpper($tableModel.tableLabel)Add.js" type="text/javascript"></script>
 <div class="editForm editForm0">
-	<form id="#firstToUpper(${tableInfo.tableLabel})AddForm" name="#firstToUpper(${tableInfo.tableLabel})AddForm" method="post">
-#foreach($field in $tableInfo.pkColumnList)
+	<form id="#firstToUpper(${tableModel.tableLabel})AddForm" name="#firstToUpper(${tableModel.tableLabel})AddForm" method="post">
+#foreach($field in $tableModel.columnPKList)
 		<input type="hidden" id="a_#firstToLower($field.columnLabel)" name="a_#firstToLower($field.columnLabel)"/>
 #end
 		<div class="row">
-#foreach($field in $tableInfo.noteshuColList)
+#foreach($field in $tableModel.columnCommonList)
 #if(${field.columnSimpleClassName.toLowerCase()}=="date")
 			<div class="col-md-4 datePicker">
 				<label id="na_#firstToLower($field.columnLabel)" #if($field.nullable!=true)class="required"#end></label>
@@ -24,7 +24,7 @@
 				<input type="text" ltype="text" id="a_#firstToLower($field.columnLabel)" name="a_#firstToLower($field.columnLabel)" validate="{maxlength:$field.precision#if($field.nullable==false),required:true#end}"/>
             </div>
 #end
-#if($velocityCount%3==0&&$velocityCount!=${tableInfo.noteshuColList.size()})
+#if($velocityCount%3==0&&$velocityCount!=${tableModel.columnCommonList.size()})
 		</div>
 		<div class="row">
 #end	
@@ -32,7 +32,7 @@
 		</div>
 	</form>
 	<center>
-		<input type="button" value="保存" class="savebtn" id="saveAdd" onclick="$('${builderHelper.getjing()}#firstToUpper(${tableInfo.tableLabel})AddForm').submit()"/>
+		<input type="button" value="保存" class="savebtn" id="saveAdd" onclick="$('${builderHelper.getjing()}#firstToUpper(${tableModel.tableLabel})AddForm').submit()"/>
 	    <input type="button" value="关闭" class="closebtn" id="closeAdd" onclick="saveDialogClose();"/>
 	</center>
 </div>

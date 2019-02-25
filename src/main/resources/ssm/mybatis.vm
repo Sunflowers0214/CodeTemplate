@@ -4,29 +4,30 @@
 #macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableInfo.tableLabel})Dao">
+<mapper namespace="${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableModel.tableLabel})Dao">
 
-	<sql id="#firstToUpper(${tableInfo.tableLabel})Where">
-#foreach($field in $tableInfo.columnList)
-		<if test="#firstToLower($field.columnLabel) != null">
+	<sql id="#firstToUpper(${tableModel.tableLabel})Where">
+#foreach($field in $tableModel.columnList)
+		<if test="@${ruleBean}@isNotEmpty(#firstToLower($field.columnLabel))">
             AND a.$field.columnName=#{#firstToLower($field.columnLabel)}
 		</if>
 #end
 	</sql>
 
-	<insert id="insert#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
-		INSERT INTO ${tableInfo.tableName.toLowerCase()} (
+    <!-- $tableModel.tableComment (添加) -->
+	<insert id="insert#firstToUpper(${tableModel.tableLabel})" parameterType="#firstToLower($tableModel.tableLabel)">
+		INSERT INTO ${tableModel.tableName.toLowerCase()} (
         <trim suffix="" suffixOverrides=",">
-#foreach($field in $tableInfo.columnList)
-			<if test="#firstToLower($field.columnLabel) != null">
+#foreach($field in $tableModel.columnList)
+			<if test="@${ruleBean}@isNotEmpty(#firstToLower($field.columnLabel))">
 				$field.columnName,
 			</if>
 #end
 		</trim>
 		) VALUES (
         <trim suffix="" suffixOverrides=",">
-#foreach($field in $tableInfo.columnList)
-	       	<if test="#firstToLower($field.columnLabel) != null">
+#foreach($field in $tableModel.columnList)
+	       	<if test="@${ruleBean}@isNotEmpty(#firstToLower($field.columnLabel))">
 				#{#firstToLower($field.columnLabel)},
 			</if>
 #end
@@ -34,107 +35,119 @@
 		)
 	</insert>
 
-    <sql id="#firstToUpper(${tableInfo.tableLabel})ModifyWhere">
-#foreach($field in $tableInfo.columnList)
-		<if test="where.#firstToLower($field.columnLabel) != null">
-			AND $field.columnName=#{where.#firstToLower($field.columnLabel)}
+    <!-- $tableModel.tableComment (修改) -->
+    <sql id="#firstToUpper(${tableModel.tableLabel})ModifyWhere">
+#foreach($field in $tableModel.columnPKList)
+		<if test="@${ruleBean}@isNotEmpty(#firstToLower($field.columnLabel))">
+			AND $field.columnName=#{#firstToLower($field.columnLabel)}
 		</if>
 #end
     </sql>
-    <update id="update#firstToUpper(${tableInfo.tableLabel})" parameterType="#firstToLower($tableInfo.tableLabel)">
-		UPDATE ${tableInfo.tableName.toLowerCase()}
-        <set>
-#foreach($field in $tableInfo.columnList)
-			<if test="#firstToLower($field.columnLabel) != null">
+    <update id="update#firstToUpper(${tableModel.tableLabel})" parameterType="#firstToLower($tableModel.tableLabel)">
+		UPDATE ${tableModel.tableName.toLowerCase()} SET
+        <trim suffix="" suffixOverrides=",">
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+            $field.columnName=$field.columnName,
+#else
+			<if test="@${ruleBean}@isNotEmpty(#firstToLower($field.columnLabel))">
 				$field.columnName=#{#firstToLower($field.columnLabel)},
 			</if>
 #end
-		</set>
-        <where>
-			<include refid="#firstToUpper(${tableInfo.tableLabel})ModifyWhere" />
-		</where>
+#end
+        </trim>
+        WHERE 1=1
+        <trim>
+			<include refid="#firstToUpper(${tableModel.tableLabel})ModifyWhere" />
+        </trim>
 	</update>
 
-    <!-- $tableInfo.tabComment (单条查询) -->
-    <resultMap id="#firstToUpper(${tableInfo.tableLabel})Result" type="#firstToLower($tableInfo.tableLabel)">
-#foreach($field in $tableInfo.noteshuColList)
-		<result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
+    <!-- $tableModel.tableComment (单条查询) -->
+    <resultMap id="#firstToUpper(${tableModel.tableLabel})Result" type="#firstToLower($tableModel.tableLabel)">
+#foreach($field in $tableModel.columnList)
+#if(${field.isCommon()})
+        <result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
+#end
 #end
     </resultMap>
-    <select id="get#firstToUpper(${tableInfo.tableLabel})" resultMap="#firstToUpper(${tableInfo.tableLabel})Result" parameterType="#firstToLower($tableInfo.tableLabel)" >
+    <select id="get#firstToUpper(${tableModel.tableLabel})" resultMap="#firstToUpper(${tableModel.tableLabel})Result" parameterType="#firstToLower($tableModel.tableLabel)" >
         SELECT
-#set( $count = 1)
-#foreach($field in $tableInfo.noteshuColList)
-#if($count==$!{tableInfo.noteshuColList.size()})
+#set($count=1)
+#foreach($field in $tableModel.columnCommonList)
+#if($count==$!{tableModel.columnCommonList.size()})
 			a.$field.columnName
 #else
 			a.$field.columnName,
 #end
 #set($count=$count+1)
 #end
-        FROM ${tableInfo.tableName.toLowerCase()} a
+        FROM ${tableModel.tableName.toLowerCase()} a
         WHERE 1=1
-#foreach($field in $tableInfo.validFlagList)
-		AND a.$field.colname = '$field.valid'
+#foreach($field in $tableModel.columnDeleteList)
+		AND a.$field.colname = $field.valid
 #end
-        <trim prefix="" prefixOverrides="">
-            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        <trim>
+            <include refid="#firstToUpper(${tableModel.tableLabel})Where" />
         </trim>
     </select>
 
-    <!-- $tableInfo.tabComment (列表查询) -->
-    <resultMap id="#firstToUpper(${tableInfo.tableLabel})ListResult" type="#firstToLower($tableInfo.tableLabel)">
-#foreach($field in $tableInfo.noteshuColList)
+    <!-- $tableModel.tableComment (列表查询) -->
+    <resultMap id="#firstToUpper(${tableModel.tableLabel})ListResult" type="#firstToLower($tableModel.tableLabel)">
+#foreach($field in $tableModel.columnList)
+#if(${field.isCommon()})
 		<result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
 #end
+#end
     </resultMap>
-	<select id="get#firstToUpper(${tableInfo.tableLabel})List" resultMap="#firstToUpper(${tableInfo.tableLabel})ListResult" parameterType="#firstToLower($tableInfo.tableLabel)" >
+	<select id="get#firstToUpper(${tableModel.tableLabel})List" resultMap="#firstToUpper(${tableModel.tableLabel})ListResult" parameterType="#firstToLower($tableModel.tableLabel)" >
         SELECT
-#set( $count = 1)
-#foreach($field in $tableInfo.noteshuColList)
-#if($count==$!{tableInfo.noteshuColList.size()})
+#set($count=1)
+#foreach($field in $tableModel.columnCommonList)
+#if($count==$!{tableModel.columnCommonList.size()})
 			a.$field.columnName
 #else
 			a.$field.columnName,
 #end
 #set($count=$count+1)
 #end
-		FROM ${tableInfo.tableName.toLowerCase()} a
+		FROM ${tableModel.tableName.toLowerCase()} a
 		WHERE 1=1
-#foreach($field in $tableInfo.validFlagList)
-    	AND a.$field.colname = '$field.valid'
+#foreach($field in $tableModel.columnDeleteList)
+    	AND a.$field.colname = $field.valid
 #end
-        <trim prefix="" prefixOverrides="">
-            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        <trim>
+            <include refid="#firstToUpper(${tableModel.tableLabel})Where" />
         </trim>
 	</select>
 
-    <!-- $tableInfo.tabComment (分页查询) -->
-    <resultMap id="#firstToUpper(${tableInfo.tableLabel})ListPageResult" type="java.util.HashMap">
-#foreach($field in $tableInfo.noteshuColList)
+    <!-- $tableModel.tableComment (分页查询) -->
+    <resultMap id="#firstToUpper(${tableModel.tableLabel})PageResult" type="java.util.HashMap">
+#foreach($field in $tableModel.columnList)
+#if(${field.isCommon()})
 		<result column="$field.columnName" property="#firstToLower($field.columnLabel)"/>
 #end
+#end
     </resultMap>
-    <select id="get#firstToUpper(${tableInfo.tableLabel})ListPage" resultMap="#firstToUpper(${tableInfo.tableLabel})ListPageResult" parameterType="map" >
+    <select id="get#firstToUpper(${tableModel.tableLabel})Page" resultMap="#firstToUpper(${tableModel.tableLabel})PageResult" parameterType="map" >
         SELECT
-#set( $count = 1)
-#foreach($field in $tableInfo.noteshuColList)
-#if($count==$!{tableInfo.noteshuColList.size()})
+#set($count=1)
+#foreach($field in $tableModel.columnCommonList)
+#if($count==$!{tableModel.columnCommonList.size()})
 			a.$field.columnName
 #else
 			a.$field.columnName,
 #end
 #set($count=$count+1)
 #end
-        FROM ${tableInfo.tableName.toLowerCase()} a
+        FROM ${tableModel.tableName.toLowerCase()} a
         WHERE 1=1
-#foreach($field in $tableInfo.validFlagList)
-		AND a.$field.colname = '$field.valid'
+#foreach($field in $tableModel.columnDeleteList)
+		AND a.$field.colname = $field.valid
 #end
-        <trim prefix="" prefixOverrides="">
-            <include refid="#firstToUpper(${tableInfo.tableLabel})Where" />
+        <trim>
+            <include refid="#firstToUpper(${tableModel.tableLabel})Where" />
         </trim>
-        <if test="pageSort != null">
+        <if test="@${ruleBean}@isNotEmpty(pageSort)">
             ORDER BY #{pageSort}
         </if>
     </select>

@@ -3,20 +3,12 @@ package com.codgen.model;
 /**
  * 逻辑删除
  */
-public class ValidFlagModel {
-    private ColumnModel columnModel;
+public class DeleteModel {
+    private String columnName; //列名
+    private String columnLabel;//列标签，列注释的标签部分。用于打印输出和显示的指定列的建议标题（中文）
     private String colname;
     private String valid;//有效值
     private String disable;//无效值
-
-
-    public ColumnModel getColumnModel() {
-        return columnModel;
-    }
-
-    public void setColumnModel(ColumnModel columnModel) {
-        this.columnModel = columnModel;
-    }
 
     public String getColname() {
         return colname;

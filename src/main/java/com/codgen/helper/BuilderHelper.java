@@ -1,18 +1,15 @@
-package com.codgen.util;
+package com.codgen.helper;
 
-import java.util.List;
 import java.util.UUID;
-
-import com.codgen.model.TableModel;
 
 
 public class BuilderHelper {
 
-    public String checkValue(String colComment, String s) {
-        if (colComment != null) {
-            String[] des = colComment.split(";");
+    public String checkValue(String columnComment, String s) {
+        if (columnComment != null) {
+            String[] des = columnComment.split(";");
             if (des.length == 1) {
-                return colComment;
+                return columnComment;
             }
             for (int i = 0; i < des.length; i++) {
                 String[] subdes = des[i].split(":");

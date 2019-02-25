@@ -1,16 +1,29 @@
 package com.codgen.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
 /**
  * JDBC配置模型
- *
  */
 public class TableConfig {
     private String prefix;
-    private String validFlag;
-    private Map<String, String> excludeFields = new HashMap<>();
+    private String deleteField;
+    private String excludeFields;
+
+    private TableConfig() {
+    }
+
+    public TableConfig(String prefix, String deleteField, String excludeFields) {
+        this.prefix = prefix;
+        this.deleteField = deleteField;
+        this.excludeFields = excludeFields;
+    }
+
+    public TableConfig(Properties properties) {
+        this.prefix = properties.getProperty("prefix");
+        this.deleteField = properties.getProperty("deleteField");
+        this.excludeFields = properties.getProperty("excludeFields");
+    }
 
     public String getPrefix() {
         return prefix;
@@ -20,21 +33,19 @@ public class TableConfig {
         this.prefix = prefix;
     }
 
-    public String getValidFlag() {
-        return validFlag;
+    public String getDeleteField() {
+        return deleteField;
     }
 
-    public void setValidFlags(String validFlag) {
-        this.validFlag = validFlag;
+    public void setDeleteField(String deleteField) {
+        this.deleteField = deleteField;
     }
 
-    public Map<String, String> getExcludeFields() {
+    public String getExcludeFields() {
         return excludeFields;
     }
 
-    public void setExcludeFields(String[] excludeFields) {
-        for (int k = 0; k < excludeFields.length; k++) {
-            this.excludeFields.put(excludeFields[k], excludeFields[k]);
-        }
+    public void setExcludeFields(String excludeFields) {
+        this.excludeFields = excludeFields;
     }
 }

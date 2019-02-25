@@ -10,16 +10,16 @@
     <typeAliases>
         <!-- 扫描model包 使用别名 -->
         <!-- <package name="${packageName}.${projectName.toLowerCase()}.model"/> -->
-#foreach($table in $tablesInfo)
-        <!-- $table.tabComment -->
+#foreach($table in $tableModelList)
+        <!-- $table.tableComment -->
         <typeAlias alias="#firstToLower(${table.tableLabel})" type="${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${table.tableLabel})"/>
 #end
     </typeAliases>
 
     <!-- 映射mapper-->
     <mappers>
-#foreach($table in $tablesInfo)
-        <!-- $table.tabComment -->
+#foreach($table in $tableModelList)
+        <!-- $table.tableComment -->
         <mapper resource="config/mybatis/${languagePath.toLowerCase()}/#firstToUpper(${table.tableLabel})Mapper.xml"/>
 #end
     </mappers>

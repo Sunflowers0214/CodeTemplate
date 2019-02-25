@@ -16,10 +16,6 @@ public class JdbcConfig {
     private JdbcConfig() {
     }
 
-    public JdbcConfig(String databaseType) {
-        this.databaseType = databaseType;
-    }
-
     public JdbcConfig(String databaseType, String driverClass, String jdbcUrl, String schema, String user, String password) {
         this.databaseType = databaseType;
         this.driverClass = driverClass;

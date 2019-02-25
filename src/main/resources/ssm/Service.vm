@@ -8,53 +8,53 @@ $field.toLowerCase().substring(0,1)$field.substring(1)##
 #end
 package ${packageName}.${projectName.toLowerCase()}.service;
 
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableInfo.tableLabel});
-import com.flysnow.common.base.Page;
+import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
+import ${pageBean};
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description $tableInfo.tabComment逻辑层接口
+ * @description $tableModel.tableComment逻辑层接口
  * @author ${author}
  * @version 1.0.0
  * @createtime $time
  */
-public interface #firstToUpper(${tableInfo.tableLabel})Service{
+public interface #firstToUpper(${tableModel.tableLabel})Service{
 
 	/**
 	 * 增加
 	 * @param entity
 	 * @return
 	 */
-	public abstract #firstToUpper(${tableInfo.tableLabel}) insert(#firstToUpper(${tableInfo.tableLabel}) entity);
+	public abstract #firstToUpper(${tableModel.tableLabel}) insert(#firstToUpper(${tableModel.tableLabel}) entity);
 
 	/**
 	 * 删除
 	 * @param entity
 	 * @return
 	 */
-	public abstract boolean delete(#firstToUpper(${tableInfo.tableLabel}) entity);
+	public abstract boolean delete(#firstToUpper(${tableModel.tableLabel}) entity);
 
 	/**
 	 * 修改
 	 * @param entity
 	 * @return
 	 */
-  	public abstract boolean update(#firstToUpper(${tableInfo.tableLabel}) entity);
+  	public abstract boolean update(#firstToUpper(${tableModel.tableLabel}) entity);
 
 	/**
 	 * 查询单条
 	 * @param entity
 	 * @return
 	 */
-  	public abstract #firstToUpper(${tableInfo.tableLabel}) get(#firstToUpper(${tableInfo.tableLabel}) entity);
+  	public abstract #firstToUpper(${tableModel.tableLabel}) get(#firstToUpper(${tableModel.tableLabel}) entity);
 
 	/**
 	 * 多条查询
 	 * @param entity
 	 * @return
 	 */
-  	public abstract List getList(#firstToUpper(${tableInfo.tableLabel}) entity);
+  	public abstract List getList(#firstToUpper(${tableModel.tableLabel}) entity);
 
 	/**
 	 * 分页查询

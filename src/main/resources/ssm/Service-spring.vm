@@ -11,8 +11,8 @@ $field.toLowerCase().substring(0,1)$field.substring(1)##
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-#foreach($table in $tablesInfo)
-    <!-- $table.tabComment -->
+#foreach($table in $tableModelList)
+    <!-- $table.tableComment -->
   	<bean id="#firstToLower($table.tableLabel)Service" class="${packageName}.${projectName.toLowerCase()}.service.impl.#firstToUpper($table.tableLabel)ServiceImpl">
 		<property name="#firstToLower($table.tableLabel)Dao" ref="#firstToLower($table.tableLabel)Dao"/>
 	</bean>

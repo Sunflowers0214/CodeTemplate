@@ -1,8 +1,7 @@
 package com.codgen.db.impl;
 
+import com.codgen.helper.DbProvider;
 import com.codgen.model.ColumnModel;
-import com.codgen.model.JdbcConfig;
-import com.codgen.db.DbProvider;
 import com.codgen.model.TableModel;
 import org.apache.commons.lang.StringUtils;
 
@@ -10,14 +9,16 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 针对Mysql的数据库信息提供者
  */
-public class MysqlProvider {
+public class MysqlProvider extends DbProvider {
 
-    public static List<TableModel> getTableList(Connection conn, String schema) {
+    @Override
+    public List<TableModel> getTableList(Connection conn, String schema) {
         List<TableModel> tableList = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
@@ -31,18 +32,19 @@ public class MysqlProvider {
 //                if (StringUtils.isEmpty(tableComment)) {
 //                    tableComment = tableName;
 //                }
-                tableList.add(new TableModel(schema, tableName, tableComment));
+                tableList.add(new TableModel(tableName, tableComment));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbProvider.safelyClose(rs);
-            DbProvider.safelyClose(stmt);
+            safelyClose(rs);
+            safelyClose(stmt);
         }
         return tableList;
     }
 
-    public static List<ColumnModel> getColumnList(Connection conn, String schema, String tableName) {
+    @Override
+    public List<ColumnModel> getColumnList(Connection conn, String schema, String tableName) {
         List<ColumnModel> columnList = new ArrayList<>();
         Statement stmt = null;
         ResultSet rs = null;
@@ -71,8 +73,8 @@ public class MysqlProvider {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            DbProvider.safelyClose(rs);
-            DbProvider.safelyClose(stmt);
+            safelyClose(rs);
+            safelyClose(stmt);
         }
         return columnList;
     }

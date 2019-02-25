@@ -2,18 +2,18 @@
 #macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
 ##首字母小写
 #macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
-var #firstToLower($tableInfo.tableLabel)DataName=[{
+var #firstToLower($tableModel.tableLabel)DataName=[{
 #set( $count = 1)
-#foreach($field in $tableInfo.noteshuColList)
-	#firstToLower($field.columnLabel):"$field.columnLabel"#if($velocityCount!=${tableInfo.noteshuColList.size()}),
+#foreach($field in $tableModel.columnCommonList)
+	#firstToLower($field.columnLabel):"$field.columnLabel"#if($velocityCount!=${tableModel.columnCommonList.size()}),
 #end
 #set($count=$count+1)
 #end
 
 }];
 
-var #firstToLower($tableInfo.tableLabel)GridHead=[
-#foreach($field in $tableInfo.noteshuColList)
+var #firstToLower($tableModel.tableLabel)GridHead=[
+#foreach($field in $tableModel.columnCommonList)
 #if(${field.columnSimpleClassName.toLowerCase()}=="date")
 	{display: '$field.columnLabel', name: '#firstToLower($field.columnLabel)', width: '10%', align: 'center', isSort: false,
 		render:function (rowdata, rowindex, value) {
@@ -31,11 +31,11 @@ var #firstToLower($tableInfo.tableLabel)GridHead=[
 	{display: 'operation', isSort: false, width: 90, 
 		render: function (rowdata, rowindex, value){
 			var optGrp;
-#foreach($field in $tableInfo.columnList)
+#foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
 			optGrp = [
-				{"name":"Modify","icon":"fa-pencil","action":"init#firstToUpper($tableInfo.tableLabel)Modify('" + rowdata.#firstToLower($field.columnLabel) + "')"},
-			  	{"name":"Delete","icon":"fa-trash-o","action":"init#firstToUpper($tableInfo.tableLabel)Delete('" + rowdata.#firstToLower($field.columnLabel) + "')"}
+				{"name":"Modify","icon":"fa-pencil","action":"init#firstToUpper($tableModel.tableLabel)Modify('" + rowdata.#firstToLower($field.columnLabel) + "')"},
+			  	{"name":"Delete","icon":"fa-trash-o","action":"init#firstToUpper($tableModel.tableLabel)Delete('" + rowdata.#firstToLower($field.columnLabel) + "')"}
 			];
 #end
 #end
@@ -51,8 +51,8 @@ var DETAIL = "detail";
 var gsearchWord = "search";
 var gsaveWord = "save";
 var gcloseWord = "close";
-var #firstToLower($tableInfo.tableLabel)Management="${tableInfo.tabComment}";
-var #firstToLower($tableInfo.tableLabel)ManagementADD=#firstToLower($tableInfo.tableLabel)Management+ADD;
-var #firstToLower($tableInfo.tableLabel)ManagementMODIFY=#firstToLower($tableInfo.tableLabel)Management+MODIFY;
-var #firstToLower($tableInfo.tableLabel)ManagementDETAIL=#firstToLower($tableInfo.tableLabel)Management+DETAIL;
-var #firstToLower($tableInfo.tableLabel)DelMsg="Are you sure you want to delete ${tableInfo.tabComment}？";
+var #firstToLower($tableModel.tableLabel)Management="${tableModel.tableComment}";
+var #firstToLower($tableModel.tableLabel)ManagementADD=#firstToLower($tableModel.tableLabel)Management+ADD;
+var #firstToLower($tableModel.tableLabel)ManagementMODIFY=#firstToLower($tableModel.tableLabel)Management+MODIFY;
+var #firstToLower($tableModel.tableLabel)ManagementDETAIL=#firstToLower($tableModel.tableLabel)Management+DETAIL;
+var #firstToLower($tableModel.tableLabel)DelMsg="Are you sure you want to delete ${tableModel.tableComment}？";

@@ -1,4 +1,4 @@
-package com.codgen.util;
+package com.codgen.helper;
 
 import java.io.File;
 import java.io.FileOutputStream;

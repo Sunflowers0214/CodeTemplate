@@ -5,22 +5,22 @@
 package ${packageName}.${projectName.toLowerCase()}.model;
 
 import java.util.Date;
+import ${basePath}.BaseModel;
 
 /**
- * @description $tableInfo.tabComment对象
+ * @description $tableModel.tableComment对象
  * @author ${author}
  * @version 1.0.0
  * @createtime $time
  */
-public class #firstToUpper(${tableInfo.tableLabel}) {
+public class #firstToUpper(${tableModel.tableLabel}) extends BaseModel {
 
-#foreach($field in $tableInfo.noteshuColList)
-	private ${field.columnSimpleClassName} #firstToLower($field.columnLabel);//$field.colComment
+#foreach($field in $tableModel.columnCommonList)
+	private ${field.columnSimpleClassName} #firstToLower($field.columnLabel);//$field.columnComment
 #end
-	private $tableInfo.tableLabel where;
-#foreach($field in $tableInfo.noteshuColList)
-	
-	//$field.colComment
+#foreach($field in $tableModel.columnCommonList)
+
+	//$field.columnComment
 	public ${field.columnSimpleClassName} get#firstToUpper($field.columnLabel)(){
 		return #firstToLower($field.columnLabel);
 	}
@@ -29,19 +29,11 @@ public class #firstToUpper(${tableInfo.tableLabel}) {
 	}
 #end
 
-	//修改条件
-	public $tableInfo.tableLabel getWhere() {
-		return where;
-	}
-	public void setWhere($tableInfo.tableLabel where) {
-		this.where = where;
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
-#foreach($field in $tableInfo.noteshuColList)
+#foreach($field in $tableModel.columnCommonList)
 		sb.append("#firstToLower($field.columnLabel)="+#firstToLower($field.columnLabel)+",");
 #end
 		sb.append("}");

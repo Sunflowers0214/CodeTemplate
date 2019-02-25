@@ -2,16 +2,16 @@
 #macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
 ##首字母小写
 #macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
-var #firstToLower(${tableInfo.tableLabel})DetUrl=rootPath+"/${languagePath.toLowerCase()}/query_#firstToLower($tableInfo.tableLabel).action";
+var #firstToLower(${tableModel.tableLabel})DetUrl=rootPath+"/${languagePath.toLowerCase()}/query_#firstToLower($tableModel.tableLabel).action";
 
 $(function (){
-	setPageControl("nd_",#firstToLower($tableInfo.tableLabel)DataName,"span");
+	setPageControl("nd_",#firstToLower($tableModel.tableLabel)DataName,"span");
 
 	var paramObj = {};
-#foreach($field in $tableInfo.pkColumnList)
+#foreach($field in $tableModel.columnPKList)
 	paramObj.#firstToLower($field.columnLabel)=#firstToLower($field.columnLabel);
 #end
-	asyncAjaxPost(JSON.stringify(paramObj), #firstToLower(${tableInfo.tableLabel})DetUrl, function (data) {
-		setPageControl("det_", data.l#firstToUpper(${tableInfo.tableLabel}), "span");
+	asyncAjaxPost(JSON.stringify(paramObj), #firstToLower(${tableModel.tableLabel})DetUrl, function (data) {
+		setPageControl("det_", data.l#firstToUpper(${tableModel.tableLabel}), "span");
 	});
 });

@@ -1,13 +1,11 @@
 package com.codgen.main;
 
+import com.codgen.db.DataHelper;
 import com.codgen.model.JdbcConfig;
 import com.codgen.model.TableConfig;
 import com.codgen.model.TableModel;
-import com.codgen.db.DbProvider;
-import com.codgen.db.impl.MysqlProvider;
-import com.codgen.db.impl.OracleProvider;
-import com.codgen.util.BuilderHelper;
-import com.codgen.util.FileHelper;
+import com.codgen.helper.BuilderHelper;
+import com.codgen.helper.FileHelper;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
@@ -19,86 +17,105 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class CreateCode {
+    private static List<TableModel> tableModelList;
+    private static VelocityContext velocityContext;
+    private static FileHelper helper = new FileHelper();
 
     public static void main(String[] args) throws IOException {
-        List<TableModel> tableModelList = CreateCode.initTableModel();
-        if (true) {
-            return;
-        }
-        FileHelper helper = new FileHelper();
         Properties properties = helper.getProperties("jdbc.properties");
+
+        //初始化表结构
+        tableModelList = CreateCode.initTableModel(properties);
+        //初始化VelocityContext
+        velocityContext = CreateCode.initVelocityContext(properties);
+
         String projectName = properties.get("projectName").toString();
         String languagePath = properties.get("languagePath").toString();
-
-        String javaPath = "java/" + projectName;
-        String testPath = "test/" + projectName;
-        String configPath = "config/spring";
+        String templatePath = properties.getProperty("templetFilePath");
+        String createFilePath = properties.getProperty("genDirPath") + File.separator + projectName + File.separator;
+        String javaPath = createFilePath + "java/" + projectName;
+        String testPath = createFilePath + "test/" + projectName;
+        String configPath = createFilePath + "config";
 
         //实体类
-        CreateCode.createFiles(tableModelList, "Model.vm", javaPath + "/model", ".java");
+        CreateCode.createFiles(templatePath + "Model.vm", javaPath + "/model", ".java");
 
         //数据库访问层
-        CreateCode.createFiles(tableModelList, "Dao.vm", javaPath + "/dao", "Dao.java");
-        CreateCode.createFiles(tableModelList, "DaoImpl.vm", javaPath + "/dao/impl", "DaoImpl.java");
-        CreateCode.createFile(tableModelList, "Dao-spring.vm", configPath, projectName + "-dao.xml");
-        CreateCode.createFiles(tableModelList, "DaoTest.vm", testPath + "/dao", "DaoTest.java");
+        CreateCode.createFiles(templatePath + "Dao.vm", javaPath + "/dao", "Dao.java");
+        CreateCode.createFiles(templatePath + "DaoImpl.vm", javaPath + "/dao/impl", "DaoImpl.java");
+        CreateCode.createFiles(templatePath + "DaoTest.vm", testPath + "/dao", "DaoTest.java");
+        CreateCode.createFile(templatePath + "Dao-spring.vm", configPath + "/spring", projectName + "-dao.xml");
 
-        CreateCode.createFiles(tableModelList, "mybatis.vm", "config/mybatis/" + languagePath, "Mapper.xml");
-        CreateCode.createFile(tableModelList, "mybatis-config.vm", "config/mybatis", "mybatis-" + projectName + "-config.xml");
-        CreateCode.createFile(tableModelList, "mybatis-spring.vm", "config/spring", "spring-mybatis-" + projectName + "-config.xml");
+        //mybatis
+        CreateCode.createFiles(templatePath + "mybatis.vm", configPath + "/mybatis/" + languagePath, "Mapper.xml");
+        CreateCode.createFile(templatePath + "mybatis-config.vm", configPath + "/mybatis", "mybatis.config." + projectName + ".xml");
+        CreateCode.createFile(templatePath + "mybatis-spring.vm", configPath + "/spring", "spring-mybatis-" + projectName + "-config.xml");
 
         //逻辑处理层
-        CreateCode.createFiles(tableModelList, "Service.vm", javaPath + "/db", "Service.java");
-        CreateCode.createFiles(tableModelList, "ServiceImpl.vm", javaPath + "/db/impl", "ServiceImpl.java");
-        CreateCode.createFile(tableModelList, "Service-spring.vm", configPath, projectName + "-db.xml");
-        CreateCode.createFiles(tableModelList, "ServiceTest.vm", testPath + "/db", "ServiceTest.java");
+        CreateCode.createFiles(templatePath + "Service.vm", javaPath + "/service", "Service.java");
+        CreateCode.createFiles(templatePath + "ServiceImpl.vm", javaPath + "/service/impl", "ServiceImpl.java");
+        CreateCode.createFiles(templatePath + "ServiceTest.vm", testPath + "/service", "ServiceTest.java");
+        CreateCode.createFile(templatePath + "Service-spring.vm", configPath + "/spring", projectName + "-service.xml");
 
         //控制层
-        CreateCode.createFiles(tableModelList, "Controller.vm", javaPath + "/controller", "Controller.java");
-        CreateCode.createFiles(tableModelList, "ControllerTest.vm", testPath + "/controller", "ControllerTest.java");
+        CreateCode.createFiles(templatePath + "Controller.vm", javaPath + "/controller", "Controller.java");
+        CreateCode.createFiles(templatePath + "ControllerTest.vm", testPath + "/controller", "ControllerTest.java");
 
 
         String webPath = "webapp/" + projectName;
-//        CreateCode.createFiles(tableModelList, "web-manhtml.vm", webPath+"/jsp", "Man.jsp");
-//        CreateCode.createFiles(tableModelList, "web-manjs.vm", webPath+"/js", "Man,js");
-//        CreateCode.createFiles(tableModelList, "web-web-addhtml.vm", webPath+"/jsp", "Add.jsp");
-//        CreateCode.createFiles(tableModelList, "web-web-addjs.vm", webPath+"/js", "Add.js");
-//        CreateCode.createFiles(tableModelList, "web-modifyhtml.vm", webPath+"/jsp", "Modify.jsp");
-//        CreateCode.createFiles(tableModelList, "web-modifyjs.vm", webPath+"/js", "Modify.js");
-//        CreateCode.createFiles(tableModelList, "web-detailhtml.vm", webPath+"/jsp", "Detail.jsp");
-//        CreateCode.createFiles(tableModelList, "web-detailjs.vm", webPath+"/js", "Detail.js");
+//        CreateCode.createFiles(templatePath + "web-manhtml.vm",createFilePath +  webPath+"/jsp", "Man.jsp");
+//        CreateCode.createFiles(templatePath + "web-manjs.vm",createFilePath +  webPath+"/js", "Man,js");
+//        CreateCode.createFiles(templatePath + "web-web-addhtml.vm",createFilePath +  webPath+"/jsp", "Add.jsp");
+//        CreateCode.createFiles(templatePath + "web-web-addjs.vm", createFilePath + webPath+"/js", "Add.js");
+//        CreateCode.createFiles(templatePath + "web-modifyhtml.vm", createFilePath + webPath+"/jsp", "Modify.jsp");
+//        CreateCode.createFiles(templatePath + "web-modifyjs.vm", createFilePath + webPath+"/js", "Modify.js");
+//        CreateCode.createFiles(templatePath + "web-detailhtml.vm",createFilePath +  webPath+"/jsp", "Detail.jsp");
+//        CreateCode.createFiles(templatePath + "web-detailjs.vm",createFilePath +  webPath+"/js", "Detail.js");
 
     }
 
     /**
-     * 初始化表模型
+     * 初始化表结构
+     *
+     * @param properties
+     * @return
+     */
+    private static List<TableModel> initTableModel(Properties properties) {
+        List<TableModel> tableList = new ArrayList<>();
+        JdbcConfig jdbcConfig = new JdbcConfig(properties);
+        TableConfig tableConfig = new TableConfig(properties);
+        DataHelper DataHelper = new DataHelper(jdbcConfig);
+        tableList = DataHelper.initTableModelList(tableConfig);
+        return tableList;
+    }
+
+    /**
+     * 初始化VelocityContext
      *
      * @return
      */
-    public static List<TableModel> initTableModel() {
-        List<TableModel> tableModelList = new ArrayList<TableModel>();
-        FileHelper helper = new FileHelper();
-        Properties properties = helper.getProperties("jdbc.properties");
-
-        //数据库连 接
-        JdbcConfig jdbcConfig = new JdbcConfig(properties);
-        DbProvider provider = new DbProvider(jdbcConfig);
-
-        TableConfig tableConfig = new TableConfig();
-        tableConfig.setPrefix(properties.getProperty("prefix"));
-        tableConfig.setValidFlags(properties.getProperty("validFlags"));
-        tableConfig.setExcludeFields(properties.getProperty("excludeFields").split(","));
-
-        List<TableModel> tableList = provider.getTableList();
-        for (TableModel tableModel : tableList) {
-            String tableName = tableModel.getTableName();
-            System.out.println(tableName + ":" + tableModel.getTabComment());
-            if (tableName.startsWith(tableConfig.getPrefix())) {
-                provider.initTableModel(tableModel, tableConfig);
-                tableModelList.add(tableModel);
-            }
-        }
-        return tableModelList;
+    private static VelocityContext initVelocityContext(Properties properties) {
+        VelocityContext context = new VelocityContext();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String dateStr = formatter.format(new Date());
+        //配置
+        context.put("builderHelper", new BuilderHelper());
+        context.put("author", properties.get("author"));
+        context.put("time", dateStr);
+        //引用
+        context.put("basePath", properties.get("basePath"));
+        context.put("pageBean", properties.get("pageBean"));
+        context.put("resultBean", properties.get("resultBean"));
+        context.put("keyBean", properties.get("keyBean"));
+        context.put("ruleBean", properties.get("ruleBean"));
+        //路径
+        context.put("databaseType", properties.get("databaseType"));
+        context.put("languagePath", properties.get("languagePath"));
+        context.put("packageName", properties.get("packageName"));
+        context.put("projectName", properties.get("projectName"));
+        //表集合
+        context.put("tableModelList", tableModelList);
+        return context;
     }
 
     /**
@@ -108,39 +125,23 @@ public class CreateCode {
      * @param dirName      目录
      * @param suffix       文件名后缀
      */
-    public static void createFiles(List<TableModel> tableModelList, String templateName, String dirName, String suffix) throws IOException {
+    public static void createFiles(String templateName, String dirName, String suffix) throws IOException {
         FileHelper helper = new FileHelper();
-        Properties properties = helper.getProperties("jdbc.properties");
 
-        String genDirPath = properties.getProperty("genDirPath") + File.separator;
-        String projectName = properties.getProperty("projectName") + File.separator;
-        String genDir = genDirPath + projectName + dirName + File.separator;
-        String templatePath = properties.getProperty("templetFilePath");
         // 初始化一个模板引擎
         Velocity.init();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(new Date());
-        VelocityContext context = new VelocityContext();
-        context.put("builderHelper", new BuilderHelper());
-        context.put("tablesInfo", tableModelList);
-        context.put("time", dateString);
-        context.put("languagePath", properties.get("languagePath"));
-        context.put("packageName", properties.get("packageName"));
-        context.put("author", properties.get("author"));
-        context.put("projectName", properties.get("projectName"));
         // 实例化一个VelocityEngine对象
         Template template = null;
-        for (TableModel tablesinfo : tableModelList) {
+        for (TableModel tableModel : tableModelList) {
             StringWriter sw = new StringWriter();
-            context.put("tableInfo", tablesinfo);
-            context.put("packageName", properties.get("packageName"));
+            velocityContext.put("tableModel", tableModel);
             // 将需要的数据加载到模板引擎的上下文中
             // 从vm目录下加载hello.vm模板,在eclipse工程中该vm目录与src目录平级
-            template = Velocity.getTemplate(templatePath + templateName, "UTF-8");
-            template.merge(context, sw);
-            String fileName = tablesinfo.getTableLabel();
+            template = Velocity.getTemplate(templateName, "UTF-8");
+            template.merge(velocityContext, sw);
+            String fileName = tableModel.getTableLabel();
             fileName = BuilderHelper.firstToUpper(fileName);
-            helper.writeToFile(genDir, fileName + suffix, sw.toString());
+            helper.writeToFile(dirName + File.separator, fileName + suffix, sw.toString());
         }
     }
 
@@ -151,32 +152,11 @@ public class CreateCode {
      * @param dirName      文件路径
      * @param fileName
      */
-    public static void createFile(List<TableModel> tableModelList, String templateName, String dirName, String fileName) throws IOException {
-        FileHelper helper = new FileHelper();
-        Properties properties = helper.getProperties("jdbc.properties");
-        Date date = new Date();
-        String genDirPath = properties.getProperty("genDirPath") + File.separator;
-        String projectName = properties.getProperty("projectName") + File.separator;
-        String genDir = genDirPath + projectName + dirName + File.separator;
-
-        String templatePath = properties.getProperty("templetFilePath");
-
-        VelocityContext context = new VelocityContext();
-        context.put("time", date.toLocaleString());
-        context.put("packageName", properties.get("packageName"));
-        Template template = Velocity.getTemplate(templatePath + templateName, "UTF-8");
+    public static void createFile(String templateName, String dirName, String fileName) throws IOException {
+        Template template = Velocity.getTemplate(templateName, "UTF-8");
         StringWriter sw = new StringWriter();
-        Map map = new HashMap();
-        map.put("databasename", properties.getProperty("database"));
-        context.put("builderHelper", new BuilderHelper());
-        context.put("tablesInfo", tableModelList);
-        context.put("databaseType", properties.get("databaseType"));
-        context.put("languagePath", properties.get("languagePath"));
-        context.put("packageName", properties.get("packageName"));
-        context.put("author", properties.get("author"));
-        context.put("projectName", properties.get("projectName"));
-        template.merge(context, sw);
-        helper.writeToFile(genDir + File.separator, fileName, sw.toString());
+        template.merge(velocityContext, sw);
+        helper.writeToFile(dirName + File.separator, fileName, sw.toString());
     }
 
 }

@@ -2,13 +2,13 @@
 #macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
 ##首字母小写
 #macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
-var #firstToLower(${tableInfo.tableLabel})DetUrl=rootPath+"/${languagePath.toLowerCase()}/query_#firstToLower($tableInfo.tableLabel).action";
-var #firstToLower(${tableInfo.tableLabel})ModUrl=rootPath+"/${languagePath.toLowerCase()}/modify_#firstToLower($tableInfo.tableLabel).action";
+var #firstToLower(${tableModel.tableLabel})DetUrl=rootPath+"/${languagePath.toLowerCase()}/query_#firstToLower($tableModel.tableLabel).action";
+var #firstToLower(${tableModel.tableLabel})ModUrl=rootPath+"/${languagePath.toLowerCase()}/modify_#firstToLower($tableModel.tableLabel).action";
 
 $(function (){
-	setPageControl("nm_",#firstToLower($tableInfo.tableLabel)DataName,"span");
+	setPageControl("nm_",#firstToLower($tableModel.tableLabel)DataName,"span");
 	$.metadata.setType("attr","validate");
-    $("${builderHelper.getjing()}#firstToUpper(${tableInfo.tableLabel})ModifyForm").validate({
+    $("${builderHelper.getjing()}#firstToUpper(${tableModel.tableLabel})ModifyForm").validate({
         errorPlacement: function (lable, element){
         	errorPlacement(lable, element);
         },
@@ -17,27 +17,27 @@ $(function (){
         },
         submitHandler: function (){
         	submitHandler();
-        	submit#firstToUpper(${tableInfo.tableLabel})Modify();
+        	submit#firstToUpper(${tableModel.tableLabel})Modify();
         }
     });
-    set#firstToUpper(${tableInfo.tableLabel})();
+    set#firstToUpper(${tableModel.tableLabel})();
     initDataPicker();
-    WoohForm.createForm('#firstToUpper(${tableInfo.tableLabel})ModifyForm',{});
+    WoohForm.createForm('#firstToUpper(${tableModel.tableLabel})ModifyForm',{});
 });  
 
 //初始页面数据
-function set#firstToUpper(${tableInfo.tableLabel})(){
+function set#firstToUpper(${tableModel.tableLabel})(){
 	var paramObj = {};
-#foreach($field in $tableInfo.pkColumnList)
+#foreach($field in $tableModel.columnPKList)
 	paramObj.#firstToLower($field.columnLabel)=#firstToLower($field.columnLabel);
 	$("#m_#firstToLower($field.columnLabel)").val(#firstToLower($field.columnLabel));
 #end
-	asyncAjaxPost(JSON.stringify(paramObj), #firstToLower(${tableInfo.tableLabel})DetUrl, function (data) {
-		setPageControl("m_", data.l#firstToUpper(${tableInfo.tableLabel}));
+	asyncAjaxPost(JSON.stringify(paramObj), #firstToLower(${tableModel.tableLabel})DetUrl, function (data) {
+		setPageControl("m_", data.l#firstToUpper(${tableModel.tableLabel}));
 	});
 }
 
 //修改数据
-function submit#firstToUpper(${tableInfo.tableLabel})Modify(){
-ajaxSubmit("m_",#firstToLower(${tableInfo.tableLabel})ModUrl,#firstToLower(${tableInfo.tableLabel})Management,MODIFY,3,"goback()");
+function submit#firstToUpper(${tableModel.tableLabel})Modify(){
+ajaxSubmit("m_",#firstToLower(${tableModel.tableLabel})ModUrl,#firstToLower(${tableModel.tableLabel})Management,MODIFY,3,"goback()");
 }

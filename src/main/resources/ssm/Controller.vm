@@ -10,32 +10,32 @@ package ${packageName}.${projectName.toLowerCase()}.controller;
 
 import java.util.List;
 import java.util.Map;
-import com.flysnow.common.base.Page;
-import com.flysnow.common.base.Result;
-import com.flysnow.common.util.JsonUtils;
+import ${pageBean};
+import ${resultBean};
+import ${jsonBean};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.flysnow.common.base.BaseController;
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableInfo.tableLabel});
-import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${tableInfo.tableLabel})Service;
+import ${basePath}.BaseController;
+import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
+import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${tableModel.tableLabel})Service;
 
 /**
- * @description $tableInfo.tabComment控制层
+ * @description $tableModel.tableComment控制层
  * @author ${author}
  * @version 1.0.0
  * @createtime $time
  */
 @Controller
-@RequestMapping("/#firstToLower($tableInfo.tableLabel)")
-public class #firstToUpper(${tableInfo.tableLabel})Controller extends BaseController{
+@RequestMapping("/#firstToLower($tableModel.tableLabel)")
+public class #firstToUpper(${tableModel.tableLabel})Controller extends BaseController{
 
 	@Autowired
-	private #firstToUpper(${tableInfo.tableLabel})Service #firstToLower($tableInfo.tableLabel)Service;
+	private #firstToUpper(${tableModel.tableLabel})Service #firstToLower($tableModel.tableLabel)Service;
 
 	/**
-	 * @description 分页信息查询$tableInfo.tabComment
+	 * @description 分页信息查询$tableModel.tableComment
 	 * @return
 	 * @throws Exception
 	 */
@@ -43,84 +43,84 @@ public class #firstToUpper(${tableInfo.tableLabel})Controller extends BaseContro
 	@ResponseBody
 	public Result getListForPage(String data, Integer pageNo, Integer pageSize, String sort) throws Exception{
 		Map map = JsonUtils.jsonToPojo(data, Map.class);
-		Page page= #firstToLower($tableInfo.tableLabel)Service.getListForPage(map, pageNo, pageSize, sort);
+		Page page= #firstToLower($tableModel.tableLabel)Service.getListForPage(map, pageNo, pageSize, sort);
      	return new Result(page);
 	}
 
 	/**
-	 * @description $tableInfo.tabComment单条信息查询
+	 * @description $tableModel.tableComment单条信息查询
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/get")
 	@ResponseBody
 	public Result get(String data) throws Exception{
-		#firstToUpper(${tableInfo.tableLabel}) queryEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableInfo.tableLabel}).class);
-		#firstToUpper(${tableInfo.tableLabel}) entity= #firstToLower($tableInfo.tableLabel)Service.get(queryEntity);
+		#firstToUpper(${tableModel.tableLabel}) queryEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableModel.tableLabel}).class);
+		#firstToUpper(${tableModel.tableLabel}) entity= #firstToLower($tableModel.tableLabel)Service.get(queryEntity);
 		return new Result(entity);
 	}
 
 	/**
-	 * @description 添加$tableInfo.tabComment数据
+	 * @description 添加$tableModel.tableComment数据
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/insert")
 	@ResponseBody
 	public Result insert(String data) throws Exception{
-		#firstToUpper(${tableInfo.tableLabel}) insertEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableInfo.tableLabel}).class);
-		#firstToLower($tableInfo.tableLabel)Service.insert(insertEntity);
+		#firstToUpper(${tableModel.tableLabel}) insertEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableModel.tableLabel}).class);
+		#firstToLower($tableModel.tableLabel)Service.insert(insertEntity);
 		return new Result(insertEntity);
 	}
 
 	/**
-	 * @description 修改 $tableInfo.tabComment数据
+	 * @description 修改 $tableModel.tableComment数据
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/modify")
 	@ResponseBody
 	public Result modify(String data) throws Exception{
-		#firstToUpper(${tableInfo.tableLabel}) updateEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableInfo.tableLabel}).class);
-		#firstToUpper(${tableInfo.tableLabel}) updateWhere = new #firstToUpper(${tableInfo.tableLabel})();
-#foreach($field in $tableInfo.columnList)
+		#firstToUpper(${tableModel.tableLabel}) updateEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableModel.tableLabel}).class);
+		#firstToUpper(${tableModel.tableLabel}) updateWhere = new #firstToUpper(${tableModel.tableLabel})();
+#foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
 		updateWhere.set#firstToUpper($field.columnLabel)(updateEntity.get#firstToUpper($field.columnLabel)());
 #end#end
 		updateEntity.setWhere(updateWhere);
-		boolean flag = #firstToLower($tableInfo.tableLabel)Service.update(updateEntity);
+		boolean flag = #firstToLower($tableModel.tableLabel)Service.update(updateEntity);
 		return new Result(flag);
 	}
 
 	/**
-	 * @description 删除$tableInfo.tabComment数据
+	 * @description 删除$tableModel.tableComment数据
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/delete")
 	@ResponseBody
 	public Result delete(String data) throws Exception{
-		#firstToUpper(${tableInfo.tableLabel}) deleteEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableInfo.tableLabel}).class);
-		#firstToUpper(${tableInfo.tableLabel}) deleteWhere = new #firstToUpper(${tableInfo.tableLabel})();
-#foreach($field in $tableInfo.columnList)
+		#firstToUpper(${tableModel.tableLabel}) deleteEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableModel.tableLabel}).class);
+		#firstToUpper(${tableModel.tableLabel}) deleteWhere = new #firstToUpper(${tableModel.tableLabel})();
+#foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
 		deleteWhere.set#firstToUpper($field.columnLabel)(deleteEntity.get#firstToUpper($field.columnLabel)());
 #end#end
 		deleteEntity.setWhere(deleteWhere);
-		boolean flag = #firstToLower($tableInfo.tableLabel)Service.delete(deleteEntity);
+		boolean flag = #firstToLower($tableModel.tableLabel)Service.delete(deleteEntity);
 		return new Result(flag);
 	}
 
 	/**
-	 * @description 不分页查询$tableInfo.tabComment
+	 * @description 不分页查询$tableModel.tableComment
 	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping("/getList")
 	@ResponseBody
 	public Result getList(String data) throws Exception{
-		#firstToUpper(${tableInfo.tableLabel}) queryEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableInfo.tableLabel}).class);
-		List datalist = #firstToLower($tableInfo.tableLabel)Service.getList(queryEntity);
+		#firstToUpper(${tableModel.tableLabel}) queryEntity = JsonUtils.jsonToPojo(data,#firstToUpper(${tableModel.tableLabel}).class);
+		List datalist = #firstToLower($tableModel.tableLabel)Service.getList(queryEntity);
 		return new Result(datalist);
 	}
 

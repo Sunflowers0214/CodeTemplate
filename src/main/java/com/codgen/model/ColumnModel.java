@@ -10,7 +10,7 @@ public class ColumnModel {
 
     private String columnName; //列名
     private String columnLabel;//列标签，列注释的标签部分。用于打印输出和显示的指定列的建议标题（中文）
-    private String colComment;//列注释
+    private String columnComment;//列注释
     private String columnType;//列的 SQL 类型。
     private int columnSize;//列的 SQL 长度
     private String columnClassName;//面向具体编程语言中类的完全限定名称，默认的编程语言为Java，如：java.lang.String。
@@ -20,38 +20,25 @@ public class ColumnModel {
     private int scale = 0;//列的小数点右边的位数。对于其标度不可用的数据类型，默认为 0。
     private boolean primaryKey = false;//标识该列是否为主键
     private boolean nullable = true;//标识该列的值能否为空
+    private boolean ignoreFlag = false;//特殊标识
+    private boolean deleteFlag = false;//逻辑删除字段标识
 
     public ColumnModel() {
         this.columnName = columnName;
     }
 
-    public ColumnModel(String columnName, String colComment, String columnType, int columnSize) {
+    public ColumnModel(String columnName, String columnComment, String columnType, int columnSize) {
         this.columnName = columnName;
-        this.colComment = colComment;
+        this.columnComment = columnComment;
         this.columnType = columnType;
         this.columnSize = columnSize;
     }
 
-    public ColumnModel(String columnName, String colComment, String columnType, int columnSize, int precision, int scale, boolean primaryKey, boolean nullable) {
-        this.columnName = columnName;
-        this.colComment = colComment;
-        this.columnType = columnType;
-        this.columnSize = columnSize;
-        this.precision = precision;
-        this.scale = scale;
-        this.primaryKey = primaryKey;
-        this.nullable = nullable;
-    }
-
-    //@return 取得列名称
     public String getColumnName() {
         return columnName;
     }
 
     public void setColumnName(String columnName) {
-//        if (columnName != null) {
-//            columnName = columnName.toLowerCase();
-//        }
         this.columnName = columnName;
     }
 
@@ -63,16 +50,14 @@ public class ColumnModel {
         this.columnLabel = columnLabel;
     }
 
-    //@return 取得列注释
-    public String getColComment() {
-        return colComment;
+    public String getColumnComment() {
+        return columnComment;
     }
 
-    public void setColComment(String colComment) {
-        this.colComment = colComment;
+    public void setColumnComment(String columnComment) {
+        this.columnComment = columnComment;
     }
 
-    //取得在java.sql.Types定义的类型
     public String getColumnType() {
         return columnType;
     }
@@ -97,7 +82,6 @@ public class ColumnModel {
         this.columnSimpleClassName = columnSimpleClassName;
     }
 
-    //@return 取得面向具体编程语言中类的完全限定名称，如java中的java.lang.String。
     public String getColumnClassName() {
         return columnClassName;
     }
@@ -106,7 +90,6 @@ public class ColumnModel {
         this.columnClassName = columnClassName;
     }
 
-    //@return 取得面向具体编程语言中类的所在的包(命名空间)，如java中的java.lang
     public String getColumnClassPackage() {
         return columnClassPackage;
     }
@@ -141,7 +124,7 @@ public class ColumnModel {
     }
 
     //@return 判断该列是否为主键列
-    public boolean isPrimaryKey() {
+    public boolean getPrimaryKey() {
         return primaryKey;
     }
 
@@ -158,6 +141,31 @@ public class ColumnModel {
         this.nullable = nullable;
     }
 
+    public boolean isIgnoreFlag() {
+        return ignoreFlag;
+    }
+
+    public void setIgnoreFlag(boolean ignoreFlag) {
+        this.ignoreFlag = ignoreFlag;
+    }
+
+    public boolean isDeleteFlag() {
+        return deleteFlag;
+    }
+
+    public void setDeleteFlag(boolean deleteFlag) {
+        this.deleteFlag = deleteFlag;
+    }
+
+    //@return 判断该列是否为主键列
+    public boolean isPrimaryKey() {
+        return primaryKey;
+    }
+
+    //@return 判断该列是否为主键列
+    public boolean isCommon() {
+        return !ignoreFlag && !deleteFlag;
+    }
 
     @Override
     public int hashCode() {
@@ -192,30 +200,19 @@ public class ColumnModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("\n---<" + colComment + ">{columnName=");
+        builder.append("\n---<" + columnComment + ">{columnName=");
         builder.append(columnName);
-        builder.append(", colComment=");
-        builder.append(colComment);
-        builder.append(", columnLabel=");
-        builder.append(columnLabel);
-        builder.append(", columnType=");
-        builder.append(columnType);
-        builder.append(", columnSize=");
-        builder.append(columnSize);
-        builder.append(", columnClassName=");
-        builder.append(columnClassName);
-        builder.append(", columnClassPackage=");
-        builder.append(columnClassPackage);
-        builder.append(", columnSimpleClassName=");
-        builder.append(columnSimpleClassName);
-        builder.append(", nullable=");
-        builder.append(nullable);
-        builder.append(", precision=");
-        builder.append(precision);
-        builder.append(", primaryKey=");
-        builder.append(primaryKey);
-        builder.append(", scale=");
-        builder.append(scale);
+        builder.append(", columnLabel=" + columnLabel);
+        builder.append(", columnComment=" + columnComment);
+        builder.append(", columnType=" + columnType);
+        builder.append(", columnSize=" + columnSize);
+        builder.append(", columnClassName=" + columnClassName);
+        builder.append(", columnClassPackage=" + columnClassPackage);
+        builder.append(", columnSimpleClassName=" + columnSimpleClassName);
+        builder.append(", nullable=" + nullable);
+        builder.append(", precision=" + precision);
+        builder.append(", primaryKey=" + primaryKey);
+        builder.append(", scale=" + scale);
         builder.append("}");
         return builder.toString();
     }

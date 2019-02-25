@@ -1,6 +1,5 @@
 package com.codgen.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -9,132 +8,82 @@ import java.util.List;
  */
 public class TableModel {
     private String tableName;//表名
-    private String schema;//数据库
     private String tableLabel;//表标签
-    private String tabComment = "";//表注释(中文)
+    private String tableComment = "";//表注释(中文)
     private List<ColumnModel> columnList;//列模型集合
-    private List<ColumnModel> pkColumnList;//主键列模型集合
-    private List<ColumnModel> noteshuColList;//普通列模型集合
-    private List<ColumnModel> teshuColList;//特殊处理列模型集合
-    private List<ValidFlagModel> validFlagList;//逻辑删除模型
+    private List<ColumnModel> columnCommonList;//普通列模型集合
+    private List<ColumnModel> columnPKList;//主键列模型集合
+    private List<DeleteModel> columnDeleteList;//逻辑删除模型
 
     private TableModel() {
     }
 
-    public TableModel(String schema, String tableName, String tabComment) {
-        this.schema = schema;
+    public TableModel(String tableName, String tableComment) {
         this.tableName = tableName;
-        this.tabComment = tabComment;
+        this.tableComment = tableComment;
     }
 
-    /**
-     * @return 取得表名称
-     */
     public String getTableName() {
         return tableName;
     }
 
-    /**
-     * @param tableName 设置表名称
-     */
     public void setTableName(String tableName) {
         this.tableName = tableName;
     }
 
-    /**
-     * @return 取得表的架构名称(一般为表的所有者，可能为空)
-     */
-    public String getSchema() {
-        return schema;
-    }
-
-    /**
-     * @param schema 设置表的架构名称(一般为表的所有者，可以为空)
-     */
-    public void setSchema(String schema) {
-        this.schema = schema;
-    }
-
-    /**
-     * @return 取得表的显示标签
-     */
     public String getTableLabel() {
         return tableLabel;
     }
 
-    /**
-     * @param tableLabel 设置表的显示标签
-     */
     public void setTableLabel(String tableLabel) {
         this.tableLabel = tableLabel;
     }
 
-    /**
-     * @return 取得表的注释
-     */
-    public String getTabComment() {
-        return tabComment;
+    public String getTableComment() {
+        return tableComment;
     }
 
-    /**
-     * @param tabComment 设置表的注释
-     */
-    public void setTabComment(String tabComment) {
-        this.tabComment = tabComment;
+    public void setTableComment(String tableComment) {
+        this.tableComment = tableComment;
     }
 
-    /**
-     * @return 取得该表下包含的所有列模型
-     */
     public List<ColumnModel> getColumnList() {
         return columnList;
     }
 
-    /**
-     * @param columnList 设置该表下包含的所有列模型
-     */
     public void setColumnList(List<ColumnModel> columnList) {
         this.columnList = columnList;
     }
 
-    public List<ColumnModel> getPkColumnList() {
-        return pkColumnList;
+    public List<ColumnModel> getColumnCommonList() {
+        return columnCommonList;
     }
 
-    public void setPkColumnList(List<ColumnModel> pkColumnList) {
-        this.pkColumnList = pkColumnList;
+    public void setColumnCommonList(List<ColumnModel> columnCommonList) {
+        this.columnCommonList = columnCommonList;
     }
 
-    public List<ColumnModel> getNoteshuColList() {
-        return noteshuColList;
+    public List<ColumnModel> getColumnPKList() {
+        return columnPKList;
     }
 
-    public void setNoteshuColList(List<ColumnModel> noteshuColList) {
-        this.noteshuColList = noteshuColList;
+    public void setColumnPKList(List<ColumnModel> columnPKList) {
+        this.columnPKList = columnPKList;
     }
 
-    public List<ColumnModel> getTeshuColList() {
-        return teshuColList;
+    public List<DeleteModel> getColumnDeleteList() {
+        return columnDeleteList;
     }
 
-    public void setTeshuColList(List<ColumnModel> teshuColList) {
-        this.teshuColList = teshuColList;
-    }
-
-    public List<ValidFlagModel> getValidFlagList() {
-        return validFlagList;
-    }
-
-    public void setValidFlagList(List<ValidFlagModel> validFlagList) {
-        this.validFlagList = validFlagList;
+    public void setColumnDeleteList(List<DeleteModel> columnDeleteList) {
+        this.columnDeleteList = columnDeleteList;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((tableName == null) ? 0 : tableName.hashCode());
+        result = prime * result + ((tableName == null) ? 0 : tableName.hashCode());
         return result;
     }
 
@@ -163,24 +112,16 @@ public class TableModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("<" + tabComment + ">模型：{schema=");
-        builder.append(schema);
-        builder.append(", tableName=");
-        builder.append(tableName);
-        builder.append(", tableLabel=");
-        builder.append(tableLabel);
-        builder.append(", tabComment=");
-        builder.append(tabComment);
+        builder.append("<" + tableComment + ">模型：{");
+        builder.append("tableName=" + tableName);
+        builder.append(", tableLabel=" + tableLabel);
+        builder.append(", tableComment=" + tableComment);
         builder.append(", \n>>>表字段集合columnList=");
         builder.append(columnList);
-        builder.append(", \n>>>主键列集合pkColumnList=");
-        builder.append(pkColumnList);
-        //builder.append(", \n>>>表字段集合noteshuColList=");
-        //builder.append(noteshuColList);
-        builder.append(", \n>>>权限字段集合teshuColList=");
-        builder.append(teshuColList);
-        builder.append(", \n>>>逻辑删除validFlagList=");
-        builder.append(validFlagList);
+        builder.append(", \n>>>主键列集合columnPKList=");
+        builder.append(columnPKList);
+        builder.append(", \n>>>逻辑删除columnDeleteList=");
+        builder.append(columnDeleteList);
         builder.append("}\n");
         return builder.toString();
     }

@@ -6,56 +6,54 @@ package ${packageName}.${projectName.toLowerCase()}.dao.ibatis;
 
 import java.util.List;
 import java.util.Map;
-import ${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableInfo.tableLabel})Dao;
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableInfo.tableLabel});
-import com.flysnow.common.util.UUIDUtil;
-import com.flysnow.common.base.BaseDao;
-import com.flysnow.common.base.Page;
+import ${keyBean};
+import ${pageBean};
+import ${basePath}.BaseDao;
+import ${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableModel.tableLabel})Dao;
+import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
 
 /**
- * @description $tableInfo.tabComment数据层实现
+ * @description $tableModel.tableComment数据层实现
  * @author ${author}
  * @version 1.0.0
  * @createtime $time
  */
-public class #firstToUpper(${tableInfo.tableLabel})DaoImpl extends BaseDao implements #firstToUpper(${tableInfo.tableLabel})Dao {
+public class #firstToUpper(${tableModel.tableLabel})DaoImpl extends BaseDao implements #firstToUpper(${tableModel.tableLabel})Dao {
 
-	private static final String NAMESPACE = #firstToUpper(${tableInfo.tableLabel})Dao.class.getName() + ".";
+	private static final String NAMESPACE = #firstToUpper(${tableModel.tableLabel})Dao.class.getName();
 
 	@Override
-	public #firstToUpper(${tableInfo.tableLabel}) insert(#firstToUpper(${tableInfo.tableLabel}) entity){
-#foreach($field in $tableInfo.columnList)
-#if(${field.isPrimaryKey()})
+	public #firstToUpper(${tableModel.tableLabel}) insert(#firstToUpper(${tableModel.tableLabel}) entity){
+#foreach($field in $tableModel.columnPKList)
 		entity.set#firstToUpper($field.columnLabel)(UUIDUtil.genKey());
 #end
-#end
-		super.insert(NAMESPACE + "insert#firstToUpper(${tableInfo.tableLabel})", entity);
+		super.insert(NAMESPACE + ".insert#firstToUpper(${tableModel.tableLabel})", entity);
 		return entity;
 	}
 
 	@Override
-	public int delete(#firstToUpper(${tableInfo.tableLabel}) entity){
-		return super.delete(NAMESPACE + "delete#firstToUpper(${tableInfo.tableLabel})", entity);
+	public int delete(#firstToUpper(${tableModel.tableLabel}) entity){
+		return super.delete(NAMESPACE + ".delete#firstToUpper(${tableModel.tableLabel})", entity);
 	}
 
 	@Override
-	public int update(#firstToUpper(${tableInfo.tableLabel}) entity){
-		return super.update(NAMESPACE + "update#firstToUpper(${tableInfo.tableLabel})", entity);
+	public int update(#firstToUpper(${tableModel.tableLabel}) entity){
+		return super.update(NAMESPACE + ".update#firstToUpper(${tableModel.tableLabel})", entity);
 	}
 
 	@Override
-	public #firstToUpper(${tableInfo.tableLabel}) get(#firstToUpper(${tableInfo.tableLabel}) entity){
-		return (#firstToUpper(${tableInfo.tableLabel}))super.queryForObject(NAMESPACE + "get#firstToUpper(${tableInfo.tableLabel})", entity);
+	public #firstToUpper(${tableModel.tableLabel}) get(#firstToUpper(${tableModel.tableLabel}) entity){
+		return (#firstToUpper(${tableModel.tableLabel}))super.queryForObject(NAMESPACE + ".get#firstToUpper(${tableModel.tableLabel})", entity);
 	}
 
 	@Override
-	public List getList(#firstToUpper(${tableInfo.tableLabel}) entity){
-		return super.queryForList(NAMESPACE + "get#firstToUpper(${tableInfo.tableLabel})List", entity);
+	public List getList(#firstToUpper(${tableModel.tableLabel}) entity){
+		return super.queryForList(NAMESPACE + ".get#firstToUpper(${tableModel.tableLabel})List", entity);
 	}
 
 	@Override
-	public Page getListForPage(Map map, int pageNo,int pageSize){
-		return super.queryForPageHelper(NAMESPACE + "get#firstToUpper(${tableInfo.tableLabel})ListPage", map, pageNo,pageSize);
+	public Page getForPage(Map map, int pageNo,int pageSize){
+		return super.queryForPageHelper(NAMESPACE + ".get#firstToUpper(${tableModel.tableLabel})Page", map, pageNo,pageSize);
 	}
 
 }
