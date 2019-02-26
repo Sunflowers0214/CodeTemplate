@@ -7,6 +7,7 @@ import java.util.Properties;
  */
 public class TableConfig {
     private String prefix;
+    private boolean prefixDeleteFlag;
     private String deleteField;
     private String excludeFields;
 
@@ -21,6 +22,7 @@ public class TableConfig {
 
     public TableConfig(Properties properties) {
         this.prefix = properties.getProperty("prefix");
+        this.prefixDeleteFlag = Boolean.valueOf(properties.getProperty("prefixDeleteFlag"));
         this.deleteField = properties.getProperty("deleteField");
         this.excludeFields = properties.getProperty("excludeFields");
     }
@@ -31,6 +33,14 @@ public class TableConfig {
 
     public void setPrefix(String prefix) {
         this.prefix = prefix;
+    }
+
+    public boolean isPrefixDeleteFlag() {
+        return prefixDeleteFlag;
+    }
+
+    public void setPrefixDeleteFlag(boolean prefixDeleteFlag) {
+        this.prefixDeleteFlag = prefixDeleteFlag;
     }
 
     public String getDeleteField() {

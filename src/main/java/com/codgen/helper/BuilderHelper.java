@@ -1,10 +1,7 @@
 package com.codgen.helper;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 
 public class BuilderHelper {
 
@@ -76,7 +73,7 @@ public class BuilderHelper {
      * @param line
      * @return
      */
-    public static String getPartString(String line) {
+    public static String lineToCase(String line) {
         if (line == null || "".equals(line)) {
             return "";
         }
@@ -103,17 +100,4 @@ public class BuilderHelper {
         return sb.toString();
     }
 
-    /**
-     * 去掉前缀
-     *
-     * @param value
-     * @param prefix
-     * @return
-     */
-    public static String getPartString(String value, String prefix) {
-        if (StringUtils.isNotEmpty(prefix) && value.startsWith(prefix)) {
-            value = value.replaceFirst(prefix, "");
-        }
-        return getPartString(value);
-    }
 }

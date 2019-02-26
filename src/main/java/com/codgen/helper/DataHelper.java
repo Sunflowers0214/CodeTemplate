@@ -78,19 +78,18 @@ public class DataHelper {
      * @return
      */
     public List<TableModel> initTableModelList(TableConfig tableConfig) {
-        List<TableModel> tableModelList = new ArrayList<TableModel>();
         List<TableModel> tableList = provider.getTableList(getConn(), jdbcConfig.getSchema());
         for (TableModel tableModel : tableList) {
             String tableName = tableModel.getTableName();
             System.out.println(tableName + ":" + tableModel.getTableComment());
-            if (tableName.startsWith(tableConfig.getPrefix())) {
-                initTableModel(tableModel, tableConfig);
-                tableModelList.add(tableModel);
+            if (StringUtils.isNotEmpty(tableConfig.getPrefix()) && !tableName.startsWith(tableConfig.getPrefix())) {
+                continue;
             }
+            initTableModel(tableModel, tableConfig);
             System.out.println(tableModel);
         }
         closeConnection();
-        return tableModelList;
+        return tableList;
     }
 
     /**
@@ -102,17 +101,20 @@ public class DataHelper {
      */
     public void initTableModel(TableModel table, TableConfig tableConfig) {
         String tableName = table.getTableName();
-        String tableLabel = BuilderHelper.getPartString(tableName, tableConfig.getPrefix());
+        if (StringUtils.isNotEmpty(tableConfig.getPrefix()) && tableConfig.isPrefixDeleteFlag()) {
+            tableName = tableName.replaceFirst(tableConfig.getPrefix(), "");
+        }
+        String tableLabel = BuilderHelper.lineToCase(tableName);
         String tableComment = StringUtils.defaultString(table.getTableComment(), tableLabel);
         table.setTableLabel(tableLabel);
         table.setTableComment(tableComment);
         DeleteModel deleteModel = gainDeleteModel(tableConfig.getDeleteField());//逻辑删除
         String excludeFields = tableConfig.getExcludeFields();//不处理字段
 
-        List<ColumnModel> columnList = provider.getColumnList(getConn(), jdbcConfig.getSchema(), tableName);
+        List<ColumnModel> columnList = provider.getColumnList(getConn(), jdbcConfig.getSchema(), table.getTableName());
         List<ColumnModel> columnPKList = new ArrayList<>();//主键列模型集合
         for (ColumnModel column : columnList) {
-            String columnLabel = BuilderHelper.getPartString(column.getColumnName());
+            String columnLabel = BuilderHelper.lineToCase(column.getColumnName());
             if (StringUtils.isEmpty(column.getColumnComment())) {
                 column.setColumnComment(columnLabel);
             }
