@@ -34,7 +34,7 @@ public class BuilderHelper {
      * @param value
      * @return
      */
-    public String toUpper(String value) {
+    public String toUpperCase(String value) {
         return value.toUpperCase();
     }
 
@@ -44,7 +44,7 @@ public class BuilderHelper {
      * @param value
      * @return
      */
-    public String toLower(String value) {
+    public String toLowerCase(String value) {
         return value.toLowerCase();
     }
 
@@ -66,6 +66,9 @@ public class BuilderHelper {
         return "#";
     }
 
+    public boolean isNotNull(Object obj) {
+        return obj != null;
+    }
 
     /**
      * 驼峰格式化

@@ -1,27 +1,47 @@
-##首字母大写
-#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
-##首字母小写
-#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
-##字母小写
-#macro(nametoLower $field)$field.toLowerCase()#end
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<script src="./${languagePath.toLowerCase()}/js/#nametoLower($tableModel.tableLabel)Detail.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$tableModel.tableComment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script type="text/javascript">
+        var get${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}";
+
+        $(function (){
+            setPageControl("nd_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
+
+            var paramObj = {};
+#foreach($field in $tableModel.columnPKList)
+                paramObj.${builder.firstToLower($field.columnLabel)}=${builder.firstToLower($field.columnLabel)};
+#end
+            asyncAjaxPost(JSON.stringify(paramObj),get${builder.firstToUpper(${tableModel.tableLabel})}Url, function (result) {
+                setPageControl("det_", result.data, "span");
+            });
+        });
+	</script>
+</head>
+<body>
 <div class="editForm editForm0">
-	<form id="#firstToUpper(${tableModel.tableLabel})DetailForm" name="#firstToUpper(${tableModel.tableLabel})DetailForm" method="post">
+	<form id="${builder.firstToUpper(${tableModel.tableLabel})}DetailForm" name="${builder.firstToUpper(${tableModel.tableLabel})}DetailForm" method="post">
 		<div class="row">
-#foreach($field in $tableModel.columnCommonList)
+#set($count=1)
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
 			<div class="col-md-4">
-		        <label id="nd_#firstToLower($field.columnLabel)"></label>
-		    	<span id="det_#firstToLower($field.columnLabel)"></span>
-		    </div>
-#if($velocityCount%3==0&&$velocityCount!=${tableModel.columnCommonList.size()})
+				<label id="nd_${builder.firstToLower($field.columnLabel)}"></label>
+				<span id="det_${builder.firstToLower($field.columnLabel)}"></span>
+			</div>
+#if($count%3==0&&$count!=${tableModel.columnList.size()})
 		</div>
 		<div class="row">
-#end						
-#end	
+#end
+#set($count=$count+1)
+#end
+#end
 		</div>
-	</form>	
+	</form>
 	<center>
 		<input type="button" value="关闭" id="closeDetail" class="closebtn" onclick="saveDialogClose();"/>
 	</center>
-</div>              
+</div>
+</body>
+</html>

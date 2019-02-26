@@ -1,22 +1,119 @@
-##首字母大写
-#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
-##首字母小写
-#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
-##字母小写
-#macro(nametoLower $field)$field.toLowerCase()#end
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<script src="./${languagePath.toLowerCase()}/js/#firstToUpper($tableModel.tableLabel)Man.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$tableModel.tableComment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript">
+        var get${builder.firstToUpper(${tableModel.tableLabel})}PageUrl="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}Page";
+        var delete${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/delete${builder.firstToUpper(${tableModel.tableLabel})}";
+        var ${builder.firstToUpper(${tableModel.tableLabel})}Grid = null;
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+        var ${builder.firstToLower($field.columnLabel)};
+#end
+#end
+
+        $(function () {
+            setLanguage("${builder.toLowerCase($tableModel.tableLabel)}Page.js","",window.parent.languageFlag,window.parent.languagePath);
+            setPageControl("n_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
+            //初始化表格
+            ${builder.firstToUpper(${tableModel.tableLabel})}Grid = WoohGrid.createGrid("${builder.firstToUpper(${tableModel.tableLabel})}MainGrid",{
+                columns: ${builder.firstToLower($tableModel.tableLabel)}GridHead,
+                onSuccess:function(data, grid){
+                    if(data.result=="false"){
+                        $.ligerDialog.error(data.data);
+                    }
+                },
+                where:get${builder.firstToUpper(${tableModel.tableLabel})}Search(),
+                root:"l${builder.firstToUpper(${tableModel.tableLabel})}",
+                record:"totalrows",
+                allowHideColumn:false,
+                colLen:1,
+                data:null,
+                width: '98%',
+                isScroll: false
+            });
+
+            WoohTextBox.createTextBox("q_searchValue", {
+                onKeyEnter:get${builder.firstToUpper(${tableModel.tableLabel})}Search
+            });
+
+            WoohForm.createForm("${builder.firstToUpper(${tableModel.tableLabel})}Form",{});
+            get${builder.firstToUpper(${tableModel.tableLabel})}Search();
+        });
+
+        //查询多行数据
+        function get${builder.firstToUpper(${tableModel.tableLabel})}Search(){
+            if (!${builder.firstToUpper(${tableModel.tableLabel})}Grid) return false;
+            setParams("q_");
+            ${builder.firstToUpper(${tableModel.tableLabel})}Grid.setOptions({
+                url:get${builder.firstToUpper(${tableModel.tableLabel})}PageUrl,
+                parms:params,
+                dataAction: 'server',
+                newPage:1
+            });
+        }
+
+        //增加数据
+        function init${builder.firstToUpper(${tableModel.tableLabel})}Add(){
+            checkSubmitFlag = false;
+            targetTabJsp("${languagePath.toLowerCase()}/html/${builder.toLowerCase(${tableModel.tableLabel})}Add.html","${tableModel.tableComment}添加");
+        }
+
+        //修改数据
+        function init${builder.firstToUpper(${tableModel.tableLabel})}Modify(id){
+            checkSubmitFlag = false;
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+            ${builder.firstToLower($field.columnLabel)}=id;
+#end
+#end
+            targetTabJsp("${languagePath.toLowerCase()}/html/${builder.toLowerCase(${tableModel.tableLabel})}Modify.html","${tableModel.tableComment}修改");
+        }
+
+        //删除数据
+        function init${builder.firstToUpper(${tableModel.tableLabel})}Delete(id){
+            $.ligerDialog.confirm(${builder.firstToLower($tableModel.tableLabel)}DelMsg, function(yes){
+                if (yes){
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+                    $("#d_${builder.firstToLower($field.columnLabel)}").val(id);
+#end
+#end
+                    ajaxSubmit("d_",delete${builder.firstToUpper(${tableModel.tableLabel})}Url,"${tableModel.tableComment}","删除",2,"${builder.firstToUpper(${tableModel.tableLabel})}");
+                }
+            });
+        }
+
+        //查询明细
+        function init${builder.firstToUpper(${tableModel.tableLabel})}Detail(id){
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+            ${builder.firstToLower($field.columnLabel)}=id;
+#end
+#end
+            targetTabJsp("${languagePath.toLowerCase()}/html/${builder.toLowerCase(${tableModel.tableLabel})}Detail.html","${tableModel.tableComment}明细");
+        }
+
+        //返回
+        function goback(){
+            saveDialogClose();
+            get${builder.firstToUpper(${tableModel.tableLabel})}Search();
+        }
+    </script>
+</head>
+<body>
 <div class="container">
-	<form id="#firstToUpper(${tableModel.tableLabel})Form" name="#firstToUpper(${tableModel.tableLabel})Form" onsubmit="return false" class="queryForm">
+	<form id="${builder.firstToUpper(${tableModel.tableLabel})}Form" name="${builder.firstToUpper(${tableModel.tableLabel})}Form" onsubmit="return false" class="queryForm">
 		<div class="row fluidLabel">
 			<div class="col-md-3">
 #foreach($field in $tableModel.columnPKList)
-				<input type="hidden" id="d_#firstToLower($field.columnLabel)" name="d_#firstToLower($field.columnLabel)"/>
-                <input type="text" ltype="text" id="q_#firstToLower($field.columnLabel)" placeholder="请输入$field.columnComment" width="100%"/>
+				<input type="hidden" id="d_${builder.firstToLower($field.columnLabel)}" name="d_${builder.firstToLower($field.columnLabel)}"/>
+                <input type="text" ltype="text" id="q_searchValue" placeholder="请输入搜索信息" width="100%"/>
 #end
             </div>
             <div class="col-md-1">
-    			<button class="btn btn-default" type="button" onclick="get#firstToUpper(${tableModel.tableLabel})Search()">查询</button>
+    			<button class="btn btn-default" type="button" onclick="get${builder.firstToUpper(${tableModel.tableLabel})}Search()">查询</button>
 			</div>
             <div id="more" class="pull-right">
                 <div class="gw_more" data-toggle="collapse" data-target="#detail">
@@ -25,15 +122,17 @@
             </div>
         </div>
         <div id="detail" class="box panel-collapse collapse topGap">
-#foreach($field in $tableModel.columnCommonList)
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
 #if(${field.columnSimpleClassName.toLowerCase()}=="date")
             <div class="row datePicker">
 #else
             <div class="row">
 #end
-            	<label id="n_#firstToLower($field.columnLabel)"></label>
-				<input type="text" ltype="text" id="q_#firstToLower($field.columnLabel)" name="q_#firstToLower($field.columnLabel)"/>
+            	<label id="n_${builder.firstToLower($field.columnLabel)}"></label>
+				<input type="text" ltype="text" id="q_${builder.firstToLower($field.columnLabel)}" name="q_${builder.firstToLower($field.columnLabel)}"/>
             </div>
+#end
 #end
         </div>
 	</form>
@@ -42,15 +141,17 @@
             <div class="col-md-12">
                 <h1 class="title">查询结果
 					<span class="btnGrp">
-						<i title="新增" class="fa fa-plus" onclick="init#firstToUpper(${tableModel.tableLabel})Add();"></i>
+						<i title="新增" class="fa fa-plus" onclick="init${builder.firstToUpper(${tableModel.tableLabel})}Add();"></i>
 					</span>
 				</h1>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div id="#firstToUpper(${tableModel.tableLabel})MainGrid"></div>
+                <div id="${builder.firstToUpper(${tableModel.tableLabel})}MainGrid"></div>
             </div>
         </div>
     </div>
 </div>
+</body>
+</html>

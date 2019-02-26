@@ -95,14 +95,11 @@ public class DataHelper {
         String tableComment = StringUtils.defaultString(table.getTableComment(), tableLabel);
         table.setTableLabel(tableLabel);
         table.setTableComment(tableComment);
-        String deleteField = tableConfig.getDeleteField();
-        DeleteModel deleteModel = gainDeleteModel(deleteField);
-        String excludeFields = tableConfig.getExcludeFields();
+        DeleteModel deleteModel = gainDeleteModel(tableConfig.getDeleteField());//逻辑删除
+        String excludeFields = tableConfig.getExcludeFields();//不处理字段
 
         List<ColumnModel> columnList = provider.getColumnList(getConn(), jdbcConfig.getSchema(), tableName);
         List<ColumnModel> columnPKList = new ArrayList<>();//主键列模型集合
-        List<ColumnModel> columnCommonList = new ArrayList<>();//普通列模型集合
-        List<DeleteModel> columnDeleteList = new ArrayList<>();//逻辑删除列模型集合
         for (ColumnModel column : columnList) {
             String columnLabel = BuilderHelper.getPartString(column.getColumnName());
             if (StringUtils.isEmpty(column.getColumnComment())) {
@@ -121,24 +118,20 @@ public class DataHelper {
             //特殊标识
             if (excludeFields.indexOf(column.getColumnName()) > -1) {
                 column.setIgnoreFlag(true);
-            } else {
-                columnCommonList.add(column);
             }
             //逻辑删除字段判断
-            if (column.getColumnName().equals(deleteModel.getColname())) {
+            if (column.getColumnName().equals(deleteModel.getColumnName())) {
                 column.setDeleteFlag(true);
-                columnDeleteList.add(deleteModel);
+                table.setDeleteModel(deleteModel);
             }
         }
         table.setColumnList(columnList);
         table.setColumnPKList(columnPKList);
-        table.setColumnCommonList(columnCommonList);
-        table.setColumnDeleteList(columnDeleteList);
     }
 
     public DeleteModel gainDeleteModel(String s) {
         DeleteModel deleteModel = new DeleteModel();
-        deleteModel.setColname(s.substring(0, s.indexOf("?")));
+        deleteModel.setColumnName(s.substring(0, s.indexOf("?")));
         deleteModel.setValid(s.substring(s.indexOf("?") + 1, s.indexOf(":")));
         deleteModel.setDisable(s.substring(s.indexOf(":") + 1, s.length()));
         return deleteModel;

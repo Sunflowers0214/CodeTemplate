@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import ${pageBean};
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
-import ${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableModel.tableLabel})Dao;
+import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName.toLowerCase()}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao;
 
 /**
  * @description $tableModel.tableComment数据层测试
@@ -19,82 +19,82 @@ import ${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableMode
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:config/spring/spring-service.xml", "classpath:config/spring/spring-mybatis.xml","classpath:config/spring/${projectName.toLowerCase()}-*.xml"})
-public class #firstToUpper(${tableModel.tableLabel})DaoTest {
+public class ${builder.firstToUpper(${tableModel.tableLabel})}DaoTest {
 
 	@Autowired
-	private #firstToUpper(${tableModel.tableLabel})Dao #firstToLower(${tableModel.tableLabel})Dao;
+	private ${builder.firstToUpper(${tableModel.tableLabel})}Dao ${builder.firstToLower(${tableModel.tableLabel})}Dao;
 
  	@Test
 	public void testCrud() {
 		System.out.println("添加");
-		#firstToUpper(${tableModel.tableLabel}) insert = new #firstToUpper(${tableModel.tableLabel})();
-		insert = #firstToLower(${tableModel.tableLabel})Dao.insert(insert);
+		${builder.firstToUpper(${tableModel.tableLabel})} insert = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		insert = ${builder.firstToLower(${tableModel.tableLabel})}Dao.insert(insert);
 		System.out.println(insert);
 
 		System.out.println("单个查询");
-		#firstToUpper(${tableModel.tableLabel}) where = new #firstToUpper(${tableModel.tableLabel})();
+		${builder.firstToUpper(${tableModel.tableLabel})} where = new ${builder.firstToUpper(${tableModel.tableLabel})}();
 #foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
-		where.set#firstToUpper($field.columnLabel)(insert.get#firstToUpper($field.columnLabel)());
+		where.set${builder.firstToUpper($field.columnLabel)}(insert.get${builder.firstToUpper($field.columnLabel)}());
 #end
 #end
-		#firstToUpper(${tableModel.tableLabel}) query = #firstToLower(${tableModel.tableLabel})Dao.get(where);
+		${builder.firstToUpper(${tableModel.tableLabel})} query = ${builder.firstToLower(${tableModel.tableLabel})}Dao.get(where);
 		System.out.println(query);
 
 		System.out.println("列表查询");
-		#firstToUpper(${tableModel.tableLabel}) listWhere = new #firstToUpper(${tableModel.tableLabel})();
-		List<#firstToUpper(${tableModel.tableLabel})> entityList = #firstToLower(${tableModel.tableLabel})Dao.getList(listWhere);
-		for (#firstToUpper(${tableModel.tableLabel}) entity : entityList){
+		${builder.firstToUpper(${tableModel.tableLabel})} listWhere = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		List<${builder.firstToUpper(${tableModel.tableLabel})}> entityList = ${builder.firstToLower(${tableModel.tableLabel})}Dao.getList(listWhere);
+		for (${builder.firstToUpper(${tableModel.tableLabel})} entity : entityList){
 			System.out.println(entity);
 		}
 
 		System.out.println("修改");
-		#firstToUpper(${tableModel.tableLabel}) update = new #firstToUpper(${tableModel.tableLabel})();
+		${builder.firstToUpper(${tableModel.tableLabel})} update = new ${builder.firstToUpper(${tableModel.tableLabel})}();
 #foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
-		update.set#firstToUpper($field.columnLabel)(insert.get#firstToUpper($field.columnLabel)());
+		update.set${builder.firstToUpper($field.columnLabel)}(insert.get${builder.firstToUpper($field.columnLabel)}());
 #end
 #end
 		update.setWhere(where);
-		int updateCount = #firstToLower(${tableModel.tableLabel})Dao.update(update);
+		int updateCount = ${builder.firstToLower(${tableModel.tableLabel})}Dao.update(update);
 		System.out.println(updateCount);
 
 		System.out.println("删除");
-		#firstToUpper(${tableModel.tableLabel}) delete = new #firstToUpper(${tableModel.tableLabel})();
+		${builder.firstToUpper(${tableModel.tableLabel})} delete = new ${builder.firstToUpper(${tableModel.tableLabel})}();
 		delete.setWhere(where);
-		int deleteCount = #firstToLower(${tableModel.tableLabel})Dao.delete(delete);
+		int deleteCount = ${builder.firstToLower(${tableModel.tableLabel})}Dao.delete(delete);
 		System.out.println(deleteCount);
 
 	}
 
 	@Test
 	public void testInsert() {
-		#firstToUpper(${tableModel.tableLabel}) insert = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Dao.insert(insert);
+		${builder.firstToUpper(${tableModel.tableLabel})} insert = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Dao.insert(insert);
 	}
 
 	@Test
 	public void testDelete() {
-		#firstToUpper(${tableModel.tableLabel}) delete = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Dao.delete(delete);
+		${builder.firstToUpper(${tableModel.tableLabel})} delete = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Dao.delete(delete);
 	}
 
 	@Test
 	public void testUpdate() {
-		#firstToUpper(${tableModel.tableLabel}) update = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Dao.update(update);
+		${builder.firstToUpper(${tableModel.tableLabel})} update = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Dao.update(update);
 	}
 
 	@Test
 	public void testGet() {
-		#firstToUpper(${tableModel.tableLabel}) entity = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Dao.get(entity);
+		${builder.firstToUpper(${tableModel.tableLabel})} entity = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Dao.get(entity);
 	}
 
 	@Test
 	public void testGetListForPage() {
 		Map map = new HashMap();
-		Page page = #firstToLower(${tableModel.tableLabel})Dao.getListForPage(map, 1, 10);
+		Page page = ${builder.firstToLower(${tableModel.tableLabel})}Dao.getListForPage(map, 1, 10);
 		System.out.println(page.getTotalRows());
 		List entityList = page.getDatalist();
 		for (Object entity : entityList){
@@ -104,9 +104,9 @@ public class #firstToUpper(${tableModel.tableLabel})DaoTest {
 
 	@Test
 	public void testGetList() {
-		#firstToUpper(${tableModel.tableLabel}) listWhere = new #firstToUpper(${tableModel.tableLabel})();
-		List<#firstToUpper(${tableModel.tableLabel})> entityList = #firstToLower(${tableModel.tableLabel})Dao.getList(listWhere);
-		for (#firstToUpper(${tableModel.tableLabel}) entity : entityList){
+		${builder.firstToUpper(${tableModel.tableLabel})} listWhere = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		List<${builder.firstToUpper(${tableModel.tableLabel})}> entityList = ${builder.firstToLower(${tableModel.tableLabel})}Dao.getList(listWhere);
+		for (${builder.firstToUpper(${tableModel.tableLabel})} entity : entityList){
 			System.out.println(entity);
 		}
 	}

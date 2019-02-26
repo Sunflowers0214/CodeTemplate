@@ -1,38 +1,84 @@
-##首字母大写
-#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
-##首字母小写
-#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
-##字母小写
-#macro(nametoLower $field)$field.toLowerCase()#end
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<script src="./${languagePath.toLowerCase()}/js/#firstToUpper($tableModel.tableLabel)Modify.js" type="text/javascript"></script>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$tableModel.tableComment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<script type="text/javascript">
+        var get${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}";
+        var modify${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/modify${builder.firstToUpper(${tableModel.tableLabel})}";
+
+        $(function (){
+            setPageControl("nm_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
+            $.metadata.setType("attr","validate");
+            $("${builder.getJing()}${builder.firstToUpper(${tableModel.tableLabel})}ModifyForm").validate({
+                errorPlacement: function (lable, element){
+                    errorPlacement(lable, element);
+                },
+                success: function (lable){
+                    success(lable);
+                },
+                submitHandler: function (){
+                    submitHandler();
+                    submit${builder.firstToUpper(${tableModel.tableLabel})}Modify();
+                }
+            });
+            set${builder.firstToUpper(${tableModel.tableLabel})}();
+            initDataPicker();
+            WoohForm.createForm('${builder.firstToUpper(${tableModel.tableLabel})}ModifyForm',{});
+        });
+
+        //初始页面数据
+        function set${builder.firstToUpper(${tableModel.tableLabel})}(){
+            var paramObj = {};
+			#foreach($field in $tableModel.columnPKList)
+                paramObj.${builder.firstToLower($field.columnLabel)}=${builder.firstToLower($field.columnLabel)};
+                $("#m_${builder.firstToLower($field.columnLabel)}").val(${builder.firstToLower($field.columnLabel)});
+			#end
+            asyncAjaxPost(JSON.stringify(paramObj), get${builder.firstToUpper(${tableModel.tableLabel})}Url, function (result) {
+                setPageControl("m_", result.data);
+            });
+        }
+
+        //修改数据
+        function submit${builder.firstToUpper(${tableModel.tableLabel})}Modify(){
+            ajaxSubmit("m_",modify${builder.firstToUpper(${tableModel.tableLabel})}Url,"${tableModel.tableComment}","修改",3,"goback()");
+        }
+	</script>
+</head>
+<body>
 <div class="editForm editForm0">
-	<form id="#firstToUpper(${tableModel.tableLabel})ModifyForm" name="#firstToUpper(${tableModel.tableLabel})ModifyForm" method="post">
+	<form id="${builder.firstToUpper(${tableModel.tableLabel})}ModifyForm" name="${builder.firstToUpper(${tableModel.tableLabel})}ModifyForm" method="post">
 #foreach($field in $tableModel.columnPKList)
-		<input type="hidden" id="m_#firstToLower($field.columnLabel)" name="m_#firstToLower($field.columnLabel)"/>
+		<input type="hidden" id="m_${builder.firstToLower($field.columnLabel)}" name="m_${builder.firstToLower($field.columnLabel)}"/>
 #end
 		<div class="row">
-#foreach($field in $tableModel.columnCommonList)
+#set($count=1)
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
 #if(${field.columnSimpleClassName.toLowerCase()}=="date")
 			<div class="col-md-4 datePicker">
-		        <label id="nm_#firstToLower($field.columnLabel)" #if($field.nullable!=true)class="required"#end></label>
-				<input type="text" ltype="text" class="dateMark" id="m_#firstToLower($field.columnLabel)" name="m_#firstToLower($field.columnLabel)" #if($field.nullable!=true)validate="{required:true}"#end/>
-            </div>
+				<label id="nm_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)class="required"#end></label>
+				<input type="text" ltype="text" class="dateMark" id="m_${builder.firstToLower($field.columnLabel)}" name="m_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)validate="{required:true}"#end/>
+			</div>
 #else
 			<div class="col-md-4">
-				<label id="nm_#firstToLower($field.columnLabel)" #if($field.nullable!=true)class="required"#end></label>
-				<input type="text" ltype="text" id="m_#firstToLower($field.columnLabel)" name="m_#firstToLower($field.columnLabel)" #if($field.nullable!=true)validate="{required:true}"#end/>
+				<label id="nm_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)class="required"#end></label>
+				<input type="text" ltype="text" id="m_${builder.firstToLower($field.columnLabel)}" name="m_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)validate="{required:true}"#end/>
 			</div>
 #end
-#if($velocityCount%3==0&&$velocityCount!=${tableModel.columnCommonList.size()})
+#if($count%3==0&&$count!=${tableModel.columnList.size()})
 		</div>
 		<div class="row">
-#end						
-#end		
+#end
+#set($count=$count+1)
+#end
+#end
 		</div>
 	</form>
 	<center>
-		<input type="button" value="保存" class="savebtn" id="saveModify" onclick="$('${builder.getJing()}#firstToUpper(${tableModel.tableLabel})ModifyForm').submit()"/>
+		<input type="button" value="保存" class="savebtn" id="saveModify" onclick="$('${builder.getJing()}${builder.firstToUpper(${tableModel.tableLabel})}ModifyForm').submit()"/>
 	    <input type="button" value="关闭" class="closebtn" id="closeModify" onclick="saveDialogClose();"/>
 	</center>
 </div>
+</body>
+</html>

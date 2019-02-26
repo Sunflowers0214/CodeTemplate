@@ -11,9 +11,8 @@ public class TableModel {
     private String tableLabel;//表标签
     private String tableComment = "";//表注释(中文)
     private List<ColumnModel> columnList;//列模型集合
-    private List<ColumnModel> columnCommonList;//普通列模型集合
     private List<ColumnModel> columnPKList;//主键列模型集合
-    private List<DeleteModel> columnDeleteList;//逻辑删除模型
+    private DeleteModel deleteModel;//逻辑删除模型
 
     private TableModel() {
     }
@@ -55,14 +54,6 @@ public class TableModel {
         this.columnList = columnList;
     }
 
-    public List<ColumnModel> getColumnCommonList() {
-        return columnCommonList;
-    }
-
-    public void setColumnCommonList(List<ColumnModel> columnCommonList) {
-        this.columnCommonList = columnCommonList;
-    }
-
     public List<ColumnModel> getColumnPKList() {
         return columnPKList;
     }
@@ -71,12 +62,12 @@ public class TableModel {
         this.columnPKList = columnPKList;
     }
 
-    public List<DeleteModel> getColumnDeleteList() {
-        return columnDeleteList;
+    public DeleteModel getDeleteModel() {
+        return deleteModel;
     }
 
-    public void setColumnDeleteList(List<DeleteModel> columnDeleteList) {
-        this.columnDeleteList = columnDeleteList;
+    public void setDeleteModel(DeleteModel deleteModel) {
+        this.deleteModel = deleteModel;
     }
 
     @Override
@@ -120,8 +111,8 @@ public class TableModel {
         builder.append(columnList);
         builder.append(", \n>>>主键列集合columnPKList=");
         builder.append(columnPKList);
-        builder.append(", \n>>>逻辑删除columnDeleteList=");
-        builder.append(columnDeleteList);
+        builder.append(", \n>>>逻辑删除deleteModel=");
+        builder.append(deleteModel);
         builder.append("}\n");
         return builder.toString();
     }

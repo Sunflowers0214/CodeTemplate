@@ -1,16 +1,8 @@
-##首字母大写
-#macro(firstToUpper $field)
-$field.toUpperCase().substring(0,1)$field.substring(1)##
-#end
-##首字母小写
-#macro(firstToLower $field)
-$field.toLowerCase().substring(0,1)$field.substring(1)##
-#end
 package ${packageName}.${projectName.toLowerCase()}.service.impl;
 
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
-import ${packageName}.${projectName.toLowerCase()}.dao.#firstToUpper(${tableModel.tableLabel})Dao;
-import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${tableModel.tableLabel})Service;
+import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName.toLowerCase()}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao;
+import ${packageName}.${projectName.toLowerCase()}.service.${builder.firstToUpper(${tableModel.tableLabel})}Service;
 import ${basePath}.BaseService;
 import ${pageBean};
 import java.util.List;
@@ -22,43 +14,43 @@ import java.util.Map;
  * @version 1.0.0
  * @createtime $time
  */
-public class #firstToUpper(${tableModel.tableLabel})ServiceImpl extends BaseService implements #firstToUpper(${tableModel.tableLabel})Service {
+public class ${builder.firstToUpper(${tableModel.tableLabel})}ServiceImpl extends BaseService implements ${builder.firstToUpper(${tableModel.tableLabel})}Service {
 
-	private #firstToUpper(${tableModel.tableLabel})Dao #firstToLower(${tableModel.tableLabel})Dao;
+	private ${builder.firstToUpper(${tableModel.tableLabel})}Dao ${builder.firstToLower(${tableModel.tableLabel})}Dao;
 
-	public void set#firstToUpper(${tableModel.tableLabel})Dao(#firstToUpper(${tableModel.tableLabel})Dao #firstToLower(${tableModel.tableLabel})Dao) {
-		this.#firstToLower(${tableModel.tableLabel})Dao = #firstToLower(${tableModel.tableLabel})Dao;
+	public void set${builder.firstToUpper(${tableModel.tableLabel})}Dao(${builder.firstToUpper(${tableModel.tableLabel})}Dao ${builder.firstToLower(${tableModel.tableLabel})}Dao) {
+		this.${builder.firstToLower(${tableModel.tableLabel})}Dao = ${builder.firstToLower(${tableModel.tableLabel})}Dao;
 	}
 
 	@Override
-	public #firstToUpper(${tableModel.tableLabel}) insert(#firstToUpper(${tableModel.tableLabel}) entity){
-		return #firstToLower(${tableModel.tableLabel})Dao.insert(entity);
+	public ${builder.firstToUpper(${tableModel.tableLabel})} insert${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity){
+		return ${builder.firstToLower(${tableModel.tableLabel})}Dao.insert(entity);
 	}
 
 	@Override
-	public boolean delete(#firstToUpper(${tableModel.tableLabel}) entity){
-		return #firstToLower(${tableModel.tableLabel})Dao.delete(entity)>0;
+	public boolean delete${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity){
+		return ${builder.firstToLower(${tableModel.tableLabel})}Dao.delete(entity)>0;
 	}
 
 	@Override
-	public boolean update(#firstToUpper(${tableModel.tableLabel}) entity){
-		return #firstToLower(${tableModel.tableLabel})Dao.update(entity)>0;
+	public boolean update${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity){
+		return ${builder.firstToLower(${tableModel.tableLabel})}Dao.update(entity)>0;
 	}
 
 	@Override
-	public #firstToUpper(${tableModel.tableLabel}) get(#firstToUpper(${tableModel.tableLabel}) entity){
-		return (#firstToUpper(${tableModel.tableLabel}))#firstToLower(${tableModel.tableLabel})Dao.get(entity);
+	public ${builder.firstToUpper(${tableModel.tableLabel})} get${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity){
+		return (${builder.firstToUpper(${tableModel.tableLabel})})${builder.firstToLower(${tableModel.tableLabel})}Dao.get(entity);
 	}
 
 
 	@Override
-	public List getList(#firstToUpper(${tableModel.tableLabel}) entity){
-		return #firstToLower(${tableModel.tableLabel})Dao.getList(entity);
+	public List get${builder.firstToUpper(${tableModel.tableLabel})}List(${builder.firstToUpper(${tableModel.tableLabel})} entity){
+		return ${builder.firstToLower(${tableModel.tableLabel})}Dao.getList(entity);
 	}
 
 	@Override
-	public Page getListForPage(Map map, int pageNo,int pageSize,String sort){
-		return #firstToLower(${tableModel.tableLabel})Dao.getForPage(map,pageNo,pageSize);
+	public Page get${builder.firstToUpper(${tableModel.tableLabel})}Page(Map map, int pageNo,int pageSize,String pageSort){
+		return ${builder.firstToLower(${tableModel.tableLabel})}Dao.getForPage(map,pageNo,pageSize,pageSort);
 	}
 
 }

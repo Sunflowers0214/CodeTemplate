@@ -1,0 +1,35 @@
+var ${builder.firstToLower($tableModel.tableLabel)}DataName=[{
+#set( $count = 1)
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
+#if($count==$!{tableModel.columnList.size()})
+	${builder.firstToLower($field.columnLabel)}:"$field.columnLabel"
+#else
+	${builder.firstToLower($field.columnLabel)}:"$field.columnLabel",
+#end
+#end
+#set($count=$count+1)
+#end
+}];
+
+var ${builder.firstToLower($tableModel.tableLabel)}GridHead=[
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()})
+	{display: '$field.columnLabel', name: '${builder.firstToLower($field.columnLabel)}', width: '10%', align: 'center', isSort: false},
+#end
+#end
+	{display: 'operation', isSort: false, width: 90, 
+		render: function (rowdata, rowindex, value){
+			var optGrp;
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+			optGrp = [
+				{"name":"Modify","icon":"fa-pencil","action":"init${builder.firstToUpper(${tableModel.tableLabel})}Modify('" + rowdata.${builder.firstToLower($field.columnLabel)} + "')"},
+			  	{"name":"Delete","icon":"fa-trash-o","action":"init${builder.firstToUpper(${tableModel.tableLabel})}Delete('" + rowdata.${builder.firstToLower($field.columnLabel)} + "')"}
+			];
+#end
+#end
+    	    return outputOpt(optGrp);
+		}
+	}
+];

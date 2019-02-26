@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+#foreach($table in $tableModelList)
+    <!-- $table.tableComment -->
+  	<bean id="${builder.firstToLower($table.tableLabel)}Service" class="${packageName}.${projectName.toLowerCase()}.service.impl.${builder.firstToUpper(${tableModel.tableLabel})}ServiceImpl">
+		<property name="${builder.firstToLower($table.tableLabel)}Dao" ref="${builder.firstToLower($table.tableLabel)}Dao"/>
+	</bean>
+
+#end
+</beans>
+

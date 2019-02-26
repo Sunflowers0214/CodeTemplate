@@ -1,6 +1,3 @@
-##首字母大写
-#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
-##首字母小写
 package ${packageName}.${projectName.toLowerCase()}.model;
 
 import java.util.Date;
@@ -12,26 +9,31 @@ import ${basePath}.BaseModel;
  * @version 1.0.0
  * @createtime $time
  */
-public class #firstToUpper(${tableModel.tableLabel}) extends BaseModel {
+public class ${builder.firstToUpper(${tableModel.tableLabel})} extends BaseModel {
 
-#foreach($field in $tableModel.columnCommonList)
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()})
 	private ${field.columnSimpleClassName} $field.columnLabel;//$field.columnComment
 #end
-#foreach($field in $tableModel.columnCommonList)
+#end
 
-	public ${field.columnSimpleClassName} get#firstToUpper($field.columnLabel)(){
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()})
+	public ${field.columnSimpleClassName} get${builder.firstToUpper($field.columnLabel)}(){
 		return $field.columnLabel;
 	}
-	public void set#firstToUpper($field.columnLabel)(${field.columnSimpleClassName} $field.columnLabel){
+	public void set${builder.firstToUpper($field.columnLabel)}(${field.columnSimpleClassName} $field.columnLabel){
 		this.$field.columnLabel = $field.columnLabel;
 	}
+
+#end
 #end
 
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("{");
-#foreach($field in $tableModel.columnCommonList)
+#foreach($field in $tableModel.columnList)
 		sb.append("$field.columnLabel="+$field.columnLabel+",");
 #end
 		sb.append("}");

@@ -5,17 +5,15 @@ package com.codgen.model;
  */
 public class DeleteModel {
     private String columnName; //列名
-    private String columnLabel;//列标签，列注释的标签部分。用于打印输出和显示的指定列的建议标题（中文）
-    private String colname;
     private String valid;//有效值
     private String disable;//无效值
 
-    public String getColname() {
-        return colname;
+    public String getColumnName() {
+        return columnName;
     }
 
-    public void setColname(String colname) {
-        this.colname = colname;
+    public void setColumnName(String columnName) {
+        this.columnName = columnName;
     }
 
     public String getValid() {
@@ -37,12 +35,10 @@ public class DeleteModel {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("<" + colname + "> {colname=");
-        builder.append(colname);
-        builder.append(", valid=");
-        builder.append(valid);
-        builder.append(", disable=");
-        builder.append(disable);
+        builder.append("{");
+        builder.append("columnName=" + columnName + ",");
+        builder.append("valid=" + valid + ",");
+        builder.append("disable=" + disable);
         builder.append("}");
         return builder.toString();
     }

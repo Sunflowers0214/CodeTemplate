@@ -123,8 +123,8 @@ public class ColumnModel {
         this.scale = scale;
     }
 
-    //@return 判断该列是否为主键列
-    public boolean getPrimaryKey() {
+    //判断该列是否为主键列
+    public boolean isPrimaryKey() {
         return primaryKey;
     }
 
@@ -157,62 +157,22 @@ public class ColumnModel {
         this.deleteFlag = deleteFlag;
     }
 
-    //@return 判断该列是否为主键列
-    public boolean isPrimaryKey() {
-        return primaryKey;
-    }
-
-    //@return 判断该列是否为主键列
-    public boolean isCommon() {
-        return !ignoreFlag && !deleteFlag;
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((columnName == null) ? 0 : columnName.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof ColumnModel)) {
-            return false;
-        }
-        ColumnModel other = (ColumnModel) obj;
-        if (columnName == null) {
-            if (other.columnName != null) {
-                return false;
-            }
-        } else if (!columnName.equalsIgnoreCase(other.columnName)) {
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        builder.append("\n---<" + columnComment + ">{columnName=");
-        builder.append(columnName);
-        builder.append(", columnLabel=" + columnLabel);
-        builder.append(", columnComment=" + columnComment);
-        builder.append(", columnType=" + columnType);
-        builder.append(", columnSize=" + columnSize);
-        builder.append(", columnClassName=" + columnClassName);
-        builder.append(", columnClassPackage=" + columnClassPackage);
-        builder.append(", columnSimpleClassName=" + columnSimpleClassName);
-        builder.append(", nullable=" + nullable);
-        builder.append(", precision=" + precision);
-        builder.append(", primaryKey=" + primaryKey);
-        builder.append(", scale=" + scale);
+        builder.append("\n---<" + columnComment + ">{");
+        builder.append(",columnName=" + columnName);
+        builder.append(",columnLabel=" + columnLabel);
+        builder.append(",columnComment=" + columnComment);
+        builder.append(",columnType=" + columnType);
+        builder.append(",columnSize=" + columnSize);
+        builder.append(",columnClassName=" + columnClassName);
+        builder.append(",columnClassPackage=" + columnClassPackage);
+        builder.append(",columnSimpleClassName=" + columnSimpleClassName);
+        builder.append(",nullable=" + nullable);
+        builder.append(",precision=" + precision);
+        builder.append(",primaryKey=" + primaryKey);
+        builder.append(",scale=" + scale);
         builder.append("}");
         return builder.toString();
     }

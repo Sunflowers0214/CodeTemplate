@@ -7,8 +7,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.HashMap;
 import java.util.Map;
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
-import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${tableModel.tableLabel})Service;
+import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName.toLowerCase()}.service.${builder.firstToUpper(${tableModel.tableLabel})}Service;
 
 /**
  * @description $tableModel.ttableComment逻辑层测试
@@ -17,45 +17,45 @@ import ${packageName}.${projectName.toLowerCase()}.service.#firstToUpper(${table
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:config/spring/spring-service.xml", "classpath:config/spring/spring-mybatis.xml","classpath:config/spring/${projectName.toLowerCase()}-*.xml"})
-public class #firstToUpper(${tableModel.tableLabel})ServiceTest {
+public class ${builder.firstToUpper(${tableModel.tableLabel})}ServiceTest {
  
 	@Autowired
-	private #firstToUpper(${tableModel.tableLabel})Service #firstToLower(${tableModel.tableLabel})Service;
+	private ${builder.firstToUpper(${tableModel.tableLabel})}Service ${builder.firstToLower(${tableModel.tableLabel})}Service;
 
  	@Test
 	public void testInsert() {
-		#firstToUpper(${tableModel.tableLabel}) #firstToLower(${tableModel.tableLabel}) = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Service.insert(#firstToLower(${tableModel.tableLabel}));
+		${builder.firstToUpper(${tableModel.tableLabel})} ${builder.firstToLower(${tableModel.tableLabel})} = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Service.insert(${builder.firstToLower(${tableModel.tableLabel})});
 	}
 
 	@Test
 	public void testDelete() {
-		#firstToUpper(${tableModel.tableLabel}) #firstToLower(${tableModel.tableLabel}) = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Service.delete(#firstToLower(${tableModel.tableLabel}));
+		${builder.firstToUpper(${tableModel.tableLabel})} ${builder.firstToLower(${tableModel.tableLabel})} = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Service.delete(${builder.firstToLower(${tableModel.tableLabel})});
 	}
 
 	@Test
 	public void testUpdate() {
-		#firstToUpper(${tableModel.tableLabel}) #firstToLower(${tableModel.tableLabel}) = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Service.update(#firstToLower(${tableModel.tableLabel}));
+		${builder.firstToUpper(${tableModel.tableLabel})} ${builder.firstToLower(${tableModel.tableLabel})} = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Service.update(${builder.firstToLower(${tableModel.tableLabel})});
 	}
 
 	@Test
 	public void testGet() {
-		#firstToUpper(${tableModel.tableLabel}) #firstToLower(${tableModel.tableLabel}) = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Service.get(#firstToLower(${tableModel.tableLabel}));
+		${builder.firstToUpper(${tableModel.tableLabel})} ${builder.firstToLower(${tableModel.tableLabel})} = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Service.get(${builder.firstToLower(${tableModel.tableLabel})});
 	}
 
 	@Test
 	public void testGetListForPage() {
 		Map map = new HashMap();
-		#firstToLower(${tableModel.tableLabel})Service.getListForPage(map, 1, 10, "");
+		${builder.firstToLower(${tableModel.tableLabel})}Service.getListForPage(map, 1, 10, "");
 	}
 
 	@Test
 	public void testGetList() {
-		#firstToUpper(${tableModel.tableLabel}) #firstToLower(${tableModel.tableLabel}) = new #firstToUpper(${tableModel.tableLabel})();
-		#firstToLower(${tableModel.tableLabel})Service.getList(#firstToLower(${tableModel.tableLabel}));
+		${builder.firstToUpper(${tableModel.tableLabel})} ${builder.firstToLower(${tableModel.tableLabel})} = new ${builder.firstToUpper(${tableModel.tableLabel})}();
+		${builder.firstToLower(${tableModel.tableLabel})}Service.getList(${builder.firstToLower(${tableModel.tableLabel})});
 	}
  
 }

@@ -1,14 +1,6 @@
-##首字母大写
-#macro(firstToUpper $field)
-$field.toUpperCase().substring(0,1)$field.substring(1)##
-#end
-##首字母小写
-#macro(firstToLower $field)
-$field.toLowerCase().substring(0,1)$field.substring(1)##
-#end
 package ${packageName}.${projectName.toLowerCase()}.service;
 
-import ${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${tableModel.tableLabel});
+import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
 import ${pageBean};
 import java.util.List;
 import java.util.Map;
@@ -19,51 +11,51 @@ import java.util.Map;
  * @version 1.0.0
  * @createtime $time
  */
-public interface #firstToUpper(${tableModel.tableLabel})Service{
+public interface ${builder.firstToUpper(${tableModel.tableLabel})}Service{
 
 	/**
-	 * 增加
+	 * @description $tableModel.tableComment增加
 	 * @param entity
 	 * @return
 	 */
-	public abstract #firstToUpper(${tableModel.tableLabel}) insert(#firstToUpper(${tableModel.tableLabel}) entity);
+	public abstract ${builder.firstToUpper(${tableModel.tableLabel})} insert${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity);
 
 	/**
-	 * 删除
+	 * @description $tableModel.tableComment删除
 	 * @param entity
 	 * @return
 	 */
-	public abstract boolean delete(#firstToUpper(${tableModel.tableLabel}) entity);
+	public abstract boolean delete${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity);
 
 	/**
-	 * 修改
+	 * @description $tableModel.tableComment修改
 	 * @param entity
 	 * @return
 	 */
-  	public abstract boolean update(#firstToUpper(${tableModel.tableLabel}) entity);
+  	public abstract boolean update${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity);
 
 	/**
-	 * 查询单条
+	 * @description $tableModel.tableComment单条查询
 	 * @param entity
 	 * @return
 	 */
-  	public abstract #firstToUpper(${tableModel.tableLabel}) get(#firstToUpper(${tableModel.tableLabel}) entity);
+  	public abstract ${builder.firstToUpper(${tableModel.tableLabel})} get${builder.firstToUpper(${tableModel.tableLabel})}(${builder.firstToUpper(${tableModel.tableLabel})} entity);
 
 	/**
-	 * 多条查询
+	 * @description $tableModel.tableComment列表查询
 	 * @param entity
 	 * @return
 	 */
-  	public abstract List getList(#firstToUpper(${tableModel.tableLabel}) entity);
+  	public abstract List get${builder.firstToUpper(${tableModel.tableLabel})}List(${builder.firstToUpper(${tableModel.tableLabel})} entity);
 
 	/**
-	 * 分页查询
+	 * @description $tableModel.tableComment分页查询
 	 * @param map
 	 * @param pageNo
 	 * @param pageSize
-	 * @param sort
+	 * @param pageSort
 	 * @return
 	 */
-	public abstract Page getListForPage(Map map, int pageNo, int pageSize, String sort);
+	public abstract Page get${builder.firstToUpper(${tableModel.tableLabel})}Page(Map map, int pageNo, int pageSize, String pageSort);
 
 }

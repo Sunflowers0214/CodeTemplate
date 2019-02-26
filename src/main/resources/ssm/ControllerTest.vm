@@ -13,7 +13,7 @@ import ${jsonBean};
 * @author ${author}
 * @createtime $time
 */
-public class #firstToUpper(${tableModel.tableLabel})ControllerTest extends BaseTest {
+public class ${builder.firstToUpper(${tableModel.tableLabel})}ControllerTest extends BaseTest {
 
     @Test
     public void testGetListForPage() throws Exception {
@@ -23,7 +23,7 @@ public class #firstToUpper(${tableModel.tableLabel})ControllerTest extends BaseT
         map.put("data", JsonUtils.objectToJson(data));
         map.put("pageNo", "1");
         map.put("pageSize", "10");
-        String result = performPost("/#firstToLower($tableModel.tableLabel)/getListForPage", map);
+        String result = performPost("/${builder.firstToLower($tableModel.tableLabel)}/getListForPage", map);
         logger.debug("结果json:"+result);
     }
 
@@ -31,7 +31,7 @@ public class #firstToUpper(${tableModel.tableLabel})ControllerTest extends BaseT
     public void testGetList() throws Exception {
         Map<String, Object> dataMap = new HashMap<>();
         String data = JsonUtils.objectToJson(dataMap);
-        String result = performPost("/#firstToLower($tableModel.tableLabel)/getList", data);
+        String result = performPost("/${builder.firstToLower($tableModel.tableLabel)}/getList", data);
         logger.info("返回结果：" + result);
     }
 
@@ -39,7 +39,7 @@ public class #firstToUpper(${tableModel.tableLabel})ControllerTest extends BaseT
     public void testInsert() throws Exception {
         Map<String, Object> dataMap = new HashMap<>();
         String data = JsonUtils.objectToJson(dataMap);
-        String result = performPost("/#firstToLower($tableModel.tableLabel)/insert", data);
+        String result = performPost("/${builder.firstToLower($tableModel.tableLabel)}/insert", data);
         logger.info("返回结果：" + result);
     }
 
@@ -47,7 +47,7 @@ public class #firstToUpper(${tableModel.tableLabel})ControllerTest extends BaseT
 	public void testGet() throws Exception {
         Map<String, Object> dataMap = new HashMap<>();
         String data = JsonUtils.objectToJson(dataMap);
-        String result = performPost("/#firstToLower($tableModel.tableLabel)/get", data);
+        String result = performPost("/${builder.firstToLower($tableModel.tableLabel)}/get", data);
         logger.info("返回结果：" + result);
 	}
 

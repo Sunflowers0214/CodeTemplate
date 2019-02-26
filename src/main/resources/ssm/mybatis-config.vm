@@ -1,26 +1,25 @@
-##首字母大写
-#macro(firstToUpper $field)$field.toUpperCase().substring(0,1)$field.substring(1)#end
-##首字母小写
-#macro(firstToLower $field)$field.toLowerCase().substring(0,1)$field.substring(1)#end
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-    <!-- 命名空间 -->
+    <settings>
+        <!-- mybatis返回map类型数据空值字段设置显示 -->
+        <setting name="callSettersOnNulls" value="true"/>
+    </settings>
+
+    <!-- 映射model -->
     <typeAliases>
-        <!-- 扫描model包 使用别名 -->
-        <!-- <package name="${packageName}.${projectName.toLowerCase()}.model"/> -->
 #foreach($table in $tableModelList)
         <!-- $table.tableComment -->
-        <typeAlias alias="#firstToLower(${table.tableLabel})" type="${packageName}.${projectName.toLowerCase()}.model.#firstToUpper(${table.tableLabel})"/>
+        <typeAlias alias="${builder.firstToLower($table.tableLabel)}" type="${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper($table.tableLabel)}"/>
 #end
     </typeAliases>
 
-    <!-- 映射mapper-->
+    <!-- 映射mapper -->
     <mappers>
 #foreach($table in $tableModelList)
         <!-- $table.tableComment -->
-        <mapper resource="config/mybatis/${languagePath.toLowerCase()}/#firstToUpper(${table.tableLabel})Mapper.xml"/>
+        <mapper resource="config/mybatis/${languagePath.toLowerCase()}/${builder.firstToUpper($table.tableLabel)}Mapper.xml"/>
 #end
     </mappers>
 </configuration>

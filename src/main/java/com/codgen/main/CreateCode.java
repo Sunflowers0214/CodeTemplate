@@ -44,7 +44,7 @@ public class CreateCode {
         CreateCode.createFiles(templatePath + "Dao.vm", javaPath + "/dao", "Dao.java");
         CreateCode.createFiles(templatePath + "DaoImpl.vm", javaPath + "/dao/impl", "DaoImpl.java");
         CreateCode.createFiles(templatePath + "DaoTest.vm", testPath + "/dao", "DaoTest.java");
-        CreateCode.createFile(templatePath + "Dao-spring.vm", configPath + "/spring", projectName + "-dao.xml");
+        CreateCode.createFile(templatePath + "Dao-config.vm", configPath + "/spring", projectName + "-dao.xml");
 
         //mybatis
         CreateCode.createFiles(templatePath + "mybatis.vm", configPath + "/mybatis/" + languagePath, "Mapper.xml");
@@ -55,23 +55,23 @@ public class CreateCode {
         CreateCode.createFiles(templatePath + "Service.vm", javaPath + "/service", "Service.java");
         CreateCode.createFiles(templatePath + "ServiceImpl.vm", javaPath + "/service/impl", "ServiceImpl.java");
         CreateCode.createFiles(templatePath + "ServiceTest.vm", testPath + "/service", "ServiceTest.java");
-        CreateCode.createFile(templatePath + "Service-spring.vm", configPath + "/spring", projectName + "-service.xml");
+        CreateCode.createFile(templatePath + "Service-config.vm", configPath + "/spring", projectName + "-service.xml");
 
         //控制层
         CreateCode.createFiles(templatePath + "Controller.vm", javaPath + "/controller", "Controller.java");
         CreateCode.createFiles(templatePath + "ControllerTest.vm", testPath + "/controller", "ControllerTest.java");
 
-
-        String webPath = "webapp/" + projectName;
-//        CreateCode.createFiles(templatePath + "web-manhtml.vm",createFilePath +  webPath+"/jsp", "Man.jsp");
-//        CreateCode.createFiles(templatePath + "web-manjs.vm",createFilePath +  webPath+"/js", "Man,js");
-//        CreateCode.createFiles(templatePath + "web-web-addhtml.vm",createFilePath +  webPath+"/jsp", "Add.jsp");
-//        CreateCode.createFiles(templatePath + "web-web-addjs.vm", createFilePath + webPath+"/js", "Add.js");
-//        CreateCode.createFiles(templatePath + "web-modifyhtml.vm", createFilePath + webPath+"/jsp", "Modify.jsp");
-//        CreateCode.createFiles(templatePath + "web-modifyjs.vm", createFilePath + webPath+"/js", "Modify.js");
-//        CreateCode.createFiles(templatePath + "web-detailhtml.vm",createFilePath +  webPath+"/jsp", "Detail.jsp");
-//        CreateCode.createFiles(templatePath + "web-detailjs.vm",createFilePath +  webPath+"/js", "Detail.js");
-
+        String webPath = createFilePath + "web/" + projectName;
+        CreateCode.createFiles(templatePath + "web-manhtml.vm", webPath + "/html", "Man.html");
+        //CreateCode.createFiles(templatePath + "web-manjs.vm", webPath + "/js", "Man,js");
+        CreateCode.createFiles(templatePath + "web-addhtml.vm", webPath + "/html", "Add.html");
+        //CreateCode.createFiles(templatePath + "web-addjs.vm", webPath + "/js", "Add.js");
+        CreateCode.createFiles(templatePath + "web-modifyhtml.vm", webPath + "/html", "Modify.html");
+        //CreateCode.createFiles(templatePath + "web-modifyjs.vm", webPath + "/js", "Modify.js");
+        CreateCode.createFiles(templatePath + "web-detailhtml.vm", webPath + "/html", "Detail.html");
+        //CreateCode.createFiles(templatePath + "web-detailjs.vm", webPath + "/js", "Detail.js");
+        CreateCode.createFiles(templatePath + "web-languageEn.vm", webPath + "/language/en", "Page.js");
+        CreateCode.createFiles(templatePath + "web-languageZn.vm", webPath + "/language/zh-cn", "Page.js");
     }
 
     /**
@@ -96,7 +96,7 @@ public class CreateCode {
      */
     private static VelocityContext initVelocityContext(Properties properties) {
         VelocityContext context = new VelocityContext();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String dateStr = formatter.format(new Date());
         //配置
         context.put("builder", new BuilderHelper());
@@ -108,6 +108,7 @@ public class CreateCode {
         context.put("resultBean", properties.get("resultBean"));
         context.put("keyBean", properties.get("keyBean"));
         context.put("ruleBean", properties.get("ruleBean"));
+        context.put("jsonBean", properties.get("jsonBean"));
         //路径
         context.put("databaseType", properties.get("databaseType"));
         context.put("languagePath", properties.get("languagePath"));
