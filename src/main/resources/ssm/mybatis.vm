@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${packageName}.${projectName.toLowerCase()}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao">
+<mapper namespace="${packageName}.${projectName}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao">
 
 	<sql id="${builder.firstToUpper(${tableModel.tableLabel})}Where">
 #foreach($field in $tableModel.columnList)
@@ -14,7 +14,7 @@
 
     <!-- $tableModel.tableComment (添加) -->
 	<insert id="insert${builder.firstToUpper(${tableModel.tableLabel})}" parameterType="$tableModel.tableLabel">
-		INSERT INTO ${tableModel.tableName.toLowerCase()} (
+		INSERT INTO ${tableModel.tableName} (
         <trim suffix="" suffixOverrides=",">
 #foreach($field in $tableModel.columnList)
 			<if test="@${ruleBean}@isNotEmpty($field.columnLabel)">
@@ -42,7 +42,7 @@
 #end
     </sql>
     <update id="update${builder.firstToUpper(${tableModel.tableLabel})}" parameterType="$tableModel.tableLabel">
-		UPDATE ${tableModel.tableName.toLowerCase()} SET
+		UPDATE ${tableModel.tableName} SET
         <trim suffix="" suffixOverrides=",">
 #foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
@@ -64,7 +64,7 @@
 	</update>
 
     <update id="delete${builder.firstToUpper(${tableModel.tableLabel})}" parameterType="$tableModel.tableLabel">
-        DELETE FROM ${tableModel.tableName.toLowerCase()}
+        DELETE FROM ${tableModel.tableName}
 #if(${builder.isNotNull($tableModel.deleteModel)})
         SET $tableModel.deleteModel.columnName = $tableModel.deleteModel.disable
 #end
@@ -98,7 +98,7 @@
 #end
 #set($count=$count+1)
 #end
-        FROM ${tableModel.tableName.toLowerCase()} a
+        FROM ${tableModel.tableName} a
         WHERE 1=1
 #if(${builder.isNotNull($tableModel.deleteModel)})
         AND a.$tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
@@ -129,7 +129,7 @@
 #end
 #set($count=$count+1)
 #end
-		FROM ${tableModel.tableName.toLowerCase()} a
+		FROM ${tableModel.tableName} a
 		WHERE 1=1
 #if(${builder.isNotNull($tableModel.deleteModel)})
         AND a.$tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
@@ -160,7 +160,7 @@
 #end
 #set($count=$count+1)
 #end
-        FROM ${tableModel.tableName.toLowerCase()} a
+        FROM ${tableModel.tableName} a
         WHERE 1=1
 #if(${builder.isNotNull($tableModel.deleteModel)})
         AND a.$tableModel.deleteModel.columnName = $tableModel.deleteModel.valid

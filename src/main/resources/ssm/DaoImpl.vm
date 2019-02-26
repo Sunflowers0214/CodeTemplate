@@ -1,12 +1,12 @@
-package ${packageName}.${projectName.toLowerCase()}.dao.ibatis;
+package ${packageName}.${projectName}.dao.ibatis;
 
 import java.util.List;
 import java.util.Map;
 import ${keyBean};
 import ${pageBean};
 import ${basePath}.BaseDao;
-import ${packageName}.${projectName.toLowerCase()}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao;
-import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao;
+import ${packageName}.${projectName}.model.${builder.firstToUpper(${tableModel.tableLabel})};
 
 /**
  * @description $tableModel.tableComment数据层实现
@@ -16,7 +16,7 @@ import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(
  */
 public class ${builder.firstToUpper(${tableModel.tableLabel})}DaoImpl extends BaseDao implements ${builder.firstToUpper(${tableModel.tableLabel})}Dao {
 
-	private final String NAMESPACE = "${packageName}.${projectName.toLowerCase()}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao";
+	private final String NAMESPACE = "${packageName}.${projectName}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao";
 
 	@Override
 	public ${builder.firstToUpper(${tableModel.tableLabel})} insert(${builder.firstToUpper(${tableModel.tableLabel})} entity){

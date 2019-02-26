@@ -1,6 +1,6 @@
-package ${packageName}.${projectName.toLowerCase()}.dao;
+package ${packageName}.${projectName}.dao;
 
-import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName}.model.${builder.firstToUpper(${tableModel.tableLabel})};
 import ${pageBean};
 import java.util.List;
 import java.util.Map;

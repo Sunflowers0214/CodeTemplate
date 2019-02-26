@@ -1,4 +1,4 @@
-package ${packageName}.${projectName.toLowerCase()}.model;
+package ${packageName}.${projectName}.model;
 
 import java.util.Date;
 import ${basePath}.BaseModel;

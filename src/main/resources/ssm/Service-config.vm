@@ -5,7 +5,7 @@
 
 #foreach($table in $tableModelList)
     <!-- $table.tableComment -->
-  	<bean id="${builder.firstToLower($table.tableLabel)}Service" class="${packageName}.${projectName.toLowerCase()}.service.impl.${builder.firstToUpper(${tableModel.tableLabel})}ServiceImpl">
+  	<bean id="${builder.firstToLower($table.tableLabel)}Service" class="${packageName}.${projectName}.service.impl.${builder.firstToUpper(${tableModel.tableLabel})}ServiceImpl">
 		<property name="${builder.firstToLower($table.tableLabel)}Dao" ref="${builder.firstToLower($table.tableLabel)}Dao"/>
 	</bean>
 

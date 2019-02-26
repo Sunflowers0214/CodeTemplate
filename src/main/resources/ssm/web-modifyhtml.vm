@@ -4,8 +4,8 @@
     <title>$tableModel.tableComment</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<script type="text/javascript">
-        var get${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}";
-        var modify${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/modify${builder.firstToUpper(${tableModel.tableLabel})}";
+        var get${builder.firstToUpper(${tableModel.tableLabel})}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}";
+        var modify${builder.firstToUpper(${tableModel.tableLabel})}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/modify${builder.firstToUpper(${tableModel.tableLabel})}";
 
         $(function (){
             setPageControl("nm_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
@@ -55,7 +55,7 @@
 #set($count=1)
 #foreach($field in $tableModel.columnList)
 #if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
-#if(${field.columnSimpleClassName.toLowerCase()}=="date")
+#if(${builder.toUpperCase(${field.columnSimpleClassName})}=="DATE")
 			<div class="col-md-4 datePicker">
 				<label id="nm_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)class="required"#end></label>
 				<input type="text" ltype="text" class="dateMark" id="m_${builder.firstToLower($field.columnLabel)}" name="m_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)validate="{required:true}"#end/>

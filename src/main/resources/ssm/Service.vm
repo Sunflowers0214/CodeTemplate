@@ -1,6 +1,6 @@
-package ${packageName}.${projectName.toLowerCase()}.service;
+package ${packageName}.${projectName}.service;
 
-import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName}.model.${builder.firstToUpper(${tableModel.tableLabel})};
 import ${pageBean};
 import java.util.List;
 import java.util.Map;

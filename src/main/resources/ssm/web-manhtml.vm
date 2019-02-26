@@ -4,8 +4,8 @@
     <title>$tableModel.tableComment</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript">
-        var get${builder.firstToUpper(${tableModel.tableLabel})}PageUrl="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}Page";
-        var delete${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/delete${builder.firstToUpper(${tableModel.tableLabel})}";
+        var get${builder.firstToUpper(${tableModel.tableLabel})}PageUrl="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}Page";
+        var delete${builder.firstToUpper(${tableModel.tableLabel})}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/delete${builder.firstToUpper(${tableModel.tableLabel})}";
         var ${builder.firstToUpper(${tableModel.tableLabel})}Grid = null;
 #foreach($field in $tableModel.columnList)
 #if(${field.isPrimaryKey()})
@@ -57,7 +57,7 @@
         //增加数据
         function init${builder.firstToUpper(${tableModel.tableLabel})}Add(){
             checkSubmitFlag = false;
-            targetTabJsp("${languagePath.toLowerCase()}/html/${builder.toLowerCase(${tableModel.tableLabel})}Add.html","${tableModel.tableComment}添加");
+            targetTabJsp("${projectName}/html/${builder.toLowerCase(${tableModel.tableLabel})}Add.html","${tableModel.tableComment}添加");
         }
 
         //修改数据
@@ -68,7 +68,7 @@
             ${builder.firstToLower($field.columnLabel)}=id;
 #end
 #end
-            targetTabJsp("${languagePath.toLowerCase()}/html/${builder.toLowerCase(${tableModel.tableLabel})}Modify.html","${tableModel.tableComment}修改");
+            targetTabJsp("${projectName}/html/${builder.toLowerCase(${tableModel.tableLabel})}Modify.html","${tableModel.tableComment}修改");
         }
 
         //删除数据
@@ -92,7 +92,7 @@
             ${builder.firstToLower($field.columnLabel)}=id;
 #end
 #end
-            targetTabJsp("${languagePath.toLowerCase()}/html/${builder.toLowerCase(${tableModel.tableLabel})}Detail.html","${tableModel.tableComment}明细");
+            targetTabJsp("${projectName}/html/${builder.toLowerCase(${tableModel.tableLabel})}Detail.html","${tableModel.tableComment}明细");
         }
 
         //返回
@@ -124,7 +124,7 @@
         <div id="detail" class="box panel-collapse collapse topGap">
 #foreach($field in $tableModel.columnList)
 #if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
-#if(${field.columnSimpleClassName.toLowerCase()}=="date")
+#if(${builder.toUpperCase(${field.columnSimpleClassName})}=="DATE")
             <div class="row datePicker">
 #else
             <div class="row">

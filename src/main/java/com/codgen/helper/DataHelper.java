@@ -62,6 +62,16 @@ public class DataHelper {
         return conn;
     }
 
+    public void closeConnection() {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * 初始化表模型
      *
@@ -79,6 +89,7 @@ public class DataHelper {
             }
             System.out.println(tableModel);
         }
+        closeConnection();
         return tableModelList;
     }
 

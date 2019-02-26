@@ -5,7 +5,7 @@
 
 #foreach($table in $tableModelList)
     <!-- $table.tableComment -->
-  	<bean id="${builder.firstToLower(${table.tableLabel})}Dao" class="${packageName}.${projectName.toLowerCase()}.dao.impl.${builder.firstToUpper(${tableModel.tableLabel})}DaoImpl">
+  	<bean id="${builder.firstToLower(${table.tableLabel})}Dao" class="${packageName}.${projectName}.dao.impl.${builder.firstToUpper(${tableModel.tableLabel})}DaoImpl">
 		<property name="sqlSessionFactory" ref="sqlSessionFactory${builder.firstToUpper(${projectName})}"/>
 	</bean>
 

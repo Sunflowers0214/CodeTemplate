@@ -1,4 +1,4 @@
-package ${packageName}.${projectName.toLowerCase()}.controller;
+package ${packageName}.${projectName}.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import ${basePath}.BaseController;
-import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
-import ${packageName}.${projectName.toLowerCase()}.service.${builder.firstToUpper(${tableModel.tableLabel})}Service;
+import ${packageName}.${projectName}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName}.service.${builder.firstToUpper(${tableModel.tableLabel})}Service;
 
 /**
  * @description $tableModel.tableComment控制层
@@ -31,7 +31,7 @@ public class ${builder.firstToUpper(${tableModel.tableLabel})}Controller extends
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@PostMapping("/${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}Page")
+	@PostMapping("/${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}Page")
 	public Result get${builder.firstToUpper(${tableModel.tableLabel})}Page(String data, Integer pageNo, Integer pageSize, String pageSort) throws Exception{
 		try {
 			Map map = JsonUtils.jsonToPojo(data, Map.class);
@@ -48,7 +48,7 @@ public class ${builder.firstToUpper(${tableModel.tableLabel})}Controller extends
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@PostMapping("/${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/insert${builder.firstToUpper(${tableModel.tableLabel})}")
+	@PostMapping("/${projectName}/${builder.firstToLower($tableModel.tableLabel)}/insert${builder.firstToUpper(${tableModel.tableLabel})}")
 	public Result insert${builder.firstToUpper(${tableModel.tableLabel})}(String data) throws Exception{
 		try {
 			${builder.firstToUpper(${tableModel.tableLabel})} insertEntity = JsonUtils.jsonToPojo(data,${builder.firstToUpper(${tableModel.tableLabel})}.class);
@@ -65,7 +65,7 @@ public class ${builder.firstToUpper(${tableModel.tableLabel})}Controller extends
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@PostMapping("/${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}")
+	@PostMapping("/${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}")
 	public Result get${builder.firstToUpper(${tableModel.tableLabel})}(String data) throws Exception{
 		try {
 			${builder.firstToUpper(${tableModel.tableLabel})} queryEntity = JsonUtils.jsonToPojo(data,${builder.firstToUpper(${tableModel.tableLabel})}.class);
@@ -82,7 +82,7 @@ public class ${builder.firstToUpper(${tableModel.tableLabel})}Controller extends
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@PostMapping("/${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/modify${builder.firstToUpper(${tableModel.tableLabel})}")
+	@PostMapping("/${projectName}/${builder.firstToLower($tableModel.tableLabel)}/modify${builder.firstToUpper(${tableModel.tableLabel})}")
 	public Result modify${builder.firstToUpper(${tableModel.tableLabel})}(String data) throws Exception{
 		try {
 			${builder.firstToUpper(${tableModel.tableLabel})} updateEntity = JsonUtils.jsonToPojo(data,${builder.firstToUpper(${tableModel.tableLabel})}.class);
@@ -99,7 +99,7 @@ public class ${builder.firstToUpper(${tableModel.tableLabel})}Controller extends
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@PostMapping("/${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/delete${builder.firstToUpper(${tableModel.tableLabel})}")
+	@PostMapping("/${projectName}/${builder.firstToLower($tableModel.tableLabel)}/delete${builder.firstToUpper(${tableModel.tableLabel})}")
 	public Result delete${builder.firstToUpper(${tableModel.tableLabel})}(String data) throws Exception{
 		try {
 			${builder.firstToUpper(${tableModel.tableLabel})} deleteEntity = JsonUtils.jsonToPojo(data,${builder.firstToUpper(${tableModel.tableLabel})}.class);
@@ -116,7 +116,7 @@ public class ${builder.firstToUpper(${tableModel.tableLabel})}Controller extends
 	 * @throws Exception
 	 */
 	@ResponseBody
-	@PostMapping("/${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}List")
+	@PostMapping("/${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}List")
 	public Result get${builder.firstToUpper(${tableModel.tableLabel})}List(String data) throws Exception{
 		try {
 			${builder.firstToUpper(${tableModel.tableLabel})} queryEntity = JsonUtils.jsonToPojo(data,${builder.firstToUpper(${tableModel.tableLabel})}.class);

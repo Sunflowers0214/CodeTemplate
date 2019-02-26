@@ -4,7 +4,7 @@
     <title>$tableModel.tableComment</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 	<script type="text/javascript">
-        var get${builder.firstToUpper(${tableModel.tableLabel})}Url="./${languagePath.toLowerCase()}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}";
+        var get${builder.firstToUpper(${tableModel.tableLabel})}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper(${tableModel.tableLabel})}";
 
         $(function (){
             setPageControl("nd_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");

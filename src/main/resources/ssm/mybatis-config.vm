@@ -11,7 +11,7 @@
     <typeAliases>
 #foreach($table in $tableModelList)
         <!-- $table.tableComment -->
-        <typeAlias alias="${builder.firstToLower($table.tableLabel)}" type="${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper($table.tableLabel)}"/>
+        <typeAlias alias="${builder.firstToLower($table.tableLabel)}" type="${packageName}.${projectName}.model.${builder.firstToUpper($table.tableLabel)}"/>
 #end
     </typeAliases>
 
@@ -19,7 +19,7 @@
     <mappers>
 #foreach($table in $tableModelList)
         <!-- $table.tableComment -->
-        <mapper resource="config/mybatis/${languagePath.toLowerCase()}/${builder.firstToUpper($table.tableLabel)}Mapper.xml"/>
+        <mapper resource="config/mybatis/${projectName}/${builder.firstToUpper($table.tableLabel)}Mapper.xml"/>
 #end
     </mappers>
 </configuration>

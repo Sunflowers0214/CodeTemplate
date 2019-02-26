@@ -20,6 +20,8 @@ public class CreateCode {
     private static List<TableModel> tableModelList;
     private static VelocityContext velocityContext;
     private static FileHelper helper = new FileHelper();
+    private static String templatePath;
+    private static String projectName;
 
     public static void main(String[] args) throws IOException {
         Properties properties = helper.getProperties("jdbc.properties");
@@ -29,49 +31,95 @@ public class CreateCode {
         //初始化VelocityContext
         velocityContext = CreateCode.initVelocityContext(properties);
 
-        String projectName = properties.get("projectName").toString();
-        String languagePath = properties.get("languagePath").toString();
-        String templatePath = properties.getProperty("templetFilePath");
-        String createFilePath = properties.getProperty("genDirPath") + File.separator + projectName + File.separator;
-        String javaPath = createFilePath + "java/" + projectName;
-        String testPath = createFilePath + "test/" + projectName;
-        String configPath = createFilePath + "config";
+        //模板路径
+        templatePath = properties.getProperty("templetFilePath");
+        //项目名
+        projectName = properties.get("projectName").toString();
+        //文件生成路径
+        String createFilePath = properties.getProperty("genDirPath");
+        String javaPath = createFilePath + File.separator + projectName + "/java/" + projectName;
+        String testPath = createFilePath + File.separator + projectName + "/test/" + projectName;
+        String configPath = createFilePath + File.separator + projectName + "/config";
 
         //实体类
-        CreateCode.createFiles(templatePath + "Model.vm", javaPath + "/model", ".java");
-
-        //数据库访问层
-        CreateCode.createFiles(templatePath + "Dao.vm", javaPath + "/dao", "Dao.java");
-        CreateCode.createFiles(templatePath + "DaoImpl.vm", javaPath + "/dao/impl", "DaoImpl.java");
-        CreateCode.createFiles(templatePath + "DaoTest.vm", testPath + "/dao", "DaoTest.java");
-        CreateCode.createFile(templatePath + "Dao-config.vm", configPath + "/spring", projectName + "-dao.xml");
-
-        //mybatis
-        CreateCode.createFiles(templatePath + "mybatis.vm", configPath + "/mybatis/" + languagePath, "Mapper.xml");
-        CreateCode.createFile(templatePath + "mybatis-config.vm", configPath + "/mybatis", "mybatis.config." + projectName + ".xml");
-        CreateCode.createFile(templatePath + "mybatis-spring.vm", configPath + "/spring", "spring-mybatis-" + projectName + "-config.xml");
-
-        //逻辑处理层
-        CreateCode.createFiles(templatePath + "Service.vm", javaPath + "/service", "Service.java");
-        CreateCode.createFiles(templatePath + "ServiceImpl.vm", javaPath + "/service/impl", "ServiceImpl.java");
-        CreateCode.createFiles(templatePath + "ServiceTest.vm", testPath + "/service", "ServiceTest.java");
-        CreateCode.createFile(templatePath + "Service-config.vm", configPath + "/spring", projectName + "-service.xml");
-
+        createModel(javaPath);
         //控制层
-        CreateCode.createFiles(templatePath + "Controller.vm", javaPath + "/controller", "Controller.java");
-        CreateCode.createFiles(templatePath + "ControllerTest.vm", testPath + "/controller", "ControllerTest.java");
+        createController(javaPath);
+        //逻辑处理层
+        createService(javaPath);
+        //数据库访问层
+        createDao(javaPath);
+        //mybatis
+        createMybatis(configPath);
+        //SpringXml
+        createSpringXml(configPath);
+        //Test
+        createTest(testPath);
 
         String webPath = createFilePath + "web/" + projectName;
-        CreateCode.createFiles(templatePath + "web-manhtml.vm", webPath + "/html", "Man.html");
-        //CreateCode.createFiles(templatePath + "web-manjs.vm", webPath + "/js", "Man,js");
-        CreateCode.createFiles(templatePath + "web-addhtml.vm", webPath + "/html", "Add.html");
-        //CreateCode.createFiles(templatePath + "web-addjs.vm", webPath + "/js", "Add.js");
-        CreateCode.createFiles(templatePath + "web-modifyhtml.vm", webPath + "/html", "Modify.html");
-        //CreateCode.createFiles(templatePath + "web-modifyjs.vm", webPath + "/js", "Modify.js");
-        CreateCode.createFiles(templatePath + "web-detailhtml.vm", webPath + "/html", "Detail.html");
-        //CreateCode.createFiles(templatePath + "web-detailjs.vm", webPath + "/js", "Detail.js");
-        CreateCode.createFiles(templatePath + "web-languageEn.vm", webPath + "/language/en", "Page.js");
-        CreateCode.createFiles(templatePath + "web-languageZn.vm", webPath + "/language/zh-cn", "Page.js");
+        //HTML
+        createHtml(webPath);
+        //Language
+        createLanguage(webPath);
+        //JS
+        //createJs(webPath);
+    }
+
+    private static void createModel(String javaPath) throws IOException {
+        CreateCode.createFiles(templatePath + "Model.vm", javaPath + "/model", ".java");
+    }
+
+    private static void createController(String javaPath) throws IOException {
+        CreateCode.createFiles(templatePath + "Controller.vm", javaPath + "/controller", "Controller.java");
+    }
+
+    private static void createService(String javaPath) throws IOException {
+        CreateCode.createFiles(templatePath + "Service.vm", javaPath + "/service", "Service.java");
+        CreateCode.createFiles(templatePath + "ServiceImpl.vm", javaPath + "/service/impl", "ServiceImpl.java");
+    }
+
+    private static void createDao(String javaPath) throws IOException {
+        CreateCode.createFiles(templatePath + "Dao.vm", javaPath + "/dao", "Dao.java");
+        CreateCode.createFiles(templatePath + "DaoImpl.vm", javaPath + "/dao/impl", "DaoImpl.java");
+    }
+
+    private static void createSpringXml(String configPath) throws IOException {
+        CreateCode.createFile(templatePath + "Dao-config.vm", configPath + "/spring", projectName + "-dao.xml");
+        CreateCode.createFile(templatePath + "Service-config.vm", configPath + "/spring", projectName + "-service.xml");
+    }
+
+    private static void createTest(String testPath) throws IOException {
+        CreateCode.createFiles(templatePath + "DaoTest.vm", testPath + "/dao", "DaoTest.java");
+        CreateCode.createFiles(templatePath + "ServiceTest.vm", testPath + "/service", "ServiceTest.java");
+        CreateCode.createFiles(templatePath + "ControllerTest.vm", testPath + "/controller", "ControllerTest.java");
+    }
+
+    private static void createMybatis(String configPath) throws IOException {
+        CreateCode.createFiles(templatePath + "mybatis.vm", configPath + "/mybatis/" + projectName, "Mapper.xml");
+        CreateCode.createFile(templatePath + "mybatis-config.vm", configPath + "/mybatis", "mybatis.config." + projectName + ".xml");
+        CreateCode.createFile(templatePath + "mybatis-spring.vm", configPath + "/spring", "spring-mybatis-" + projectName + "-config.xml");
+    }
+
+    private static void createHtml(String webPath) throws IOException {
+        String path = webPath + "/html";
+        CreateCode.createFiles(templatePath + "web-manhtml.vm", path, "Man.html");
+        CreateCode.createFiles(templatePath + "web-addhtml.vm", path, "Add.html");
+        CreateCode.createFiles(templatePath + "web-modifyhtml.vm", path, "Modify.html");
+        CreateCode.createFiles(templatePath + "web-detailhtml.vm", path, "Detail.html");
+    }
+
+    private static void createJs(String webPath) throws IOException {
+        String path = webPath + "/js";
+        CreateCode.createFiles(templatePath + "web-manjs.vm", path, "Man,js");
+        CreateCode.createFiles(templatePath + "web-addjs.vm", path, "Add.js");
+        CreateCode.createFiles(templatePath + "web-modifyjs.vm", path, "Modify.js");
+        CreateCode.createFiles(templatePath + "web-detailjs.vm", path, "Detail.js");
+    }
+
+    private static void createLanguage(String webPath) throws IOException {
+        String path = webPath + "/language";
+        CreateCode.createFiles(templatePath + "web-languageEn.vm", path, "Page.js");
+        CreateCode.createFiles(templatePath + "web-languageZn.vm", path, "Page.js");
     }
 
     /**
@@ -111,7 +159,6 @@ public class CreateCode {
         context.put("jsonBean", properties.get("jsonBean"));
         //路径
         context.put("databaseType", properties.get("databaseType"));
-        context.put("languagePath", properties.get("languagePath"));
         context.put("packageName", properties.get("packageName"));
         context.put("projectName", properties.get("projectName"));
         //表集合
@@ -126,7 +173,7 @@ public class CreateCode {
      * @param dirName      目录
      * @param suffix       文件名后缀
      */
-    public static void createFiles(String templateName, String dirName, String suffix) throws IOException {
+    private static void createFiles(String templateName, String dirName, String suffix) throws IOException {
         FileHelper helper = new FileHelper();
 
         // 初始化一个模板引擎
@@ -153,7 +200,7 @@ public class CreateCode {
      * @param dirName      文件路径
      * @param fileName
      */
-    public static void createFile(String templateName, String dirName, String fileName) throws IOException {
+    private static void createFile(String templateName, String dirName, String fileName) throws IOException {
         Template template = Velocity.getTemplate(templateName, "UTF-8");
         StringWriter sw = new StringWriter();
         template.merge(velocityContext, sw);

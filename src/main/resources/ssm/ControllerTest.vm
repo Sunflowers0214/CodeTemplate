@@ -1,4 +1,4 @@
-package ${packageName}.${projectName.toLowerCase()}.test;
+package ${packageName}.${projectName}.test;
 
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;

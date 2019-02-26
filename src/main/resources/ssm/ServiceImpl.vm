@@ -1,8 +1,8 @@
-package ${packageName}.${projectName.toLowerCase()}.service.impl;
+package ${packageName}.${projectName}.service.impl;
 
-import ${packageName}.${projectName.toLowerCase()}.model.${builder.firstToUpper(${tableModel.tableLabel})};
-import ${packageName}.${projectName.toLowerCase()}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao;
-import ${packageName}.${projectName.toLowerCase()}.service.${builder.firstToUpper(${tableModel.tableLabel})}Service;
+import ${packageName}.${projectName}.model.${builder.firstToUpper(${tableModel.tableLabel})};
+import ${packageName}.${projectName}.dao.${builder.firstToUpper(${tableModel.tableLabel})}Dao;
+import ${packageName}.${projectName}.service.${builder.firstToUpper(${tableModel.tableLabel})}Service;
 import ${basePath}.BaseService;
 import ${pageBean};
 import java.util.List;
