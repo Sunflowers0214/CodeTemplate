@@ -22,6 +22,8 @@ public class ColumnModel {
     private boolean nullable = true;//标识该列的值能否为空
     private boolean ignoreFlag = false;//特殊标识
     private boolean deleteFlag = false;//逻辑删除字段标识
+    private String valid;//有效值
+    private String disable;//无效值
 
     public ColumnModel() {
         this.columnName = columnName;
@@ -157,24 +159,20 @@ public class ColumnModel {
         this.deleteFlag = deleteFlag;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("\n---<" + columnComment + ">{");
-        builder.append(",columnName=" + columnName);
-        builder.append(",columnLabel=" + columnLabel);
-        builder.append(",columnComment=" + columnComment);
-        builder.append(",columnType=" + columnType);
-        builder.append(",columnSize=" + columnSize);
-        builder.append(",columnClassName=" + columnClassName);
-        builder.append(",columnClassPackage=" + columnClassPackage);
-        builder.append(",columnSimpleClassName=" + columnSimpleClassName);
-        builder.append(",nullable=" + nullable);
-        builder.append(",precision=" + precision);
-        builder.append(",primaryKey=" + primaryKey);
-        builder.append(",scale=" + scale);
-        builder.append("}");
-        return builder.toString();
+    public String getValid() {
+        return valid;
+    }
+
+    public void setValid(String valid) {
+        this.valid = valid;
+    }
+
+    public String getDisable() {
+        return disable;
+    }
+
+    public void setDisable(String disable) {
+        this.disable = disable;
     }
 
 }
