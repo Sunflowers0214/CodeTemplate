@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$tableModel.tableComment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="./${projectName}/js/${builder.firstToUpper($tableModel.tableLabel)}Add.js"/>
+</head>
+<body>
+<div class="editForm editForm0">
+	<form id="${builder.firstToUpper($tableModel.tableLabel)}AddForm" name="${builder.firstToUpper($tableModel.tableLabel)}AddForm" method="post">
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+        <input type="hidden" id="a_${builder.firstToLower($field.columnLabel)}" name="a_${builder.firstToLower($field.columnLabel)}"/>
+#end
+#end
+		<div class="row">
+#set($count=1)
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
+#if(${builder.toUpperCase(${field.columnSimpleClassName})}=="DATE")
+            <div class="col-md-4 datePicker">
+                <label id="na_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)class="required"#end></label>
+                <input type="text" ltype="text" class="dateMark" id="a_${builder.firstToLower($field.columnLabel)}" name="a_${builder.firstToLower($field.columnLabel)}" validate="{maxlength:$field.precision#if($field.nullable==false),required:true#end}"/>
+            </div>
+#else
+            <div class="col-md-4">
+                <label id="na_${builder.firstToLower($field.columnLabel)}" #if($field.nullable!=true)class="required"#end></label>
+                <input type="text" ltype="text" id="a_${builder.firstToLower($field.columnLabel)}" name="a_${builder.firstToLower($field.columnLabel)}" validate="{maxlength:$field.precision#if($field.nullable==false),required:true#end}"/>
+            </div>
+#end
+#if($count%3==0&&$count!=${tableModel.columnList.size()})
+        </div>
+        <div class="row">
+#end
+#set($count=$count+1)
+#end
+#end
+		</div>
+	</form>
+	<center>
+		<input type="button" value="保存" class="savebtn" id="saveAdd" onclick="$('${builder.getJing()}${builder.firstToUpper($tableModel.tableLabel)}AddForm').submit()"/>
+	    <input type="button" value="关闭" class="closebtn" id="closeAdd" onclick="saveDialogClose();"/>
+	</center>
+</div>
+</body>
+</html>

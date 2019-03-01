@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>$tableModel.tableComment</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <script type="text/javascript" src="./${projectName}/js/${builder.firstToUpper($tableModel.tableLabel)}Man.js"/>
+</head>
+<body>
+<div class="container">
+	<form id="${builder.firstToUpper($tableModel.tableLabel)}Form" name="${builder.firstToUpper($tableModel.tableLabel)}Form" onsubmit="return false" class="queryForm">
+		<div class="row fluidLabel">
+			<div class="col-md-3">
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+                <input type="hidden" id="d_${builder.firstToLower($field.columnLabel)}" name="d_${builder.firstToLower($field.columnLabel)}"/>
+                <input type="text" ltype="text" id="q_searchValue" placeholder="请输入搜索信息" width="100%"/>
+#end
+#end
+            </div>
+            <div class="col-md-1">
+    			<button class="btn btn-default" type="button" onclick="get${builder.firstToUpper($tableModel.tableLabel)}Search()">查询</button>
+			</div>
+            <div id="more" class="pull-right">
+                <div class="gw_more" data-toggle="collapse" data-target="#detail">
+                    更多筛选条件<i id="moreCon" class="fa fa-chevron-circle-down"></i>
+                </div>
+            </div>
+        </div>
+        <div id="detail" class="box panel-collapse collapse topGap">
+#foreach($field in $tableModel.columnList)
+#if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()}&&!${field.isPrimaryKey()})
+#if(${builder.toUpperCase(${field.columnSimpleClassName})}=="DATE")
+            <div class="row datePicker">
+#else
+            <div class="row">
+#end
+            	<label id="n_${builder.firstToLower($field.columnLabel)}"></label>
+				<input type="text" ltype="text" id="q_${builder.firstToLower($field.columnLabel)}" name="q_${builder.firstToLower($field.columnLabel)}"/>
+            </div>
+#end
+#end
+        </div>
+	</form>
+	<div class="box topGap">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="title">查询结果
+					<span class="btnGrp">
+						<i title="新增" class="fa fa-plus" onclick="init${builder.firstToUpper($tableModel.tableLabel)}Add();"></i>
+					</span>
+				</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div id="${builder.firstToUpper($tableModel.tableLabel)}MainGrid"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
