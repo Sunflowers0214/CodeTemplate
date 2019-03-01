@@ -13,6 +13,11 @@ public class JdbcConfig {
     private String user;
     private String password;
 
+    private String prefix;
+    private boolean prefixDeleteFlag;
+    private String deleteField;
+    private String excludeFields;
+
     private JdbcConfig() {
     }
 
@@ -32,6 +37,10 @@ public class JdbcConfig {
         this.schema = prop.getProperty("schema");
         this.user = prop.getProperty("user");
         this.password = prop.getProperty("password");
+        this.prefix = prop.getProperty("prefix");
+        this.prefixDeleteFlag = Boolean.valueOf(prop.getProperty("prefixDeleteFlag"));
+        this.deleteField = prop.getProperty("deleteField");
+        this.excludeFields = prop.getProperty("excludeFields");
     }
 
     public String getDatabaseType() {
@@ -80,5 +89,37 @@ public class JdbcConfig {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
+    public boolean isPrefixDeleteFlag() {
+        return prefixDeleteFlag;
+    }
+
+    public void setPrefixDeleteFlag(boolean prefixDeleteFlag) {
+        this.prefixDeleteFlag = prefixDeleteFlag;
+    }
+
+    public String getDeleteField() {
+        return deleteField;
+    }
+
+    public void setDeleteField(String deleteField) {
+        this.deleteField = deleteField;
+    }
+
+    public String getExcludeFields() {
+        return excludeFields;
+    }
+
+    public void setExcludeFields(String excludeFields) {
+        this.excludeFields = excludeFields;
     }
 }
