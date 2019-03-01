@@ -1,0 +1,15 @@
+var get${builder.firstToUpper($tableModel.tableLabel)}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper($tableModel.tableLabel)}";
+
+$(function (){
+	setPageControl("nd_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
+
+	var paramObj = {};
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+	paramObj.${builder.firstToLower($field.columnLabel)}=${builder.firstToLower($field.columnLabel)};
+#end
+#end
+	asyncAjaxPost(JSON.stringify(paramObj),get${builder.firstToUpper($tableModel.tableLabel)}Url, function (result) {
+		setPageControl("det_", result.datalist, "span");
+	});
+});

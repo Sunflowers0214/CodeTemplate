@@ -1,0 +1,25 @@
+var insert${builder.firstToLower($tableModel.tableLabel)}Url = "./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/insert${builder.firstToUpper($tableModel.tableLabel)}";
+
+$(function (){
+	setPageControl("na_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
+	$.metadata.setType("attr", "validate");
+	$("${builder.getJing()}${builder.firstToUpper($tableModel.tableLabel)}AddForm").validate({
+		errorPlacement: function (lable, element){
+			errorPlacement(lable, element);
+		},
+		success: function (lable){
+			success(lable);
+		},
+		submitHandler: function (){
+			submitHandler();
+			submit${builder.firstToUpper($tableModel.tableLabel)}Add();
+		}
+	});
+	initDataPicker();
+	WoohForm.createForm('${builder.firstToUpper($tableModel.tableLabel)}AddForm',{});
+});
+
+//提交数据
+function submit${builder.firstToUpper($tableModel.tableLabel)}Add(){
+	ajaxSubmit("a_",insert${builder.firstToLower($tableModel.tableLabel)}Url,"${tableModel.tableComment}","保存",3,"goback()");
+}

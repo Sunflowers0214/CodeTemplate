@@ -1,0 +1,41 @@
+var get${builder.firstToUpper($tableModel.tableLabel)}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/get${builder.firstToUpper($tableModel.tableLabel)}";
+var modify${builder.firstToUpper($tableModel.tableLabel)}Url="./${projectName}/${builder.firstToLower($tableModel.tableLabel)}/modify${builder.firstToUpper($tableModel.tableLabel)}";
+
+$(function (){
+	setPageControl("nm_",${builder.firstToLower($tableModel.tableLabel)}DataName,"span");
+	$.metadata.setType("attr","validate");
+	$("${builder.getJing()}${builder.firstToUpper($tableModel.tableLabel)}ModifyForm").validate({
+        errorPlacement: function (lable, element){
+            errorPlacement(lable, element);
+        },
+        success: function (lable){
+            success(lable);
+        },
+        submitHandler: function (){
+            submitHandler();
+            submit${builder.firstToUpper($tableModel.tableLabel)}Modify();
+        }
+	});
+	set${builder.firstToUpper($tableModel.tableLabel)}();
+	initDataPicker();
+	WoohForm.createForm('${builder.firstToUpper($tableModel.tableLabel)}ModifyForm',{});
+});
+
+//初始页面数据
+function set${builder.firstToUpper($tableModel.tableLabel)}(){
+	var paramObj = {};
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+	paramObj.${builder.firstToLower($field.columnLabel)}=${builder.firstToLower($field.columnLabel)};
+	$("#m_${builder.firstToLower($field.columnLabel)}").val(${builder.firstToLower($field.columnLabel)});
+#end
+#end
+	asyncAjaxPost(JSON.stringify(paramObj), get${builder.firstToUpper($tableModel.tableLabel)}Url, function (result) {
+		setPageControl("m_", result.datalist));
+	});
+}
+
+//提交数据
+function submit${builder.firstToUpper($tableModel.tableLabel)}Modify(){
+	ajaxSubmit("m_",modify${builder.firstToUpper($tableModel.tableLabel)}Url,"${tableModel.tableComment}","修改",3,"goback()");
+}
