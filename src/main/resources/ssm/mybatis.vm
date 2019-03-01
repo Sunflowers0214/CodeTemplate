@@ -35,10 +35,12 @@
 
     <!-- $tableModel.tableComment (修改) -->
     <sql id="${builder.firstToUpper(${tableModel.tableLabel})}ModifyWhere">
-#foreach($field in $tableModel.columnPKList)
-		<if test="@${ruleBean}@isNotEmpty($field.columnLabel)">
-			AND $field.columnName=${builder.getJing()}{$field.columnLabel}
-		</if>
+#foreach($field in $tableModel.columnList)
+#if(${field.isPrimaryKey()})
+        <if test="@${ruleBean}@isNotEmpty($field.columnLabel)">
+            AND $field.columnName=${builder.getJing()}{$field.columnLabel}
+        </if>
+#end
 #end
     </sql>
     <update id="update${builder.firstToUpper(${tableModel.tableLabel})}" parameterType="$tableModel.tableLabel">
@@ -55,37 +57,43 @@
 #end
         </trim>
         WHERE 1=1
-#if(${builder.isNotNull($tableModel.deleteModel)})
-        AND $tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
+#foreach($field in $tableModel.columnList)
+#if(${field.isDeleteFlag()})
+        AND $field.columnName = $field.valid
+#end
 #end
         <trim>
-			<include refid="${builder.firstToUpper(${tableModel.tableLabel})}ModifyWhere" />
+			<include refid="${builder.firstToUpper($tableModel.tableLabel)}ModifyWhere" />
         </trim>
 	</update>
 
     <update id="delete${builder.firstToUpper(${tableModel.tableLabel})}" parameterType="$tableModel.tableLabel">
         DELETE FROM ${tableModel.tableName}
-#if(${builder.isNotNull($tableModel.deleteModel)})
-        SET $tableModel.deleteModel.columnName = $tableModel.deleteModel.disable
+#foreach($field in $tableModel.columnList)
+#if(${field.isDeleteFlag()})
+        SET $field.columnName = $field.disable
+#end
 #end
         WHERE 1=1
-#if(${builder.isNotNull($tableModel.deleteModel)})
-        AND $tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
+#foreach($field in $tableModel.columnList)
+#if(${field.isDeleteFlag()})
+        AND $field.columnName = $field.valid
+#end
 #end
         <trim>
-            <include refid="${builder.firstToUpper(${tableModel.tableLabel})}ModifyWhere" />
+            <include refid="${builder.firstToUpper($tableModel.tableLabel)}ModifyWhere" />
         </trim>
     </update>
 
     <!-- $tableModel.tableComment (单条查询) -->
-    <resultMap id="${builder.firstToUpper(${tableModel.tableLabel})}Result" type="$tableModel.tableLabel">
+    <resultMap id="${builder.firstToUpper($tableModel.tableLabel)}Result" type="$tableModel.tableLabel">
 #foreach($field in $tableModel.columnList)
 #if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()})
         <result column="$field.columnName" property="$field.columnLabel"/>
 #end
 #end
     </resultMap>
-    <select id="get${builder.firstToUpper(${tableModel.tableLabel})}" resultMap="${builder.firstToUpper(${tableModel.tableLabel})}Result" parameterType="$tableModel.tableLabel" >
+    <select id="get${builder.firstToUpper($tableModel.tableLabel)}" resultMap="${builder.firstToUpper($tableModel.tableLabel)}Result" parameterType="$tableModel.tableLabel" >
         SELECT
 #set($count=1)
 #foreach($field in $tableModel.columnList)
@@ -100,23 +108,25 @@
 #end
         FROM ${tableModel.tableName} a
         WHERE 1=1
-#if(${builder.isNotNull($tableModel.deleteModel)})
-        AND a.$tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
+#foreach($field in $tableModel.columnList)
+#if(${field.isDeleteFlag()})
+        AND a.$field.columnName = $field.valid
+#end
 #end
         <trim>
-            <include refid="${builder.firstToUpper(${tableModel.tableLabel})}Where" />
+            <include refid="${builder.firstToUpper($tableModel.tableLabel)}Where" />
         </trim>
     </select>
 
     <!-- $tableModel.tableComment (列表查询) -->
-    <resultMap id="${builder.firstToUpper(${tableModel.tableLabel})}ListResult" type="$tableModel.tableLabel">
+    <resultMap id="${builder.firstToUpper($tableModel.tableLabel)}ListResult" type="$tableModel.tableLabel">
 #foreach($field in $tableModel.columnList)
 #if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()})
 		<result column="$field.columnName" property="$field.columnLabel"/>
 #end
 #end
     </resultMap>
-	<select id="get${builder.firstToUpper(${tableModel.tableLabel})}List" resultMap="${builder.firstToUpper(${tableModel.tableLabel})}ListResult" parameterType="$tableModel.tableLabel" >
+	<select id="get${builder.firstToUpper($tableModel.tableLabel)}List" resultMap="${builder.firstToUpper($tableModel.tableLabel)}ListResult" parameterType="$tableModel.tableLabel" >
         SELECT
 #set($count=1)
 #foreach($field in $tableModel.columnList)
@@ -131,23 +141,25 @@
 #end
 		FROM ${tableModel.tableName} a
 		WHERE 1=1
-#if(${builder.isNotNull($tableModel.deleteModel)})
-        AND a.$tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
+#foreach($field in $tableModel.columnList)
+#if(${field.isDeleteFlag()})
+        AND a.$field.columnName = $field.valid
+#end
 #end
         <trim>
-            <include refid="${builder.firstToUpper(${tableModel.tableLabel})}Where" />
+            <include refid="${builder.firstToUpper($tableModel.tableLabel)}Where" />
         </trim>
 	</select>
 
     <!-- $tableModel.tableComment (分页查询) -->
-    <resultMap id="${builder.firstToUpper(${tableModel.tableLabel})}PageResult" type="java.util.HashMap">
+    <resultMap id="${builder.firstToUpper($tableModel.tableLabel)}PageResult" type="java.util.HashMap">
 #foreach($field in $tableModel.columnList)
 #if(!${field.isDeleteFlag()}&&!${field.isIgnoreFlag()})
 		<result column="$field.columnName" property="$field.columnLabel"/>
 #end
 #end
     </resultMap>
-    <select id="get${builder.firstToUpper(${tableModel.tableLabel})}Page" resultMap="${builder.firstToUpper(${tableModel.tableLabel})}PageResult" parameterType="map" >
+    <select id="get${builder.firstToUpper($tableModel.tableLabel)}Page" resultMap="${builder.firstToUpper($tableModel.tableLabel)}PageResult" parameterType="map" >
         SELECT
 #set($count=1)
 #foreach($field in $tableModel.columnList)
@@ -162,11 +174,13 @@
 #end
         FROM ${tableModel.tableName} a
         WHERE 1=1
-#if(${builder.isNotNull($tableModel.deleteModel)})
-        AND a.$tableModel.deleteModel.columnName = $tableModel.deleteModel.valid
+#foreach($field in $tableModel.columnList)
+#if(${field.isDeleteFlag()})
+        AND a.$field.columnName = $field.valid
+#end
 #end
         <trim>
-            <include refid="${builder.firstToUpper(${tableModel.tableLabel})}Where" />
+            <include refid="${builder.firstToUpper($tableModel.tableLabel)}Where" />
         </trim>
         <if test="@${ruleBean}@isNotEmpty(pageSort)">
             ORDER BY ${builder.getJing()}{pageSort}
