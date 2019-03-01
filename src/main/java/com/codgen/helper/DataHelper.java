@@ -3,13 +3,14 @@ package com.codgen.helper;
 import com.codgen.db.DbProvider;
 import com.codgen.db.impl.MysqlProvider;
 import com.codgen.db.impl.OracleProvider;
-import com.codgen.model.*;
+import com.codgen.model.ColumnModel;
+import com.codgen.model.JdbcConfig;
+import com.codgen.model.TableModel;
 import org.apache.commons.lang.StringUtils;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -77,19 +78,35 @@ public class DataHelper {
      *
      * @return
      */
-    public List<TableModel> initTableModelList(TableConfig tableConfig) {
+    public List<TableModel> initTableModelList() {
         List<TableModel> tableList = provider.getTableList(getConn(), jdbcConfig.getSchema());
         for (TableModel tableModel : tableList) {
             String tableName = tableModel.getTableName();
-            System.out.println(tableName + ":" + tableModel.getTableComment());
-            if (StringUtils.isNotEmpty(tableConfig.getPrefix()) && !tableName.startsWith(tableConfig.getPrefix())) {
+            if (StringUtils.isNotEmpty(jdbcConfig.getPrefix()) && !tableName.startsWith(jdbcConfig.getPrefix())) {
                 continue;
             }
-            initTableModel(tableModel, tableConfig);
-            System.out.println(tableModel);
+            handleTableModel(tableModel);
+            initColumnModelList(tableModel);
         }
         closeConnection();
         return tableList;
+    }
+
+    /**
+     * 处理表信息
+     *
+     * @param table
+     */
+    public static void handleTableModel(TableModel table) {
+        System.out.println("处理表：" + table.getTableName() + ":" + table.getTableComment());
+        String tableName = table.getTableName();
+        if (StringUtils.isNotEmpty(jdbcConfig.getPrefix()) && jdbcConfig.isPrefixDeleteFlag()) {
+            tableName = tableName.replaceFirst(jdbcConfig.getPrefix(), "");
+        }
+        String tableLabel = BuilderHelper.lineToCase(tableName);
+        String tableComment = StringUtils.defaultString(table.getTableComment(), tableLabel);
+        table.setTableLabel(tableLabel);
+        table.setTableComment(tableComment);
     }
 
     /**
@@ -99,20 +116,22 @@ public class DataHelper {
      * @return
      * @throws SQLException
      */
-    public void initTableModel(TableModel table, TableConfig tableConfig) {
+    public void initColumnModelList(TableModel table) {
         String tableName = table.getTableName();
-        if (StringUtils.isNotEmpty(tableConfig.getPrefix()) && tableConfig.isPrefixDeleteFlag()) {
-            tableName = tableName.replaceFirst(tableConfig.getPrefix(), "");
+        if (StringUtils.isNotEmpty(jdbcConfig.getPrefix()) && jdbcConfig.isPrefixDeleteFlag()) {
+            tableName = tableName.replaceFirst(jdbcConfig.getPrefix(), "");
         }
         String tableLabel = BuilderHelper.lineToCase(tableName);
         String tableComment = StringUtils.defaultString(table.getTableComment(), tableLabel);
         table.setTableLabel(tableLabel);
         table.setTableComment(tableComment);
-        DeleteModel deleteModel = gainDeleteModel(tableConfig.getDeleteField());//逻辑删除
-        String excludeFields = tableConfig.getExcludeFields();//不处理字段
+        String excludeFields = jdbcConfig.getExcludeFields();//不处理字段
+        String deleteField = jdbcConfig.getDeleteField();//删除标识字段
+        String deleteCoulumn = deleteField.substring(0, deleteField.indexOf("?"));
+        String valid = deleteField.substring(deleteField.indexOf("?") + 1, deleteField.indexOf(":"));
+        String disable = deleteField.substring(deleteField.indexOf(":") + 1, deleteField.length());
 
         List<ColumnModel> columnList = provider.getColumnList(getConn(), jdbcConfig.getSchema(), table.getTableName());
-        List<ColumnModel> columnPKList = new ArrayList<>();//主键列模型集合
         for (ColumnModel column : columnList) {
             String columnLabel = BuilderHelper.lineToCase(column.getColumnName());
             if (StringUtils.isEmpty(column.getColumnComment())) {
@@ -123,31 +142,19 @@ public class DataHelper {
             //处理类型转换问题
             handleColumnType(column);
 
-            //主键字段判断
-            if (column.isPrimaryKey()) {
-                columnPKList.add(column);
-            }
-
             //特殊标识
             if (excludeFields.indexOf(column.getColumnName()) > -1) {
                 column.setIgnoreFlag(true);
             }
+
             //逻辑删除字段判断
-            if (column.getColumnName().equals(deleteModel.getColumnName())) {
+            if (column.getColumnName().equals(deleteCoulumn)) {
                 column.setDeleteFlag(true);
-                table.setDeleteModel(deleteModel);
+                column.setValid(valid);
+                column.setDisable(disable);
             }
         }
         table.setColumnList(columnList);
-        table.setColumnPKList(columnPKList);
-    }
-
-    public DeleteModel gainDeleteModel(String s) {
-        DeleteModel deleteModel = new DeleteModel();
-        deleteModel.setColumnName(s.substring(0, s.indexOf("?")));
-        deleteModel.setValid(s.substring(s.indexOf("?") + 1, s.indexOf(":")));
-        deleteModel.setDisable(s.substring(s.indexOf(":") + 1, s.length()));
-        return deleteModel;
     }
 
     /**
